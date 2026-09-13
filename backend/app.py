@@ -26,6 +26,23 @@ FRONTEND_DIR = Path(__file__).resolve().parent.parent
 app = Flask(__name__, static_folder=str(FRONTEND_DIR))
 CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
+# Auto-initialize and seed database if empty (required for cloud environments like Render)
+def init_application():
+    try:
+        init_db()
+        from backend.database import get_db
+        with get_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) as count FROM products")
+            row = cursor.fetchone()
+            if not row or row["count"] == 0:
+                from backend.seed import seed
+                seed()
+    except Exception as e:
+        print(f"[AURELIS] Application startup init: {e}")
+
+init_application()
+
 # Register API Blueprints
 app.register_blueprint(auth_bp, url_prefix="/api/auth")
 app.register_blueprint(product_bp, url_prefix="/api/products")

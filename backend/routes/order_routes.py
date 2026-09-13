@@ -51,10 +51,11 @@ def get_auth_user_id(request):
 @order_bp.route("", methods=["POST"])
 def create_order():
     data = request.get_json() or {}
-    customer_name = (data.get("customer_name") or "").strip()
-    customer_email = (data.get("customer_email") or "").strip().lower()
-    customer_phone = (data.get("customer_phone") or "").strip()
-    shipping_address = data.get("shipping_address")
+    cust_data = data.get("customer") if isinstance(data.get("customer"), dict) else {}
+    customer_name = (data.get("customer_name") or cust_data.get("name") or cust_data.get("customer_name") or "").strip()
+    customer_email = (data.get("customer_email") or cust_data.get("email") or cust_data.get("customer_email") or "").strip().lower()
+    customer_phone = (data.get("customer_phone") or cust_data.get("phone") or cust_data.get("customer_phone") or "").strip()
+    shipping_address = data.get("shipping_address") or cust_data
     items = data.get("items", [])
     raw_payment = (data.get("payment_method") or "COD").upper()
     payment_method = "COD" if "COD" in raw_payment or "CASH" in raw_payment else raw_payment
@@ -81,10 +82,14 @@ def create_order():
     if not isinstance(shipping_address, dict):
         return jsonify({"error": "Shipping address details are required"}), 400
 
-    flat_no = (shipping_address.get("flat_no") or shipping_address.get("flat") or shipping_address.get("house") or shipping_address.get("address_line") or "").strip()
-    street = (shipping_address.get("street") or shipping_address.get("address_line") or shipping_address.get("area") or "").strip()
+    flat_no = (shipping_address.get("flat_no") or shipping_address.get("flat") or shipping_address.get("house") or shipping_address.get("address_line") or shipping_address.get("address_line1") or shipping_address.get("address") or "").strip()
+    street = (shipping_address.get("street") or shipping_address.get("address_line") or shipping_address.get("address_line1") or shipping_address.get("address") or "").strip()
+    if not flat_no and street:
+        flat_no = street
+    if not street and flat_no:
+        street = flat_no
     city = (shipping_address.get("city") or "").strip()
-    pincode = str(shipping_address.get("pincode") or "").strip()
+    pincode = str(shipping_address.get("pincode") or shipping_address.get("postal_code") or "").strip()
 
     if not flat_no or not street or not city:
         return jsonify({"error": "Complete address required: Flat/House, Street, and City cannot be blank"}), 400
@@ -201,13 +206,13 @@ def create_order():
         order_number = generate_order_number(cursor)
 
         is_cod = payment_method == "COD"
-        initial_order_status = "CONFIRMED"
-        initial_payment_status = "COD_PENDING" if is_cod else "PAID"
+        initial_order_status = "CONFIRMED" if is_cod else "PENDING"
+        initial_payment_status = "COD_PENDING" if is_cod else "PENDING"
 
         # Current India Standard Time (IST)
         now_ist = datetime.datetime.now(IST)
         created_at_ist = now_ist.strftime("%Y-%m-%d %H:%M:%S")
-        date_formatted = now_ist.strftime("%d %B %Y")
+        date_formatted = now_ist.strftime("%d %B %Y, %I:%M %p IST")
         time_formatted = now_ist.strftime("%I:%M %p IST")
 
         # Estimated delivery: 3-5 business days
@@ -306,6 +311,7 @@ def create_order():
 
 
 @order_bp.route("", methods=["GET"])
+@order_bp.route("/user", methods=["GET"])
 def get_user_orders():
     user_id = get_auth_user_id(request)
     if not user_id:
@@ -331,15 +337,25 @@ def get_user_orders():
                 o["shipping_address"] = json.loads(o["shipping_address"])
             except Exception:
                 pass
+            cursor.execute("""
+                SELECT oi.*, COALESCE(pv.image_url, p.main_image, './assets/fallback-watch.svg') as image_url,
+                       p.name as product_name
+                FROM order_items oi
+                LEFT JOIN product_variants pv ON oi.variant_id = pv.id
+                LEFT JOIN products p ON oi.product_id = p.id
+                WHERE oi.order_id = ?
+            """, (o["id"],))
+            o["items"] = dicts_from_rows(cursor.fetchall())
+
             if o.get("created_at"):
                 try:
                     dt = datetime.datetime.fromisoformat(str(o["created_at"]).replace("Z", "+00:00"))
                     if dt.tzinfo is None:
-                        o["order_date"] = dt.strftime("%d %B %Y")
+                        o["order_date"] = dt.strftime("%d %B %Y, %I:%M %p IST")
                         o["order_time"] = dt.strftime("%I:%M %p IST")
                     else:
                         dt_ist = dt.astimezone(IST)
-                        o["order_date"] = dt_ist.strftime("%d %B %Y")
+                        o["order_date"] = dt_ist.strftime("%d %B %Y, %I:%M %p IST")
                         o["order_time"] = dt_ist.strftime("%I:%M %p IST")
                 except Exception:
                     o["order_date"] = str(o.get("created_at", ""))
@@ -358,6 +374,33 @@ def get_order_by_identifier(identifier):
         order = dict_from_row(cursor.fetchone())
         if not order:
             return jsonify({"error": "Order not found"}), 404
+
+        # Strict Customer Ownership Check
+        auth_uid = get_auth_user_id(request)
+        order_uid = order.get("user_id")
+        order_email = (order.get("customer_email") or "").lower()
+
+        if order_uid:
+            # Order belongs to a registered collector
+            if not auth_uid:
+                return jsonify({"error": "Authentication required to view this private collector commission"}), 401
+            cursor.execute("SELECT email, role FROM users WHERE id = ?", (auth_uid,))
+            curr_u = cursor.fetchone()
+            if not curr_u:
+                return jsonify({"error": "Invalid authentication credentials"}), 401
+            if curr_u["role"] != "admin":
+                user_email = (curr_u["email"] or "").lower()
+                if order_uid != auth_uid and order_email != user_email:
+                    return jsonify({"error": "Forbidden: You do not have permission to view this order"}), 403
+        elif auth_uid:
+            cursor.execute("SELECT role FROM users WHERE id = ?", (auth_uid,))
+            curr_u = cursor.fetchone()
+            # If guest order, any logged-in customer who is not admin should only view if email matches
+            if curr_u and curr_u["role"] != "admin":
+                cursor.execute("SELECT email FROM users WHERE id = ?", (auth_uid,))
+                user_email = (cursor.fetchone()["email"] or "").lower()
+                if order_email and user_email != order_email:
+                    return jsonify({"error": "Forbidden: You do not have permission to view this order"}), 403
 
         try:
             order["shipping_address"] = json.loads(order["shipping_address"])
@@ -379,11 +422,11 @@ def get_order_by_identifier(identifier):
             try:
                 dt = datetime.datetime.fromisoformat(str(order["created_at"]).replace("Z", "+00:00"))
                 if dt.tzinfo is None:
-                    order["order_date"] = dt.strftime("%d %B %Y")
+                    order["order_date"] = dt.strftime("%d %B %Y, %I:%M %p IST")
                     order["order_time"] = dt.strftime("%I:%M %p IST")
                 else:
                     dt_ist = dt.astimezone(IST)
-                    order["order_date"] = dt_ist.strftime("%d %B %Y")
+                    order["order_date"] = dt_ist.strftime("%d %B %Y, %I:%M %p IST")
                     order["order_time"] = dt_ist.strftime("%I:%M %p IST")
             except Exception:
                 order["order_date"] = str(order.get("created_at", ""))
@@ -437,11 +480,11 @@ def track_order():
             try:
                 dt = datetime.datetime.fromisoformat(str(order["created_at"]).replace("Z", "+00:00"))
                 if dt.tzinfo is None:
-                    order["order_date"] = dt.strftime("%d %B %Y")
+                    order["order_date"] = dt.strftime("%d %B %Y, %I:%M %p IST")
                     order["order_time"] = dt.strftime("%I:%M %p IST")
                 else:
                     dt_ist = dt.astimezone(IST)
-                    order["order_date"] = dt_ist.strftime("%d %B %Y")
+                    order["order_date"] = dt_ist.strftime("%d %B %Y, %I:%M %p IST")
                     order["order_time"] = dt_ist.strftime("%I:%M %p IST")
             except Exception:
                 order["order_date"] = str(order.get("created_at", ""))

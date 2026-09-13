@@ -3,317 +3,1124 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Collector Account — AURELIS Luxury Timepieces</title>
-  <meta name="description" content="Manage your personal AURELIS collector profile and saved delivery addresses.">
+  <title>My Account — AURELIS Haute Horlogerie</title>
+  <meta name="description" content="Manage your private AURELIS collector profile, commission purchase history, and saved details.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/cart-checkout.css">
+  <style>
+    .account-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 35px;
+      align-items: start;
+    }
+    .account-sidebar {
+      background: #090807;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 25px 20px;
+      position: sticky;
+      top: 100px;
+    }
+    .collector-avatar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .collector-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(217, 174, 85, 0.25) 0%, #0d0c0a 80%);
+      border: 1.5px solid var(--gold-primary);
+      display: grid;
+      place-content: center;
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+    .collector-sidebar-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin: 0 0 3px 0;
+      line-height: 1.2;
+    }
+    .collector-sidebar-id {
+      font-size: 11px;
+      color: var(--gold-primary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+      font-family: monospace;
+    }
+    .account-nav-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .account-nav-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: 4px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+    .account-nav-btn:hover {
+      background: rgba(217, 174, 85, 0.06);
+      color: var(--gold-light);
+    }
+    .account-nav-btn.active {
+      background: rgba(217, 174, 85, 0.12);
+      border-color: rgba(217, 174, 85, 0.3);
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+    .account-nav-btn-icon {
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    .account-tab-pill {
+      font-size: 10.5px;
+      background: var(--gold-primary);
+      color: #080807;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .account-tab-content {
+      display: none;
+    }
+    .account-tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Profile Grid */
+    .profile-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .profile-info-item {
+      background: #080706;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 16px;
+    }
+    .profile-info-item label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 6px;
+    }
+    .profile-info-item p {
+      font-size: 14px;
+      color: #f5f0e7;
+      font-weight: 500;
+      margin: 0;
+      word-break: break-word;
+    }
+    /* Order Cards */
+    .order-card-luxury {
+      background: #090807;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .order-card-luxury:hover {
+      border-color: rgba(217, 174, 85, 0.4);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+    .order-card-header {
+      padding: 16px 20px;
+      background: #0d0c0a;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .order-card-body {
+      padding: 20px;
+    }
+    .order-item-line {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .order-item-line:last-child {
+      border-bottom: none;
+    }
+    .order-item-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 4px;
+      background: #050504;
+      border: 1px solid var(--border-subtle);
+      object-fit: contain;
+      padding: 4px;
+      flex-shrink: 0;
+    }
+    .order-card-footer {
+      padding: 14px 20px;
+      background: #080706;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    /* Status Timeline */
+    .timeline-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      margin: 30px 0 20px;
+    }
+    .timeline-wrap::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: #1c1a16;
+      z-index: 1;
+    }
+    .timeline-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      flex: 1;
+    }
+    .timeline-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #0a0907;
+      border: 2px solid #28241e;
+      color: #6a665f;
+      display: grid;
+      place-content: center;
+      margin: 0 auto 8px;
+      font-size: 11px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+    .timeline-step.completed .timeline-dot {
+      background: #064e3b;
+      border-color: #10b981;
+      color: #34d399;
+    }
+    .timeline-step.current .timeline-dot {
+      background: rgba(217, 174, 85, 0.2);
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+      box-shadow: 0 0 16px rgba(217, 174, 85, 0.5);
+    }
+    .timeline-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .timeline-step.completed .timeline-label,
+    .timeline-step.current .timeline-label {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    /* Empty State */
+    .empty-orders-box {
+      text-align: center;
+      padding: 60px 20px;
+      background: #090807;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+    }
+    .empty-orders-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(217, 174, 85, 0.08);
+      border: 1px solid var(--border-gold);
+      display: grid;
+      place-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+      color: var(--gold-primary);
+    }
+    @media (max-width: 800px) {
+      .account-layout { grid-template-columns: 1fr; }
+      .account-sidebar { position: static; }
+      .timeline-wrap { overflow-x: auto; padding-bottom: 10px; }
+      .timeline-step { min-width: 80px; }
+    }
+    @media print {
+      body * { visibility: hidden; }
+      #orderDetailModalContent, #orderDetailModalContent * { visibility: visible; }
+      #orderDetailModalContent { position: absolute; left: 0; top: 0; width: 100%; }
+      .modal-close, .action-buttons-group { display: none !important; }
+    }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
-  <header class="nav">
+  <header class="nav" id="mainNav">
     <a class="brand" href="index.html">
       <span class="brand-title">AURELIS</span>
       <span class="brand-sub">Haute Horlogerie</span>
     </a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="navLinks">
       <a href="index.html">Atelier</a>
       <a href="shop.html">Collection</a>
       <a href="craftsmanship.html">Craftsmanship</a>
-      <a href="orders.html">My Orders</a>
+      <a href="warranty.html">6-Month Warranty</a>
       <a href="track-order.html">Track Order</a>
       <a href="contact.html">Concierge</a>
     </nav>
     <div class="nav-actions">
-      <button class="gold-btn-outline" style="padding: 8px 16px; font-size: 10px;" onclick="Auth.logout()">Sign Out</button>
+      <div id="navAuthArea">
+        <button class="gold-btn-outline" style="padding: 8px 16px; font-size: 10px;" onclick="openLoginModal()" id="navSignBtn">Sign In</button>
+      </div>
     </div>
   </header>
 
   <main style="padding: 130px 5vw 100px;">
-    <div class="container" style="max-width: 900px;">
-      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 40px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 20px; flex-wrap: wrap; gap: 15px;">
-        <div>
-          <p class="eyebrow">COLLECTOR ATELIER PROFILE</p>
-          <h1 style="font-size: 36px;" id="accountNameHeader">Collector Profile</h1>
-          <p style="color: var(--text-secondary); font-size: 14px;" id="accountEmailSub">-</p>
-        </div>
-        <div>
-          <a href="orders.html" class="gold-btn" style="padding: 12px 24px;">View All Commissions</a>
-        </div>
-      </div>
+    <div class="container" style="max-width: 1080px;">
 
-      <!-- Auth Prompt (if not logged in) -->
-      <div id="authPromptCard" class="luxury-card" style="display: none; padding: 40px; text-align: center; margin-bottom: 40px;">
-        <p class="eyebrow">AUTHENTICATION REQUIRED</p>
-        <h3 style="font-size: 24px; margin: 10px 0 16px;">Sign In to Your Collector Account</h3>
-        <p style="color: var(--text-secondary); max-width: 440px; margin: 0 auto 25px; font-size: 14px;">
-          Access your private horology commissions, saved addresses, and concierge support.
-        </p>
-        <div style="display: flex; justify-content: center; gap: 15px;">
-          <button class="gold-btn" onclick="openLoginModal()">Sign In</button>
-          <button class="gold-btn-outline" onclick="openRegisterModal()">Create Collector Profile</button>
-        </div>
-      </div>
+      <!-- Guest Authentication Hub (Inline Centered Luxury Card) -->
+      <div id="guestAuthContainer" class="auth-container" style="display: none; margin: 0 auto;">
+        <div class="auth-card">
+          <div style="width: 58px; height: 58px; border-radius: 50%; background: radial-gradient(circle, rgba(217, 174, 85, 0.22) 0%, rgba(13, 12, 10, 0.9) 75%); border: 1.5px solid var(--gold-primary); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; box-shadow: 0 0 25px rgba(217, 174, 85, 0.25);">🛡️</div>
+          <div style="text-align: center; margin-bottom: 24px;">
+            <p class="eyebrow" style="margin-bottom: 4px;">PRIVATE CLIENT REGISTRY</p>
+            <h2 style="font-size: 26px; color: #f5f0e7; font-family: var(--font-serif); margin: 0 0 8px;">Collector Access</h2>
+            <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin: 0;">
+              Sign in to inspect personal timepiece commissions, exclusive order history, and saved details.
+            </p>
+          </div>
 
-      <!-- Logged-in Content -->
-      <div id="accountDashboardContent">
-        <!-- Saved Addresses Section -->
-        <div class="luxury-card" style="padding: 30px; margin-bottom: 40px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-            <div>
-              <h3 style="font-size: 18px;">Saved Delivery Addresses</h3>
-              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Used for priority express insured courier shipments.</p>
-            </div>
-            <button class="gold-btn-outline" style="font-size: 10px; padding: 8px 16px;" onclick="document.getElementById('newAddressModal').classList.add('active')">
-              + Add Address
+          <!-- Tab Switcher -->
+          <div class="auth-tabs" role="tablist">
+            <button type="button" class="auth-tab-btn active" id="accountTabBtn-login" onclick="AccountView.switchAuthTab('login')">
+              Sign In
+            </button>
+            <button type="button" class="auth-tab-btn" id="accountTabBtn-register" onclick="AccountView.switchAuthTab('register')">
+              Create Account
             </button>
           </div>
-          <div id="accountAddressesList"></div>
+
+          <!-- PANEL 1: SIGN IN -->
+          <div class="auth-panel active" id="accountPanel-login">
+            <form id="userLoginForm" onsubmit="event.preventDefault(); AccountView.handleUserLogin();">
+              <div class="form-group">
+                <label class="form-label" for="loginEmail">Registered Email Address *</label>
+                <input type="email" id="loginEmail" class="form-input" placeholder="collector@domain.com" autocomplete="email" required>
+              </div>
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label class="form-label" for="loginPassword" style="margin-bottom: 0;">Password *</label>
+                  <a href="forgot-password.html" style="font-size: 11.5px; color: var(--gold-primary); text-decoration: underline;">Forgot Password?</a>
+                </div>
+                <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
+              </div>
+              <button type="submit" class="gold-btn" style="width: 100%; padding: 14px; font-size: 11.5px; letter-spacing: 0.15em; margin-top: 10px;" id="loginSubmitBtn">
+                SIGN IN TO ACCOUNT
+              </button>
+              <div style="text-align: center; margin-top: 22px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 18px;">
+                New to AURELIS? <a href="javascript:void(0)" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;" onclick="AccountView.switchAuthTab('register')">Create a collector account</a>
+              </div>
+            </form>
+          </div>
+
+          <!-- PANEL 2: CREATE ACCOUNT -->
+          <div class="auth-panel" id="accountPanel-register">
+            <form id="userRegisterForm" onsubmit="event.preventDefault(); AccountView.handleUserRegister();">
+              <div class="form-group">
+                <label class="form-label" for="regName">Full Legal Name *</label>
+                <input type="text" id="regName" class="form-input" placeholder="e.g. Vikramaditya Sharma" autocomplete="name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regEmail">Email Address *</label>
+                <input type="email" id="regEmail" class="form-input" placeholder="collector@domain.com" autocomplete="email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regPhone">Mobile Phone Number (10 Digits) *</label>
+                <input type="tel" id="regPhone" class="form-input" placeholder="9876543210" maxlength="10" autocomplete="tel" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regPassword">Password (Minimum 6 Characters) *</label>
+                <input type="password" id="regPassword" class="form-input" placeholder="At least 6 characters" minlength="6" autocomplete="new-password" required oninput="AccountView.checkPasswordMatch()">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regConfirm">Confirm Password *</label>
+                <input type="password" id="regConfirm" class="form-input" placeholder="Re-enter your password" minlength="6" autocomplete="new-password" required oninput="AccountView.checkPasswordMatch()">
+                <div id="accountRegMismatch" style="font-size: 11px; color: #e74c3c; margin-top: 5px; display: none;">Passwords do not match. Please verify.</div>
+              </div>
+              <button type="submit" class="gold-btn" style="width: 100%; padding: 14px; font-size: 11.5px; letter-spacing: 0.15em; margin-top: 10px;" id="regSubmitBtn">
+                CREATE COLLECTOR ACCOUNT
+              </button>
+              <div style="text-align: center; margin-top: 22px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 18px;">
+                Already have an account? <a href="javascript:void(0)" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;" onclick="AccountView.switchAuthTab('login')">Sign in here</a>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Login Modal -->
-    <div class="modal-overlay" id="loginModal">
-      <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('loginModal').classList.remove('active')">&times;</button>
-        <p class="eyebrow">COLLECTOR ACCESS</p>
-        <h3 style="font-size: 22px; margin-bottom: 20px;">Sign In</h3>
-        <form id="userLoginForm" onsubmit="event.preventDefault(); handleUserLogin();">
-          <div class="form-group">
-            <label class="form-label">Email Address</label>
-            <input type="email" id="loginEmail" class="form-input" placeholder="collector@domain.com" required>
-          </div>
-          <div class="form-group">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <label class="form-label" style="margin-bottom: 0;">Password</label>
-              <a href="forgot-password.html" style="font-size: 11.5px; color: var(--gold-primary); text-decoration: underline;">Forgot Password?</a>
-            </div>
-            <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
-          </div>
-          <button type="submit" class="gold-btn" style="width: 100%; margin-top: 10px;">Sign In</button>
-          <p style="text-align: center; margin-top: 18px; font-size: 12px; color: var(--text-muted);">
-            Don't have an account? <a href="#" style="color: var(--gold-primary);" onclick="switchAuthModal('register')">Register here</a>
-          </p>
-        </form>
-      </div>
-    </div>
+      <!-- Logged-in Customer Dashboard Layout -->
+      <div id="accountDashboardContent" style="display: none;">
+        <div class="account-layout">
 
-    <!-- Register Modal -->
-    <div class="modal-overlay" id="registerModal">
-      <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('registerModal').classList.remove('active')">&times;</button>
-        <p class="eyebrow">NEW COLLECTOR</p>
-        <h3 style="font-size: 22px; margin-bottom: 20px;">Create Profile</h3>
-        <form id="userRegisterForm" onsubmit="event.preventDefault(); handleUserRegister();">
-          <div class="form-group">
-            <label class="form-label">Full Name</label>
-            <input type="text" id="regName" class="form-input" placeholder="e.g. Vikramaditya S." required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email Address</label>
-            <input type="email" id="regEmail" class="form-input" placeholder="collector@domain.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Mobile Phone Number</label>
-            <input type="tel" id="regPhone" class="form-input" placeholder="+91 9445437069" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Password</label>
-            <input type="password" id="regPassword" class="form-input" placeholder="At least 6 characters" minlength="6" required>
-          </div>
-          <button type="submit" class="gold-btn" style="width: 100%; margin-top: 10px;">Create Profile</button>
-          <p style="text-align: center; margin-top: 18px; font-size: 12px; color: var(--text-muted);">
-            Already registered? <a href="#" style="color: var(--gold-primary);" onclick="switchAuthModal('login')">Sign in</a>
-          </p>
-        </form>
-      </div>
-    </div>
+          <!-- Left Sidebar -->
+          <aside class="account-sidebar">
+            <div class="collector-avatar-wrap">
+              <div class="collector-avatar" id="sidebarAvatar">A</div>
+              <div>
+                <p style="font-size: 11px; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 0.1em; margin: 0;">Welcome</p>
+                <h3 class="collector-sidebar-name" id="sidebarCollectorName">Collector</h3>
+                <p class="collector-sidebar-id" id="sidebarCustomerId">ID: #CUST-...</p>
+              </div>
+            </div>
 
-    <!-- New Address Modal -->
-    <div class="modal-overlay" id="newAddressModal">
-      <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('newAddressModal').classList.remove('active')">&times;</button>
-        <p class="eyebrow">DELIVERY DESTINATION</p>
-        <h3 style="font-size: 22px; margin-bottom: 20px;">Add New Address</h3>
-        <form onsubmit="event.preventDefault(); handleSaveNewAddress();">
-          <div class="form-group">
-            <label class="form-label">Recipient Name</label>
-            <input type="text" id="newAddrName" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Contact Phone</label>
-            <input type="tel" id="newAddrPhone" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Address Line</label>
-            <input type="text" id="newAddrLine" class="form-input" required>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-            <div class="form-group">
-              <label class="form-label">City</label>
-              <input type="text" id="newAddrCity" class="form-input" required>
+            <nav class="account-nav-tabs">
+              <button class="account-nav-btn active" onclick="AccountView.switchTab('profile')" id="navTab-profile">
+                <span><span class="account-nav-btn-icon">👤</span> My Profile</span>
+              </button>
+              <button class="account-nav-btn" onclick="AccountView.switchTab('orders')" id="navTab-orders">
+                <span><span class="account-nav-btn-icon">🛍️</span> My Orders</span>
+                <span class="account-tab-pill" id="ordersCountBadge">0</span>
+              </button>
+              <button class="account-nav-btn" onclick="AccountView.switchTab('addresses')" id="navTab-addresses">
+                <span><span class="account-nav-btn-icon">📍</span> Saved Details</span>
+              </button>
+              <button class="account-nav-btn" style="color: #e74c3c; margin-top: 15px; border-top: 1px solid var(--border-subtle); padding-top: 16px;" onclick="Auth.logout()">
+                <span><span class="account-nav-btn-icon">🚪</span> Sign Out</span>
+              </button>
+            </nav>
+          </aside>
+
+          <!-- Right Content Panels -->
+          <section>
+
+            <!-- TAB 1: MY PROFILE -->
+            <div class="account-tab-content active" id="tabContent-profile">
+              <div class="luxury-card" style="padding: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                  <div>
+                    <p class="eyebrow">PERSONAL CREDENTIALS</p>
+                    <h2 style="font-size: 24px; margin: 4px 0;" id="welcomeProfileTitle">Welcome, Collector</h2>
+                  </div>
+                  <button class="gold-btn" style="padding: 10px 20px; font-size: 11px;" onclick="AccountView.openEditProfileModal()">
+                    Edit Profile
+                  </button>
+                </div>
+
+                <p style="color: var(--text-secondary); font-size: 13.5px; margin-bottom: 20px;">
+                  Your private collector details registered with the AURELIS atelier registry. You can inspect and update your credentials below.
+                </p>
+
+                <div class="profile-info-grid">
+                  <div class="profile-info-item">
+                    <label>Full Name</label>
+                    <p id="profileFullName">-</p>
+                  </div>
+                  <div class="profile-info-item">
+                    <label>Email Address</label>
+                    <p id="profileEmail">-</p>
+                  </div>
+                  <div class="profile-info-item">
+                    <label>Mobile Contact</label>
+                    <p id="profilePhone">-</p>
+                  </div>
+                  <div class="profile-info-item">
+                    <label>Unique Collector ID</label>
+                    <p id="profileId" style="font-family: monospace; color: var(--gold-light);">-</p>
+                  </div>
+                  <div class="profile-info-item" style="grid-column: 1 / -1;">
+                    <label>Primary Delivery Address</label>
+                    <p id="profileAddress" style="color: var(--text-primary);">-</p>
+                  </div>
+                  <div class="profile-info-item">
+                    <label>Account Created</label>
+                    <p id="profileCreatedAt" style="font-size: 12.5px; color: var(--text-muted);">-</p>
+                  </div>
+                  <div class="profile-info-item">
+                    <label>Last Session Login</label>
+                    <p id="profileLastLogin" style="font-size: 12.5px; color: var(--text-muted);">-</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">State</label>
-              <input type="text" id="newAddrState" class="form-input" required>
+
+            <!-- TAB 2: MY ORDERS / PURCHASE HISTORY -->
+            <div class="account-tab-content" id="tabContent-orders">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
+                <div>
+                  <p class="eyebrow">COMMISSION RECORDS</p>
+                  <h2 style="font-size: 24px; margin: 4px 0;">My Orders & Purchase History</h2>
+                  <p style="color: var(--text-secondary); font-size: 13px;">Securely isolated purchase history for your authenticated account.</p>
+                </div>
+                <a href="shop.html" class="gold-btn-outline" style="padding: 10px 18px; font-size: 11px;">
+                  + New Commission
+                </a>
+              </div>
+
+              <!-- Orders List Container -->
+              <div id="customerOrdersContainer">
+                <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                  Loading your private commissions...
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Pincode</label>
-            <input type="text" id="newAddrPincode" class="form-input" required>
-          </div>
-          <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); margin-bottom: 20px;">
-            <input type="checkbox" id="newAddrDefault" style="accent-color: var(--gold-primary);">
-            <span>Set as default delivery address</span>
-          </label>
-          <button type="submit" class="gold-btn" style="width: 100%;">Save Delivery Address</button>
-        </form>
+
+            <!-- TAB 3: SAVED DETAILS (ADDRESSES) -->
+            <div class="account-tab-content" id="tabContent-addresses">
+              <div class="luxury-card" style="padding: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                  <div>
+                    <p class="eyebrow">SHIPPING PROFILE</p>
+                    <h2 style="font-size: 24px; margin: 4px 0;">Saved Delivery Details</h2>
+                    <p style="color: var(--text-secondary); font-size: 13px;">Pre-fill destinations for priority insured dispatch.</p>
+                  </div>
+                  <button class="gold-btn-outline" style="padding: 10px 18px; font-size: 11px;" onclick="document.getElementById('newAddressModal').classList.add('active')">
+                    + Add New Address
+                  </button>
+                </div>
+
+                <div id="accountAddressesList"></div>
+              </div>
+            </div>
+
+          </section>
+        </div>
       </div>
     </div>
   </main>
 
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal-content" style="max-width: 480px;">
+      <button class="modal-close" onclick="document.getElementById('editProfileModal').classList.remove('active')">&times;</button>
+      <p class="eyebrow">UPDATE PROFILE</p>
+      <h3 style="font-size: 22px; margin-bottom: 20px;">Edit Collector Details</h3>
+      <form id="editProfileForm" onsubmit="event.preventDefault(); AccountView.saveProfile();">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="editProfileName" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" id="editProfilePhone" class="form-input" placeholder="10-digit mobile" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Default Delivery Address</label>
+          <textarea id="editProfileAddress" class="form-textarea" rows="3" placeholder="Flat/House, Street, City, State, PIN"></textarea>
+        </div>
+        <button type="submit" class="gold-btn" style="width: 100%; margin-top: 10px;" id="saveProfileBtn">Save Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Details Inspection Modal -->
+  <div class="modal-overlay" id="orderDetailModal">
+    <div class="modal-content" style="max-width: 680px;" id="orderDetailModalContent">
+      <button class="modal-close" onclick="document.getElementById('orderDetailModal').classList.remove('active')">&times;</button>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 15px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+        <div>
+          <p class="eyebrow" style="margin-bottom: 4px;">COMMISSION INSPECTION</p>
+          <h3 style="font-size: 22px; color: var(--gold-light); font-family: var(--font-serif);" id="modalOrderNumber">#WT-2026-XXXXXX</h3>
+          <span style="font-size: 12px; color: var(--text-muted);" id="modalOrderDate">-</span>
+        </div>
+        <div style="text-align: right;">
+          <span class="badge-gold" id="modalOrderStatusBadge">CONFIRMED</span>
+          <div style="margin-top: 4px;">
+            <span style="font-size: 11.5px; color: #2ecc71; font-weight: 600;" id="modalPaymentStatusBadge">PAID</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual 7-Stage Timeline -->
+      <div class="timeline-wrap" id="modalOrderTimeline"></div>
+
+      <!-- Items Table -->
+      <div style="margin: 25px 0;">
+        <h4 style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 10px;">Timepieces in Commission</h4>
+        <div id="modalOrderItemsList" style="background: #060605; border: 1px solid var(--border-subtle); border-radius: 4px; padding: 12px 16px;"></div>
+      </div>
+
+      <!-- Address & Summary Grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 25px;">
+        <div style="background: #080706; border: 1px solid var(--border-subtle); padding: 16px; border-radius: 4px;">
+          <h5 style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin: 0 0 6px;">Delivery Destination</h5>
+          <p style="font-size: 13px; color: #f5f0e7; margin: 0; line-height: 1.5;" id="modalOrderAddress">-</p>
+          <p style="font-size: 12px; color: var(--text-muted); margin: 6px 0 0;" id="modalOrderContact">-</p>
+        </div>
+        <div style="background: #080706; border: 1px solid var(--border-subtle); padding: 16px; border-radius: 4px;">
+          <h5 style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin: 0 0 6px;">Payment Breakdown</h5>
+          <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 4px;">
+            <span style="color: var(--text-muted);">Method:</span>
+            <strong id="modalOrderPaymentMethod" style="color: #f5f0e7;">-</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 4px;">
+            <span style="color: var(--text-muted);">Insured Freight:</span>
+            <span style="color: #2ecc71;">Complimentary</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 14px; border-top: 1px solid var(--border-subtle); padding-top: 8px; margin-top: 6px;">
+            <span style="font-weight: 600;">Total:</span>
+            <strong style="color: var(--gold-light); font-size: 16px; font-family: var(--font-serif);" id="modalOrderTotal">₹0</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+        <button class="gold-btn-outline" style="padding: 10px 16px; font-size: 11px;" onclick="window.print()">
+          🖨️ Print / Save Invoice
+        </button>
+        <a id="modalTrackBtn" href="track-order.html" class="gold-btn" style="padding: 10px 20px; font-size: 11px;">
+          Track Order Live
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Address Modal -->
+
+  <div class="modal-overlay" id="newAddressModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="document.getElementById('newAddressModal').classList.remove('active')">&times;</button>
+      <p class="eyebrow">DELIVERY DESTINATION</p>
+      <h3 style="font-size: 22px; margin-bottom: 20px;">Add New Address</h3>
+      <form id="newAddressForm" onsubmit="event.preventDefault(); AccountView.handleSaveNewAddress();">
+        <div class="form-group">
+          <label class="form-label">Recipient Name</label>
+          <input type="text" id="newAddrName" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contact Phone</label>
+          <input type="tel" id="newAddrPhone" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address (Flat, Building, Road)</label>
+          <input type="text" id="newAddrLine" class="form-input" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input type="text" id="newAddrCity" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">State</label>
+            <input type="text" id="newAddrState" class="form-input" value="Tamil Nadu" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">PIN Code (6 digits)</label>
+          <input type="text" id="newAddrPincode" class="form-input" maxlength="6" required>
+        </div>
+        <div class="form-group">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); cursor: pointer;">
+            <input type="checkbox" id="newAddrDefault"> Set as primary delivery address
+          </label>
+        </div>
+        <button type="submit" class="gold-btn" style="width: 100%;">Save Address</button>
+      </form>
+    </div>
+  </div>
+
   <footer class="luxury-footer">
-    <div class="container footer-bottom">
+    <div class="container footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
       <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
-      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+        <a href="admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase;">ADMIN PANEL</a>
+      </div>
     </div>
   </footer>
 
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
   <script>
-    async function initAccount() {
-      if (!Auth.isLoggedIn()) {
-        document.getElementById("authPromptCard").style.display = "block";
-        document.getElementById("accountDashboardContent").style.display = "none";
-        return;
-      }
+    const AccountView = {
+      currentUser: null,
+      orders: [],
 
-      document.getElementById("authPromptCard").style.display = "none";
-      document.getElementById("accountDashboardContent").style.display = "block";
+      async init() {
+        const guestContainer = document.getElementById("guestAuthContainer");
+        const dashContent = document.getElementById("accountDashboardContent");
 
-      const user = Auth.getUser();
-      if (user) {
-        document.getElementById("accountNameHeader").textContent = user.name;
-        document.getElementById("accountEmailSub").textContent = `${user.email} • ${user.phone || ''}`;
-      }
-      loadAccountAddresses();
-    }
-
-    async function loadAccountAddresses() {
-      const container = document.getElementById("accountAddressesList");
-      try {
-        const res = await apiRequest("/api/auth/addresses");
-        if (!res.addresses || res.addresses.length === 0) {
-          container.innerHTML = `<p style="color: var(--text-muted); font-size: 13px;">No delivery addresses saved yet.</p>`;
+        if (!Auth.isLoggedIn()) {
+          if (guestContainer) guestContainer.style.display = "block";
+          if (dashContent) dashContent.style.display = "none";
+          if (window.location.hash === "#register") {
+            this.switchAuthTab("register");
+          }
           return;
         }
-        container.innerHTML = res.addresses.map(a => `
-          <div class="luxury-card" style="padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <strong>${a.name}</strong> (${a.phone}) ${a.is_default ? '<span class="badge-gold">Default</span>' : ''}
-              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
-                ${a.address_line}, ${a.city}, ${a.state} - ${a.pincode}
-              </p>
-            </div>
-            <button class="gold-btn-outline" style="padding: 6px 12px; font-size: 10px;" onclick="deleteAddress(${a.id})">Delete</button>
-          </div>
-        `).join("");
-      } catch (e) {
-        container.innerHTML = `<p style="color: #e74c3c;">Failed to load addresses</p>`;
-      }
-    }
 
-    async function handleSaveNewAddress() {
-      const payload = {
-        name: document.getElementById("newAddrName").value.trim(),
-        phone: document.getElementById("newAddrPhone").value.trim(),
-        address_line: document.getElementById("newAddrLine").value.trim(),
-        city: document.getElementById("newAddrCity").value.trim(),
-        state: document.getElementById("newAddrState").value.trim(),
-        pincode: document.getElementById("newAddrPincode").value.trim(),
-        is_default: document.getElementById("newAddrDefault").checked
-      };
+        if (guestContainer) guestContainer.style.display = "none";
+        if (dashContent) dashContent.style.display = "block";
 
-      try {
-        await apiRequest("/api/auth/addresses", {
-          method: "POST",
-          body: JSON.stringify(payload)
+        await this.loadUserProfile();
+        await this.loadUserOrders();
+        await this.loadAddresses();
+
+        // Check hash for tab
+        if (window.location.hash === "#orders") {
+          this.switchTab("orders");
+        }
+      },
+
+      switchAuthTab(tab) {
+        const isLogin = tab === 'login';
+        const loginBtn = document.getElementById("accountTabBtn-login");
+        const regBtn = document.getElementById("accountTabBtn-register");
+        const loginPanel = document.getElementById("accountPanel-login");
+        const regPanel = document.getElementById("accountPanel-register");
+
+        if (loginBtn) loginBtn.classList.toggle("active", isLogin);
+        if (regBtn) regBtn.classList.toggle("active", !isLogin);
+        if (loginPanel) loginPanel.classList.toggle("active", isLogin);
+        if (regPanel) regPanel.classList.toggle("active", !isLogin);
+      },
+
+      checkPasswordMatch() {
+        const p1 = document.getElementById("regPassword")?.value || "";
+        const p2 = document.getElementById("regConfirm")?.value || "";
+        const mismatch = document.getElementById("accountRegMismatch");
+        if (!mismatch) return;
+        if (p2.length > 0 && p1 !== p2) {
+          mismatch.style.display = "block";
+        } else {
+          mismatch.style.display = "none";
+        }
+      },
+
+      switchTab(tabId) {
+        document.querySelectorAll(".account-nav-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.id === `navTab-${tabId}`);
         });
-        showToast("Address saved successfully", "success");
-        document.getElementById("newAddressModal").classList.remove("active");
-        loadAccountAddresses();
-      } catch (e) {
-        showToast(e.message, "error");
-      }
-    }
+        document.querySelectorAll(".account-tab-content").forEach(content => {
+          content.classList.toggle("active", content.id === `tabContent-${tabId}`);
+        });
+      },
 
-    async function deleteAddress(id) {
-      if (confirm("Remove this address from your profile?")) {
+      async loadUserProfile() {
         try {
-          await apiRequest(`/api/auth/addresses/${id}`, { method: "DELETE" });
-          showToast("Address removed", "success");
-          loadAccountAddresses();
+          const res = await apiRequest("/api/auth/me");
+          this.currentUser = res.user;
+          const user = res.user;
+
+          // Sidebar
+          const initials = (user.name || 'Collector').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+          document.getElementById("sidebarAvatar").textContent = initials || 'A';
+          document.getElementById("sidebarCollectorName").textContent = user.name || 'Collector';
+          document.getElementById("sidebarCustomerId").textContent = `ID: #CUST-${String(user.id).padStart(5, '0')}`;
+
+          // Profile Tab
+          document.getElementById("welcomeProfileTitle").textContent = `Welcome, ${user.name.split(' ')[0]}`;
+          document.getElementById("profileFullName").textContent = user.name || '-';
+          document.getElementById("profileEmail").textContent = user.email || '-';
+          document.getElementById("profilePhone").textContent = user.phone ? `+91 ${user.phone}` : 'None on file';
+          document.getElementById("profileId").textContent = `#CUST-${String(user.id).padStart(5, '0')}`;
+          document.getElementById("profileAddress").textContent = user.address || 'No primary address specified yet.';
+          document.getElementById("profileCreatedAt").textContent = user.created_at || 'Atelier Foundation';
+          document.getElementById("profileLastLogin").textContent = user.last_login || 'Active Session';
+
+          // Prepopulate edit modal
+          document.getElementById("editProfileName").value = user.name || '';
+          document.getElementById("editProfilePhone").value = user.phone || '';
+          document.getElementById("editProfileAddress").value = user.address || '';
+
+        } catch (e) {
+          console.error("Failed to load user profile:", e);
+        }
+      },
+
+      async loadUserOrders() {
+        const container = document.getElementById("customerOrdersContainer");
+        const badge = document.getElementById("ordersCountBadge");
+
+        try {
+          const res = await apiRequest("/api/orders");
+          this.orders = res.orders || [];
+          if (badge) badge.textContent = this.orders.length;
+
+          if (this.orders.length === 0) {
+            container.innerHTML = `
+              <div class="empty-orders-box">
+                <div class="empty-orders-icon">⏱️</div>
+                <h3 style="font-size: 20px; color: #f5f0e7; margin: 0 0 8px;">YOUR ORDER HISTORY IS EMPTY</h3>
+                <p style="color: var(--text-secondary); font-size: 14px; max-width: 400px; margin: 0 auto 24px;">
+                  Looks like you haven't placed an order yet. Explore our bespoke luxury collections to commission your first timepiece.
+                </p>
+                <a href="shop.html" class="gold-btn" style="padding: 12px 28px;">
+                  EXPLORE WATCHES &rarr;
+                </a>
+              </div>
+            `;
+            return;
+          }
+
+          container.innerHTML = this.orders.map(order => {
+            const isCod = (order.payment_method || '').toUpperCase().includes("COD");
+            const isPaid = (order.payment_status || '').toUpperCase() === "PAID";
+            const payBadge = isPaid
+              ? `<span style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 3px; font-size: 10.5px; font-weight: 600;">PAID</span>`
+              : `<span style="background: rgba(230, 126, 34, 0.15); color: #e67e22; border: 1px solid rgba(230, 126, 34, 0.3); padding: 3px 8px; border-radius: 3px; font-size: 10.5px; font-weight: 600;">COD PENDING</span>`;
+
+            const statusClass = `status-${(order.order_status || 'CONFIRMED').toUpperCase()}`;
+
+            const itemsHtml = (order.items && order.items.length > 0)
+              ? order.items.map(item => `
+                  <div class="order-item-line">
+                    <img src="${item.image_url || './assets/fallback-watch.svg'}" class="order-item-thumb" onerror="this.src='./assets/fallback-watch.svg'" alt="${item.product_name}">
+                    <div style="flex: 1;">
+                      <h4 style="font-size: 14px; margin: 0 0 4px; color: #fff;">${item.product_name}</h4>
+                      <p style="font-size: 12px; color: var(--gold-light); margin: 0;">
+                        Variant: <strong>${item.color_name || 'Signature'}</strong> &bull; Qty: <strong>${item.quantity}</strong>
+                      </p>
+                    </div>
+                    <div style="text-align: right;">
+                      <strong style="font-size: 14px; color: #fff;">${formatINR(item.total_price || (item.price * item.quantity))}</strong>
+                      <div style="font-size: 11px; color: var(--text-muted);">${formatINR(item.price)} each</div>
+                    </div>
+                  </div>
+                `).join("")
+              : `<p style="font-size: 12.5px; color: var(--text-muted); margin: 0;">${order.item_count || 1} Timepiece Commission</p>`;
+
+            return `
+              <div class="order-card-luxury">
+                <div class="order-card-header">
+                  <div style="display: flex; align-items: baseline; gap: 10px;">
+                    <strong style="font-size: 15px; color: var(--gold-primary); font-family: monospace;">#${order.order_number}</strong>
+                    <span style="font-size: 12px; color: var(--text-muted);">${order.order_date || order.created_at || ''}</span>
+                  </div>
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    ${payBadge}
+                    <span class="status-pill ${statusClass}">${(order.order_status || 'CONFIRMED').replace(/_/g, ' ')}</span>
+                  </div>
+                </div>
+
+                <div class="order-card-body">
+                  ${itemsHtml}
+                </div>
+
+                <div class="order-card-footer">
+                  <div>
+                    <span style="font-size: 12px; color: var(--text-muted);">Total Commission:</span>
+                    <strong style="font-size: 16px; color: var(--gold-light); font-family: var(--font-serif); margin-left: 6px;">${formatINR(order.total_amount)}</strong>
+                    <span style="font-size: 11px; color: var(--text-muted); margin-left: 6px;">via ${order.payment_method || 'Prepaid'}</span>
+                  </div>
+
+                  <div style="display: flex; gap: 8px;">
+                    <button class="gold-btn-outline" style="padding: 7px 14px; font-size: 11px;" onclick="AccountView.openOrderModal('${order.order_number}')">
+                      View Order
+                    </button>
+                    <a href="track-order.html?order_id=${encodeURIComponent(order.order_number)}" class="gold-btn" style="padding: 7px 14px; font-size: 11px;">
+                      Track Order
+                    </a>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join("");
+
+        } catch (e) {
+          container.innerHTML = `<p style="color: #e74c3c;">Failed to load order records: ${e.message}</p>`;
+        }
+      },
+
+      async openOrderModal(orderNumber) {
+        try {
+          const res = await apiRequest(`/api/orders/${encodeURIComponent(orderNumber)}`);
+          const o = res.order;
+          if (!o) return;
+
+          document.getElementById("modalOrderNumber").textContent = `#${o.order_number}`;
+          document.getElementById("modalOrderDate").textContent = o.order_date ? `${o.order_date} at ${o.order_time || ''}` : (o.created_at || '');
+          document.getElementById("modalOrderStatusBadge").textContent = (o.order_status || 'CONFIRMED').replace(/_/g, ' ');
+          
+          const isPaid = (o.payment_status || '').toUpperCase() === "PAID";
+          const payEl = document.getElementById("modalPaymentStatusBadge");
+          payEl.textContent = isPaid ? "PAID" : "COD PENDING";
+          payEl.style.color = isPaid ? "#2ecc71" : "#e67e22";
+
+          // Address
+          const addr = typeof o.shipping_address === "object" ? o.shipping_address : {};
+          const fullAddr = addr.address_line 
+            ? `${addr.address_line}, ${addr.city || ''}, ${addr.state || ''} - ${addr.pincode || ''}`
+            : (addr.flat_no ? `${addr.flat_no}, ${addr.street || ''}, ${addr.city || ''} - ${addr.pincode || ''}` : 'Address on verified file');
+          document.getElementById("modalOrderAddress").textContent = fullAddr;
+          document.getElementById("modalOrderContact").textContent = `${o.customer_name} • +91 ${o.customer_phone || ''}`;
+
+          document.getElementById("modalOrderPaymentMethod").textContent = o.payment_method || 'UPI';
+          document.getElementById("modalOrderTotal").textContent = formatINR(o.total_amount);
+          document.getElementById("modalTrackBtn").href = `track-order.html?order_id=${encodeURIComponent(o.order_number)}`;
+
+          // Items
+          const itemsBox = document.getElementById("modalOrderItemsList");
+          if (o.items && o.items.length > 0) {
+            itemsBox.innerHTML = o.items.map(it => `
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <img src="${it.image_url || './assets/fallback-watch.svg'}" style="width: 42px; height: 42px; object-fit: contain; border-radius: 3px; background: #000;" onerror="this.src='./assets/fallback-watch.svg'">
+                  <div>
+                    <strong style="font-size: 13px; color: #fff;">${it.product_name}</strong>
+                    <div style="font-size: 11px; color: var(--gold-light);">Color: ${it.color_name || 'Standard'} &bull; Qty: ${it.quantity}</div>
+                  </div>
+                </div>
+                <strong style="font-size: 13.5px; color: #fff;">${formatINR(it.total_price || (it.price * it.quantity))}</strong>
+              </div>
+            `).join("");
+          } else {
+            itemsBox.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); margin: 0;">1 Master Timepiece Commission</p>`;
+          }
+
+          // 7-Stage Timeline
+          const stages = ["ORDER PLACED", "PAYMENT CONFIRMED", "PROCESSING", "PACKED", "SHIPPED", "OUT FOR DELIVERY", "DELIVERED"];
+          const currentIdx = stages.findIndex(s => s.replace(/ /g, '_') === (o.order_status || '').toUpperCase() || s === (o.order_status || '').toUpperCase());
+          const timelineBox = document.getElementById("modalOrderTimeline");
+
+          if ((o.order_status || '').toUpperCase() === "CANCELLED") {
+            timelineBox.innerHTML = `
+              <div style="width: 100%; padding: 12px; background: rgba(231,76,60,0.15); border: 1px solid #e74c3c; border-radius: 4px; text-align: center; color: #e74c3c; font-size: 12.5px; font-weight: 600;">
+                ✕ ORDER HAS BEEN CANCELLED &bull; RESERVED ATELIER STOCK RESTORED
+              </div>
+            `;
+          } else {
+            timelineBox.innerHTML = stages.map((st, i) => {
+              const isDone = i < (currentIdx >= 0 ? currentIdx : 1);
+              const isCurr = i === (currentIdx >= 0 ? currentIdx : 1);
+              return `
+                <div class="timeline-step ${isDone ? 'completed' : ''} ${isCurr ? 'current' : ''}">
+                  <div class="timeline-dot">${isDone ? '✓' : (i + 1)}</div>
+                  <div class="timeline-label">${st}</div>
+                </div>
+              `;
+            }).join("");
+          }
+
+          document.getElementById("orderDetailModal").classList.add("active");
+        } catch (e) {
+          showToast("Failed to view order: " + e.message, "error");
+        }
+      },
+
+      openEditProfileModal() {
+        document.getElementById("editProfileModal").classList.add("active");
+      },
+
+      async saveProfile() {
+        const name = document.getElementById("editProfileName").value.trim();
+        const phone = document.getElementById("editProfilePhone").value.trim();
+        const address = document.getElementById("editProfileAddress").value.trim();
+        const btn = document.getElementById("saveProfileBtn");
+
+        if (!name) {
+          showToast("Full name cannot be blank", "error");
+          return;
+        }
+
+        try {
+          btn.disabled = true;
+          btn.textContent = "SAVING...";
+          const res = await apiRequest("/api/auth/profile", {
+            method: "PUT",
+            body: JSON.stringify({ name, phone, address })
+          });
+          showToast("Profile updated successfully", "success");
+          document.getElementById("editProfileModal").classList.remove("active");
+          await this.loadUserProfile();
+        } catch (e) {
+          showToast(e.message, "error");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Save Profile";
+        }
+      },
+
+      async loadAddresses() {
+        const container = document.getElementById("accountAddressesList");
+        try {
+          const res = await apiRequest("/api/auth/addresses");
+          if (!res.addresses || res.addresses.length === 0) {
+            container.innerHTML = `<p style="color: var(--text-muted); font-size: 13px;">No saved delivery addresses found.</p>`;
+            return;
+          }
+          container.innerHTML = res.addresses.map(a => `
+            <div class="luxury-card" style="padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>${a.name}</strong> (${a.phone}) ${a.is_default ? '<span class="badge-gold">Default</span>' : ''}
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                  ${a.address_line}, ${a.city}, ${a.state} - ${a.pincode}
+                </p>
+              </div>
+              <button class="gold-btn-outline" style="padding: 6px 12px; font-size: 10px;" onclick="AccountView.deleteAddress(${a.id})">Delete</button>
+            </div>
+          `).join("");
+        } catch (e) {
+          container.innerHTML = `<p style="color: #e74c3c;">Failed to load addresses</p>`;
+        }
+      },
+
+      async handleSaveNewAddress() {
+        const payload = {
+          name: document.getElementById("newAddrName").value.trim(),
+          phone: document.getElementById("newAddrPhone").value.trim(),
+          address_line: document.getElementById("newAddrLine").value.trim(),
+          city: document.getElementById("newAddrCity").value.trim(),
+          state: document.getElementById("newAddrState").value.trim(),
+          pincode: document.getElementById("newAddrPincode").value.trim(),
+          is_default: document.getElementById("newAddrDefault").checked
+        };
+
+        try {
+          await apiRequest("/api/auth/addresses", {
+            method: "POST",
+            body: JSON.stringify(payload)
+          });
+          showToast("Address saved successfully", "success");
+          document.getElementById("newAddressModal").classList.remove("active");
+          this.loadAddresses();
         } catch (e) {
           showToast(e.message, "error");
         }
+      },
+
+      async deleteAddress(id) {
+        if (confirm("Remove this address from your profile?")) {
+          try {
+            await apiRequest(`/api/auth/addresses/${id}`, { method: "DELETE" });
+            showToast("Address removed", "success");
+            this.loadAddresses();
+          } catch (e) {
+            showToast(e.message, "error");
+          }
+        }
+      },
+
+      switchAuthModal(target) {
+        this.switchAuthTab(target);
+      },
+
+      async handleUserLogin() {
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        const btn = document.getElementById("loginSubmitBtn");
+        try {
+          btn.disabled = true;
+          const res = await apiRequest("/api/auth/login", {
+            method: "POST",
+            body: JSON.stringify({ email, password })
+          });
+          Auth.setAuth(res.token, res.user);
+          showToast("Welcome back, " + res.user.name, "success");
+          this.init();
+        } catch (e) {
+          showToast(e.message, "error");
+        } finally {
+          btn.disabled = false;
+        }
+      },
+
+      async handleUserRegister() {
+        const name = document.getElementById("regName").value.trim();
+        const email = document.getElementById("regEmail").value.trim();
+        const phone = document.getElementById("regPhone").value.trim();
+        const password = document.getElementById("regPassword").value;
+        const confirm_password = document.getElementById("regConfirm")?.value || "";
+        const btn = document.getElementById("regSubmitBtn");
+
+        if (password !== confirm_password) {
+          showToast("Passwords do not match. Please verify.", "error");
+          const mismatch = document.getElementById("accountRegMismatch");
+          if (mismatch) mismatch.style.display = "block";
+          return;
+        }
+
+        try {
+          btn.disabled = true;
+          const res = await apiRequest("/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify({ name, email, phone, password, confirm_password })
+          });
+          Auth.setAuth(res.token, res.user);
+          showToast("Collector profile registered successfully", "success");
+          this.init();
+        } catch (e) {
+          showToast(e.message, "error");
+        } finally {
+          btn.disabled = false;
+        }
       }
-    }
+    };
 
     function openLoginModal() {
-      document.getElementById("loginModal").classList.add("active");
+      const container = document.getElementById("guestAuthContainer");
+      if (container && !Auth.isLoggedIn()) {
+        AccountView.switchAuthTab('login');
+        container.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.location.href = "signin.html";
+      }
     }
     function openRegisterModal() {
-      document.getElementById("registerModal").classList.add("active");
-    }
-    function switchAuthModal(target) {
-      document.getElementById("loginModal").classList.remove("active");
-      document.getElementById("registerModal").classList.remove("active");
-      if (target === "login") openLoginModal();
-      if (target === "register") openRegisterModal();
-    }
-
-    async function handleUserLogin() {
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value;
-      try {
-        const res = await apiRequest("/api/auth/login", {
-          method: "POST",
-          body: JSON.stringify({ email, password })
-        });
-        Auth.setAuth(res.token, res.user);
-        document.getElementById("loginModal").classList.remove("active");
-        showToast("Welcome back, " + res.user.name, "success");
-        initAccount();
-      } catch (e) {
-        showToast(e.message, "error");
+      const container = document.getElementById("guestAuthContainer");
+      if (container && !Auth.isLoggedIn()) {
+        AccountView.switchAuthTab('register');
+        container.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.location.href = "signin.html#register";
       }
     }
 
-    async function handleUserRegister() {
-      const name = document.getElementById("regName").value.trim();
-      const email = document.getElementById("regEmail").value.trim();
-      const phone = document.getElementById("regPhone").value.trim();
-      const password = document.getElementById("regPassword").value;
-
-      try {
-        const res = await apiRequest("/api/auth/register", {
-          method: "POST",
-          body: JSON.stringify({ name, email, phone, password })
-        });
-        Auth.setAuth(res.token, res.user);
-        document.getElementById("registerModal").classList.remove("active");
-        showToast("Collector profile registered successfully", "success");
-        initAccount();
-      } catch (e) {
-        showToast(e.message, "error");
+    document.addEventListener("DOMContentLoaded", () => {
+      AccountView.init();
+      if (window.Auth && Auth.isLoggedIn()) {
+        const user = Auth.getUser();
+        const navAuth = document.getElementById("navAuthArea");
+        if (navAuth && user) {
+          navAuth.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 12px; color: var(--gold-light);">👤 ${user.name.split(' ')[0]}</span>
+              <button class="gold-btn-outline" style="padding: 6px 12px; font-size: 10px;" onclick="Auth.logout()">Sign Out</button>
+            </div>
+          `;
+        }
       }
-    }
-
-    document.addEventListener("DOMContentLoaded", initAccount);
+    });
   </script>
 </body>
 </html>

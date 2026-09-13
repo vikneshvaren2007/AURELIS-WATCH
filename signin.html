@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign In &bull; Collector Portal — AURELIS Haute Horlogerie</title>
+  <meta name="description" content="Sign in or create your private AURELIS collector account to manage orders, warranties, and horology commissions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+  <style>
+    .auth-page-wrapper {
+      padding: 130px 5vw 90px;
+      min-height: calc(100vh - 120px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .auth-brand-emblem {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(217, 174, 85, 0.22) 0%, rgba(13, 12, 10, 0.9) 75%);
+      border: 1.5px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 25px rgba(217, 174, 85, 0.25);
+    }
+    .auth-mismatch-note {
+      font-size: 11px;
+      color: #e74c3c;
+      margin-top: 5px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Atelier</a>
+      <a href="shop.html">Collection</a>
+      <a href="craftsmanship.html">Craftsmanship</a>
+      <a href="warranty.html">6-Month Warranty</a>
+      <a href="track-order.html">Track Order</a>
+      <a href="contact.html">Concierge</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="shop.html" class="nav-cta">Collection</a>
+    </div>
+  </header>
+
+  <main class="auth-page-wrapper container">
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-brand-emblem">🛡️</div>
+        <div style="text-align: center; margin-bottom: 24px;">
+          <p class="eyebrow" style="margin-bottom: 4px;">PRIVATE CLIENT REGISTRY</p>
+          <h1 style="font-size: 26px; color: #f5f0e7; font-family: var(--font-serif); margin: 0 0 8px;">Collector Access</h1>
+          <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin: 0;">
+            Sign in to inspect personal timepiece commissions, warranty passports, and saved delivery addresses.
+          </p>
+        </div>
+
+        <!-- Tab Switcher -->
+        <div class="auth-tabs" role="tablist">
+          <button type="button" class="auth-tab-btn active" id="tabBtn-login" onclick="AuthPage.switchTab('login')">
+            Sign In
+          </button>
+          <button type="button" class="auth-tab-btn" id="tabBtn-register" onclick="AuthPage.switchTab('register')">
+            Create Account
+          </button>
+        </div>
+
+        <!-- PANEL 1: SIGN IN -->
+        <div class="auth-panel active" id="panel-login">
+          <form id="standaloneLoginForm" onsubmit="event.preventDefault(); AuthPage.handleLogin();">
+            <div class="form-group">
+              <label class="form-label" for="authLoginEmail">Registered Email Address *</label>
+              <input type="email" id="authLoginEmail" class="form-input" placeholder="collector@domain.com" autocomplete="email" required autofocus>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="form-label" for="authLoginPassword" style="margin-bottom: 0;">Password *</label>
+                <a href="forgot-password.html" style="font-size: 11.5px; color: var(--gold-primary); text-decoration: underline;">
+                  Forgot Password?
+                </a>
+              </div>
+              <input type="password" id="authLoginPassword" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
+            </div>
+
+            <button type="submit" class="gold-btn" id="authLoginSubmitBtn" style="width: 100%; padding: 14px; font-size: 11.5px; letter-spacing: 0.15em; margin-top: 10px;">
+              SIGN IN TO ACCOUNT
+            </button>
+
+            <div style="text-align: center; margin-top: 22px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 18px;">
+              New to AURELIS? <a href="javascript:void(0)" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;" onclick="AuthPage.switchTab('register')">Create a collector account</a>
+            </div>
+          </form>
+        </div>
+
+        <!-- PANEL 2: CREATE ACCOUNT -->
+        <div class="auth-panel" id="panel-register">
+          <form id="standaloneRegisterForm" onsubmit="event.preventDefault(); AuthPage.handleRegister();">
+            <div class="form-group">
+              <label class="form-label" for="authRegName">Full Legal Name *</label>
+              <input type="text" id="authRegName" class="form-input" placeholder="e.g. Vikramaditya Sharma" autocomplete="name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="authRegEmail">Email Address *</label>
+              <input type="email" id="authRegEmail" class="form-input" placeholder="collector@domain.com" autocomplete="email" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="authRegPhone">Mobile Phone Number (10 Digits) *</label>
+              <input type="tel" id="authRegPhone" class="form-input" placeholder="9876543210" maxlength="10" autocomplete="tel" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="authRegPassword">Password (Minimum 6 Characters) *</label>
+              <input type="password" id="authRegPassword" class="form-input" placeholder="At least 6 characters" minlength="6" autocomplete="new-password" required oninput="AuthPage.checkPasswordMatch()">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="authRegConfirm">Confirm Password *</label>
+              <input type="password" id="authRegConfirm" class="form-input" placeholder="Re-enter your password" minlength="6" autocomplete="new-password" required oninput="AuthPage.checkPasswordMatch()">
+              <div class="auth-mismatch-note" id="regMismatchNote">Passwords do not match. Please verify.</div>
+            </div>
+
+            <button type="submit" class="gold-btn" id="authRegSubmitBtn" style="width: 100%; padding: 14px; font-size: 11.5px; letter-spacing: 0.15em; margin-top: 10px;">
+              CREATE COLLECTOR ACCOUNT
+            </button>
+
+            <div style="text-align: center; margin-top: 22px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 18px;">
+              Already have an account? <a href="javascript:void(0)" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;" onclick="AuthPage.switchTab('login')">Sign in here</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+        <a href="admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase;">ADMIN PANEL</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const AuthPage = {
+      init() {
+        // If already logged in, redirect straight to account
+        if (Auth.isLoggedIn()) {
+          const params = new URLSearchParams(window.location.search);
+          const redirect = params.get("redirect") || "account.html";
+          window.location.href = redirect;
+          return;
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const action = params.get("action") || (window.location.hash === "#register" ? "register" : "login");
+        if (action === "register") {
+          this.switchTab("register");
+        }
+      },
+
+      switchTab(tab) {
+        const isLogin = tab === "login";
+        document.getElementById("tabBtn-login").classList.toggle("active", isLogin);
+        document.getElementById("tabBtn-register").classList.toggle("active", !isLogin);
+        document.getElementById("panel-login").classList.toggle("active", isLogin);
+        document.getElementById("panel-register").classList.toggle("active", !isLogin);
+      },
+
+      checkPasswordMatch() {
+        const pass = document.getElementById("authRegPassword").value;
+        const conf = document.getElementById("authRegConfirm").value;
+        const note = document.getElementById("regMismatchNote");
+        const confInput = document.getElementById("authRegConfirm");
+
+        if (conf && pass !== conf) {
+          note.style.display = "block";
+          confInput.style.borderColor = "#e74c3c";
+          return false;
+        } else {
+          note.style.display = "none";
+          confInput.style.borderColor = conf ? "#2ecc71" : "";
+          return true;
+        }
+      },
+
+      async handleLogin() {
+        const email = document.getElementById("authLoginEmail").value.trim().toLowerCase();
+        const password = document.getElementById("authLoginPassword").value;
+        const btn = document.getElementById("authLoginSubmitBtn");
+
+        if (!email || !password) {
+          showToast("Please provide both email and password.", "error");
+          return;
+        }
+
+        try {
+          btn.disabled = true;
+          btn.textContent = "AUTHENTICATING...";
+          const res = await apiRequest("/api/auth/login", {
+            method: "POST",
+            body: JSON.stringify({ email, password })
+          });
+
+          Auth.setAuth(res.token, res.user);
+          showToast("Welcome back, " + res.user.name, "success");
+
+          const params = new URLSearchParams(window.location.search);
+          const redirect = params.get("redirect") || "account.html";
+          setTimeout(() => {
+            window.location.href = redirect;
+          }, 400);
+
+        } catch (e) {
+          showToast(e.message || "Invalid credentials. Please verify and retry.", "error");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "SIGN IN TO ACCOUNT";
+        }
+      },
+
+      async handleRegister() {
+        const name = document.getElementById("authRegName").value.trim();
+        const email = document.getElementById("authRegEmail").value.trim().toLowerCase();
+        const phone = document.getElementById("authRegPhone").value.trim();
+        const password = document.getElementById("authRegPassword").value;
+        const confirm_password = document.getElementById("authRegConfirm").value;
+        const btn = document.getElementById("authRegSubmitBtn");
+
+        if (!name || !email || !phone || !password || !confirm_password) {
+          showToast("All registration fields are required.", "error");
+          return;
+        }
+
+        if (password.length < 6) {
+          showToast("Password must be at least 6 characters long.", "error");
+          return;
+        }
+
+        if (password !== confirm_password) {
+          showToast("Passwords do not match. Please re-enter.", "error");
+          document.getElementById("authRegConfirm").focus();
+          return;
+        }
+
+        try {
+          btn.disabled = true;
+          btn.textContent = "REGISTERING PROFILE...";
+          const res = await apiRequest("/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify({ name, email, phone, password, confirm_password })
+          });
+
+          Auth.setAuth(res.token, res.user);
+          showToast("Collector profile registered successfully!", "success");
+
+          const params = new URLSearchParams(window.location.search);
+          const redirect = params.get("redirect") || "account.html";
+          setTimeout(() => {
+            window.location.href = redirect;
+          }, 500);
+
+        } catch (e) {
+          showToast(e.message || "Registration could not be completed.", "error");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "CREATE COLLECTOR ACCOUNT";
+        }
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      AuthPage.init();
+    });
+  </script>
+</body>
+</html>

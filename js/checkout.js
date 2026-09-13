@@ -23,6 +23,43 @@ const Checkout = {
     this.renderSummary();
   },
 
+  renderSummary() {
+    const listEl = document.getElementById("checkoutItemsList");
+    if (!listEl || !this.cart) return;
+
+    listEl.innerHTML = (this.cart.items || []).map(item => {
+      let imgSrc = item.image_url || "./assets/fallback-watch.svg";
+      if (imgSrc.startsWith("/")) imgSrc = "." + imgSrc;
+      return `
+        <div style="display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
+          <img src="${imgSrc}" alt="${item.product_name}" style="width: 52px; height: 52px; object-fit: contain; background: #12100c; border-radius: 4px; border: 1px solid var(--border-subtle);" onerror="this.src='./assets/fallback-watch.svg'">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 13.5px; font-weight: 600; color: var(--text-primary);">${item.product_name}</div>
+            <div style="font-size: 11px; color: var(--gold-primary); margin-top: 2px;">
+              ${item.color_name || "Signature Edition"}${item.strap_color ? ` • ${item.strap_color}` : ""}
+            </div>
+            <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
+              Qty: ${item.quantity} &times; ${formatINR(item.price || item.unit_price)}
+            </div>
+          </div>
+          <div style="font-family: var(--font-serif); font-size: 14px; font-weight: 600; color: var(--text-primary);">
+            ${formatINR((item.price || item.unit_price) * item.quantity)}
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    const subtotalEl = document.getElementById("checkoutSubtotal");
+    const totalEl = document.getElementById("checkoutTotal");
+    const shippingEl = document.getElementById("checkoutShipping");
+    const taxEl = document.getElementById("checkoutTax");
+
+    if (subtotalEl) subtotalEl.textContent = formatINR(this.cart.subtotal || 0);
+    if (totalEl) totalEl.textContent = formatINR(this.cart.total || this.cart.subtotal || 0);
+    if (shippingEl) shippingEl.textContent = this.cart.shipping ? formatINR(this.cart.shipping) : "Complimentary";
+    if (taxEl) taxEl.textContent = "Included in MRP";
+  },
+
   async checkAuthAndAddresses() {
     // Only check saved addresses if explicitly logged in as a customer
     if (Auth.isLoggedIn()) {
@@ -231,10 +268,10 @@ const Checkout = {
         Cart.updateBadges(0);
       }
 
-      showToast("Order placed successfully! Redirecting to confirmation...", "success");
+      showToast("Order recorded in atelier registry! Redirecting to payment portal...", "success");
       setTimeout(() => {
-        window.location.href = `order-success.html?order_id=${encodeURIComponent(res.order_number)}`;
-      }, 500);
+        window.location.href = `payment.html?order_id=${encodeURIComponent(res.order_number)}&method=${encodeURIComponent(this.selectedPaymentMethod)}`;
+      }, 400);
 
     } catch (e) {
       const friendlyMsg = (e.message && !e.message.includes("status 500") && !e.message.includes("Failed to fetch"))
@@ -243,7 +280,7 @@ const Checkout = {
       showToast(friendlyMsg, "error");
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.textContent = this.selectedPaymentMethod === "COD" ? "Place Order (Cash on Delivery)" : "Place Order (UPI / Demo Payment)";
+        submitBtn.textContent = this.selectedPaymentMethod === "COD" ? "Place Order (Cash on Delivery)" : "Place Order (Proceed to Payment)";
       }
     }
   },

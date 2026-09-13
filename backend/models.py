@@ -92,6 +92,8 @@ CREATE TABLE IF NOT EXISTS product_variants (
     reserved_quantity INTEGER NOT NULL DEFAULT 0,
     low_stock_threshold INTEGER NOT NULL DEFAULT 3,
     image_url TEXT NOT NULL,
+    strap_color TEXT DEFAULT '',
+    accent_color TEXT DEFAULT '',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
 );
@@ -395,6 +397,34 @@ def init_db():
                 cursor.execute("ALTER TABLE orders ADD COLUMN order_note TEXT DEFAULT ''")
             except Exception as e:
                 print(f"Migration note (order_note): {e}")
+
+        # Ensure last_login and address exist in users table
+        cursor.execute("PRAGMA table_info(users)")
+        user_cols = {row[1] for row in cursor.fetchall()}
+        if "last_login" not in user_cols:
+            try:
+                cursor.execute("ALTER TABLE users ADD COLUMN last_login TEXT")
+            except Exception as e:
+                print(f"Migration note (last_login): {e}")
+        if "address" not in user_cols:
+            try:
+                cursor.execute("ALTER TABLE users ADD COLUMN address TEXT")
+            except Exception as e:
+                print(f"Migration note (address): {e}")
+
+        # Ensure strap_color and accent_color exist in product_variants table
+        cursor.execute("PRAGMA table_info(product_variants)")
+        variant_cols = {row[1] for row in cursor.fetchall()}
+        if "strap_color" not in variant_cols:
+            try:
+                cursor.execute("ALTER TABLE product_variants ADD COLUMN strap_color TEXT DEFAULT ''")
+            except Exception as e:
+                print(f"Migration note (strap_color): {e}")
+        if "accent_color" not in variant_cols:
+            try:
+                cursor.execute("ALTER TABLE product_variants ADD COLUMN accent_color TEXT DEFAULT ''")
+            except Exception as e:
+                print(f"Migration note (accent_color): {e}")
                     
     print("Database schema initialized successfully.")
 

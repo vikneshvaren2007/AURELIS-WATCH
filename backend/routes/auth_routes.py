@@ -65,16 +65,33 @@ def admin_required(f):
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
+    import re
     data = request.get_json() or {}
     name = data.get("name", "").strip()
     email = data.get("email", "").strip().lower()
     phone = data.get("phone", "").strip()
     password = data.get("password", "")
+    confirm_password = data.get("confirm_password")
 
     if not name or not email or not password:
-        return jsonify({"error": "Name, email, and password are required"}), 400
+        return jsonify({"error": "Full name, email, and password are required"}), 400
+    
+    if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email):
+        return jsonify({"error": "Please enter a valid email address"}), 400
+
     if len(password) < 6:
         return jsonify({"error": "Password must be at least 6 characters long"}), 400
+
+    if confirm_password is not None and password != confirm_password:
+        return jsonify({"error": "Passwords do not match. Please re-enter your password."}), 400
+
+    # Sanitize phone if provided
+    clean_phone = ""
+    if phone:
+        digits = re.sub(r"[\s\-\+\(\)]", "", phone)
+        if digits.startswith("91") and len(digits) == 12:
+            digits = digits[2:]
+        clean_phone = digits
 
     password_hash = generate_password_hash(password)
 
@@ -83,13 +100,13 @@ def register():
             cursor = conn.cursor()
             cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
             if cursor.fetchone():
-                return jsonify({"error": "An account with this email address already exists"}), 409
+                return jsonify({"error": "An account with this email address already exists. Please sign in instead."}), 409
 
             now_ist = datetime.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")
             cursor.execute("""
                 INSERT INTO users (name, email, phone, password_hash, role, created_at, updated_at)
                 VALUES (?, ?, ?, ?, 'customer', ?, ?)
-            """, (name, email, phone, password_hash, now_ist, now_ist))
+            """, (name, email, clean_phone, password_hash, now_ist, now_ist))
             user_id = cursor.lastrowid
 
             token = generate_token(user_id, "customer", email, name)
@@ -100,7 +117,7 @@ def register():
                     "id": user_id,
                     "name": name,
                     "email": email,
-                    "phone": phone,
+                    "phone": clean_phone,
                     "role": "customer"
                 }
             }), 201
@@ -118,11 +135,14 @@ def login():
 
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT id, name, email, phone, password_hash, role FROM users WHERE email = ?", (email,))
+        cursor.execute("SELECT id, name, email, phone, password_hash, role, address FROM users WHERE email = ?", (email,))
         user = cursor.fetchone()
 
         if not user or not check_password_hash(user["password_hash"], password):
             return jsonify({"error": "Invalid email or password"}), 401
+
+        now_ist = datetime.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute("UPDATE users SET last_login = ? WHERE id = ?", (now_ist, user["id"]))
 
         token = generate_token(user["id"], user["role"], user["email"], user["name"])
         return jsonify({
@@ -133,7 +153,9 @@ def login():
                 "name": user["name"],
                 "email": user["email"],
                 "phone": user["phone"],
-                "role": user["role"]
+                "address": user["address"] or "",
+                "role": user["role"],
+                "last_login": now_ist
             }
         }), 200
 
@@ -143,11 +165,34 @@ def get_current_user_profile():
     user_id = int(request.current_user["sub"])
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT id, name, email, phone, role, created_at FROM users WHERE id = ?", (user_id,))
+        cursor.execute("SELECT id, name, email, phone, role, address, last_login, created_at FROM users WHERE id = ?", (user_id,))
         user = cursor.fetchone()
         if not user:
             return jsonify({"error": "User not found"}), 404
         return jsonify({"user": dict_from_row(user)})
+
+@auth_bp.route("/profile", methods=["PUT"])
+@token_required
+def update_profile():
+    user_id = int(request.current_user["sub"])
+    data = request.get_json() or {}
+    name = data.get("name", "").strip()
+    phone = data.get("phone", "").strip()
+    address = data.get("address", "").strip()
+
+    if not name:
+        return jsonify({"error": "Full name cannot be blank"}), 400
+
+    with get_db() as conn:
+        cursor = conn.cursor()
+        now_ist = datetime.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute("""
+            UPDATE users SET name = ?, phone = ?, address = ?, updated_at = ?
+            WHERE id = ?
+        """, (name, phone, address, now_ist, user_id))
+        cursor.execute("SELECT id, name, email, phone, role, address, last_login, created_at FROM users WHERE id = ?", (user_id,))
+        updated_user = cursor.fetchone()
+        return jsonify({"message": "Profile updated successfully", "user": dict_from_row(updated_user)})
 
 @auth_bp.route("/addresses", methods=["GET", "POST"])
 @token_required

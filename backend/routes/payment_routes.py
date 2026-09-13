@@ -239,8 +239,9 @@ def dummy_pay():
             return jsonify({"error": "Order not found"}), 404
 
         is_cod = ("cod" in payment_method.lower() or "cash" in payment_method.lower())
+        saved_method = "Cash on Delivery" if is_cod else payment_method
         new_payment_status = "COD_PENDING" if is_cod else "PAID"
-        new_order_status = "CONFIRMED"
+        new_order_status = "ORDER PLACED" if is_cod else "CONFIRMED"
 
         cursor.execute("""
             UPDATE orders
@@ -249,7 +250,7 @@ def dummy_pay():
                 order_status = ?,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
-        """, (payment_method, new_payment_status, new_order_status, order["id"]))
+        """, (saved_method, new_payment_status, new_order_status, order["id"]))
 
         # Insert or update payment transaction record
         cursor.execute("""

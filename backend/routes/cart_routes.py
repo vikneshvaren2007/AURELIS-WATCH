@@ -54,7 +54,7 @@ def get_cart():
             SELECT ci.id as item_id, ci.id as id, ci.quantity, ci.product_id, ci.variant_id,
                    p.name as product_name, p.slug as product_slug,
                    pv.color_name, pv.sku, pv.price, pv.price as unit_price, pv.discount_price, pv.image_url,
-                   pv.stock_quantity as available_stock
+                   pv.stock_quantity as available_stock, pv.strap_color, pv.accent_color
             FROM cart_items ci
             JOIN products p ON ci.product_id = p.id
             JOIN product_variants pv ON ci.variant_id = pv.id

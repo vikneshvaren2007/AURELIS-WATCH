@@ -82,12 +82,13 @@
         <table class="admin-table">
           <thead>
             <tr>
-              <th>Order Number</th>
-              <th>Collector Details</th>
-              <th>Total Amount</th>
+              <th>Order ID</th>
+              <th>Customer Information</th>
+              <th>Timepieces & Variants</th>
+              <th>Total</th>
+              <th>Payment</th>
               <th>Order Status</th>
-              <th>Payment Info</th>
-              <th>Date</th>
+              <th>Date & Time</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -96,6 +97,66 @@
       </div>
     </div>
   </main>
+
+  <!-- Modal for Full Order Inspection -->
+  <div class="modal-overlay" id="adminOrderDetailsModal">
+    <div class="modal-content" style="max-width: 680px; max-height: 90vh; overflow-y: auto;">
+      <button class="modal-close" onclick="document.getElementById('adminOrderDetailsModal').classList.remove('active')">&times;</button>
+      <p class="eyebrow" style="color: var(--gold-primary); letter-spacing: 2px;">COMMISSION MANIFEST</p>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin: 8px 0 16px;">
+        <h3 style="font-size: 22px; font-family: 'Playfair Display', serif; margin: 0;">Order <span id="inspOrderNumber" style="color: var(--gold-light);"></span></h3>
+        <span id="inspOrderStatusBadge" class="status-pill"></span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; background: rgba(255,255,255,0.02); padding: 14px; border: 1px solid var(--border-subtle); border-radius: 6px;">
+        <div>
+          <p style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">Collector Details</p>
+          <div id="inspCustomerName" style="font-weight: 600; color: #fff; font-size: 14px;"></div>
+          <div id="inspCustomerEmail" style="font-size: 12px; color: var(--text-secondary);"></div>
+          <div id="inspCustomerPhone" style="font-size: 12px; color: var(--text-secondary);"></div>
+          <div id="inspUserId" style="font-size: 11px; color: var(--gold-muted); margin-top: 4px;"></div>
+        </div>
+        <div>
+          <p style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">Delivery Destination</p>
+          <div id="inspShippingAddress" style="font-size: 12px; line-height: 1.5; color: var(--text-secondary);"></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px;">Selected Timepieces</p>
+        <div id="inspOrderItemsList" style="border: 1px solid var(--border-subtle); border-radius: 6px; overflow: hidden;"></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; background: rgba(255,255,255,0.02); padding: 14px; border: 1px solid var(--border-subtle); border-radius: 6px;">
+        <div>
+          <p style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">Payment Audit</p>
+          <div style="font-size: 13px;">Method: <strong id="inspPaymentMethod" style="color: #fff;"></strong></div>
+          <div style="font-size: 13px; margin-top: 2px;">Status: <span id="inspPaymentStatus" style="font-weight: 600;"></span></div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Txn Ref: <code id="inspTransactionId" style="color: var(--gold-light);"></code></div>
+        </div>
+        <div>
+          <p style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">Financial Breakdown</p>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 2px;">
+            <span style="color: var(--text-muted);">Subtotal:</span>
+            <span id="inspSubtotal" style="color: #fff;"></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+            <span style="color: var(--text-muted);">Shipping:</span>
+            <span style="color: #2ecc71;">COMPLIMENTARY</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; border-top: 1px solid var(--border-subtle); padding-top: 4px;">
+            <span style="color: var(--gold-primary);">Total Charged:</span>
+            <span id="inspTotal" style="color: var(--gold-light);"></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="gold-btn-outline" onclick="document.getElementById('adminOrderDetailsModal').classList.remove('active')">Close</button>
+        <button class="gold-btn" id="inspQuickUpdateBtn">Update Status</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal for Status Updates -->
   <div class="modal-overlay" id="orderStatusModal">

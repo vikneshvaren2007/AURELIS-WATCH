@@ -142,10 +142,10 @@ const PaymentPortal = {
         throw new Error(res.error || "Payment authorization failed");
       }
 
-      // Automatically redirect to success page after simulated 2-second processing
+      // Automatically redirect to success page after simulated processing
       setTimeout(() => {
-        window.location.href = `payment-success.html?order_id=${this.order.order_number}&txn=${txnId}`;
-      }, 2100);
+        window.location.href = `order-success.html?order_id=${encodeURIComponent(this.order.order_number)}&txn=${encodeURIComponent(txnId)}`;
+      }, 1600);
 
     } catch (e) {
       if (overlay) overlay.classList.remove("active");

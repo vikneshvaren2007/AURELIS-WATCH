@@ -3,7 +3,7 @@
    ========================================================================== */
 
 .pdp-wrapper {
-  padding: 130px 5vw 100px;
+  padding: 130px 5vw 80px;
 }
 
 .pdp-grid {
@@ -144,55 +144,87 @@
 .selected-variant-name {
   color: var(--gold-light);
   font-weight: 600;
+  font-size: 13px;
 }
 
 .variant-cards-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 14px;
+  margin-bottom: 22px;
 }
 
 .variant-option-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  padding: 14px;
-  border-radius: 4px;
+  width: 136px;
+  background: #11100d;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 10px 8px 12px;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  transition: var(--transition);
+  text-align: center;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  user-select: none;
 }
 
 .variant-option-card:hover {
-  border-color: var(--border-gold);
-  background: var(--bg-card-hover);
+  border-color: rgba(217, 174, 85, 0.6);
+  background: #181612;
+  transform: translateY(-2px);
 }
 
 .variant-option-card.active {
-  border-color: var(--gold-primary);
-  background: rgba(217, 174, 85, 0.08);
-  box-shadow: 0 0 15px rgba(217, 174, 85, 0.15);
+  border: 2px solid var(--gold-primary);
+  background: rgba(217, 174, 85, 0.09);
+  box-shadow: 0 0 16px rgba(217, 174, 85, 0.28), inset 0 0 0 1px var(--gold-primary);
 }
 
 .variant-card-thumb {
-  width: 44px;
-  height: 44px;
-  border-radius: 3px;
+  width: 76px;
+  height: 76px;
+  border-radius: 4px;
   object-fit: contain;
   background: #090807;
+  margin-bottom: 8px;
+  transition: transform 0.2s ease;
+}
+
+.variant-option-card:hover .variant-card-thumb {
+  transform: scale(1.05);
 }
 
 .variant-card-title {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--text-primary);
+  line-height: 1.35;
+  margin-bottom: 5px;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.variant-card-stock {
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  margin-top: 3px;
+.variant-card-price-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.variant-card-price {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--gold-primary);
+}
+
+.variant-card-orig-price {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  text-decoration: line-through;
 }
 
 /* Quantity & Action Controls */
@@ -269,12 +301,14 @@
   margin-top: 50px;
   border-top: 1px solid var(--border-subtle);
   padding-top: 60px;
+  margin-bottom: 0;
 }
 
 .specs-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 25px;
+  margin-bottom: 0;
 }
 
 .specs-table tr {
@@ -297,6 +331,9 @@
 }
 
 @media (max-width: 900px) {
+  .pdp-wrapper {
+    padding: 100px 5vw 50px;
+  }
   .pdp-grid {
     grid-template-columns: 1fr;
   }
@@ -309,5 +346,16 @@
   .pdp-assurances {
     grid-template-columns: 1fr;
     gap: 12px;
+  }
+  .specs-section {
+    margin-top: 40px;
+    padding-top: 40px;
+  }
+  .specs-table td {
+    padding: 12px 10px;
+    font-size: 12px;
+  }
+  .specs-table td:first-child {
+    width: 40%;
   }
 }

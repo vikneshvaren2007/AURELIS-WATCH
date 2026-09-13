@@ -75,6 +75,8 @@ const Admin = {
     }
   },
 
+  ordersCache: [],
+
   async loadOrders() {
     const table = document.getElementById("adminOrdersTable");
     if (!table) return;
@@ -84,27 +86,124 @@ const Admin = {
 
     try {
       const res = await apiRequest(`/api/admin/orders?search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`);
-      table.innerHTML = res.orders.map(o => `
-        <tr>
-          <td><strong>${o.order_number}</strong></td>
-          <td>
-            <strong>${o.customer_name}</strong><br>
-            <span style="font-size: 11px; color: var(--text-muted);">${o.customer_email} &bull; ${o.customer_phone}</span>
-          </td>
-          <td>${formatINR(o.total_amount)}</td>
-          <td><span class="status-pill status-${o.order_status}">${o.order_status}</span></td>
-          <td>${o.payment_method} (<span style="font-size: 11px;">${o.payment_status}</span>)</td>
-          <td>${o.created_at || '-'}</td>
-          <td>
-            <button class="gold-btn-outline" style="padding: 6px 12px; font-size: 10px;" onclick="Admin.openOrderStatusModal(${o.id}, '${o.order_status}', '${o.order_number}')">
-              Update Status
-            </button>
-          </td>
-        </tr>
-      `).join("");
+      this.ordersCache = res.orders || [];
+      table.innerHTML = this.ordersCache.map(o => {
+        const itemsHtml = (o.items && o.items.length > 0)
+          ? o.items.map(it => `
+              <div style="font-size: 11.5px; line-height: 1.4; margin-bottom: 2px;">
+                <strong style="color: #fff;">${it.product_name}</strong>
+                <span style="color: var(--text-muted);">&bull; ${it.variant_color || 'Standard'}</span>
+                <span style="color: var(--gold-light); font-weight: 600;">(×${it.quantity})</span>
+              </div>
+            `).join("")
+          : `<span style="font-size: 11px; color: var(--text-muted);">Standard Timepiece</span>`;
+
+        const paymentColor = o.payment_status === 'PAID' ? '#2ecc71' : (o.payment_method === 'Cash on Delivery' ? '#e67e22' : '#f39c12');
+
+        return `
+          <tr>
+            <td>
+              <strong style="color: var(--gold-light); font-family: monospace; font-size: 12.5px;">${o.order_number}</strong>
+            </td>
+            <td>
+              <strong style="color: #fff; font-size: 13px;">${o.customer_name}</strong><br>
+              <span style="font-size: 11px; color: var(--text-muted);">${o.customer_email}</span><br>
+              <span style="font-size: 11px; color: var(--text-secondary);">${o.customer_phone || ''}</span>
+            </td>
+            <td>
+              ${itemsHtml}
+            </td>
+            <td>
+              <strong style="color: var(--gold-primary); font-size: 13.5px;">${formatINR(o.total_amount)}</strong>
+            </td>
+            <td>
+              <span style="font-size: 12px; font-weight: 500;">${o.payment_method}</span><br>
+              <span style="font-size: 10.5px; font-weight: 600; color: ${paymentColor}; letter-spacing: 0.5px;">${o.payment_status}</span>
+            </td>
+            <td>
+              <span class="status-pill status-${o.order_status}">${o.order_status}</span>
+            </td>
+            <td>
+              <span style="font-size: 11.5px; color: var(--text-muted);">${o.created_at || '-'}</span>
+            </td>
+            <td>
+              <div style="display: flex; flex-direction: column; gap: 5px;">
+                <button class="gold-btn" style="padding: 5px 10px; font-size: 10px;" onclick="Admin.openOrderDetailsModal(${o.id})">
+                  Inspect
+                </button>
+                <button class="gold-btn-outline" style="padding: 5px 10px; font-size: 10px;" onclick="Admin.openOrderStatusModal(${o.id}, '${o.order_status}', '${o.order_number}')">
+                  Update Status
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
     } catch (e) {
       showToast(e.message, "error");
     }
+  },
+
+  openOrderDetailsModal(orderId) {
+    const o = this.ordersCache.find(x => x.id === orderId);
+    if (!o) return;
+
+    const modal = document.getElementById("adminOrderDetailsModal");
+    if (!modal) return;
+
+    document.getElementById("inspOrderNumber").textContent = o.order_number;
+    const badge = document.getElementById("inspOrderStatusBadge");
+    badge.className = `status-pill status-${o.order_status}`;
+    badge.textContent = o.order_status;
+
+    document.getElementById("inspCustomerName").textContent = o.customer_name || 'N/A';
+    document.getElementById("inspCustomerEmail").textContent = o.customer_email || 'N/A';
+    document.getElementById("inspCustomerPhone").textContent = o.customer_phone || 'N/A';
+    document.getElementById("inspUserId").textContent = o.user_id ? `Account User ID: #${o.user_id}` : 'Guest Commission';
+
+    const addr = o.shipping_address || {};
+    document.getElementById("inspShippingAddress").innerHTML = `
+      ${addr.address_line1 || addr.street || ''}${addr.address_line2 ? `<br>${addr.address_line2}` : ''}<br>
+      ${addr.city || ''}, ${addr.state || ''} ${addr.postal_code || addr.pincode || ''}<br>
+      ${addr.country || 'India'}
+    `;
+
+    const itemsContainer = document.getElementById("inspOrderItemsList");
+    if (o.items && o.items.length > 0) {
+      itemsContainer.innerHTML = o.items.map(it => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border-subtle); background: rgba(0,0,0,0.2);">
+          <div>
+            <div style="font-weight: 600; color: #fff; font-size: 13px;">${it.product_name}</div>
+            <div style="font-size: 11px; color: var(--gold-primary);">Variant: ${it.variant_color || 'Standard Edition'}</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 13px; font-weight: 600; color: #fff;">${formatINR(it.total_price || (it.unit_price * it.quantity))}</div>
+            <div style="font-size: 11px; color: var(--text-muted);">${formatINR(it.unit_price)} × ${it.quantity}</div>
+          </div>
+        </div>
+      `).join("");
+    } else {
+      itemsContainer.innerHTML = '<div style="padding: 12px; font-size: 12px; color: var(--text-muted);">Standard Timepiece Specification</div>';
+    }
+
+    document.getElementById("inspPaymentMethod").textContent = o.payment_method || 'Online';
+    const payStatusEl = document.getElementById("inspPaymentStatus");
+    payStatusEl.textContent = o.payment_status || 'PENDING';
+    payStatusEl.style.color = o.payment_status === 'PAID' ? '#2ecc71' : '#f39c12';
+    document.getElementById("inspTransactionId").textContent = o.transaction_id || 'N/A';
+
+    document.getElementById("inspSubtotal").textContent = formatINR(o.subtotal || o.total_amount);
+    document.getElementById("inspTotal").textContent = formatINR(o.total_amount);
+
+    const quickUpdateBtn = document.getElementById("inspQuickUpdateBtn");
+    if (quickUpdateBtn) {
+      quickUpdateBtn.onclick = () => {
+        modal.classList.remove("active");
+        this.openOrderStatusModal(o.id, o.order_status, o.order_number);
+      };
+    }
+
+    modal.classList.add("active");
   },
 
   openOrderStatusModal(orderId, currentStatus, orderNumber) {

@@ -55,17 +55,41 @@ const Auth = {
   updateNavbar() {
     const accountBtn = document.getElementById("navAccountBtn");
     const accountLink = document.getElementById("navAccountLink");
+    const navAuth = document.getElementById("navAuthArea");
     const user = this.getUser();
 
-    if (user && accountBtn) {
-      accountBtn.title = `${user.name} (${user.email})`;
-      accountBtn.innerHTML = `
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-      `;
-      if (accountLink) accountLink.href = "account.html";
+    if (user) {
+      if (accountBtn) {
+        accountBtn.title = `${user.name} (${user.email})`;
+        accountBtn.innerHTML = `
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        `;
+      }
+      if (accountLink) {
+        accountLink.href = "account.html";
+        accountLink.textContent = "My Account";
+      }
+      if (navAuth) {
+        const firstName = user.name.split(" ")[0];
+        navAuth.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="account.html" style="color: var(--gold-light); text-decoration: none; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+              <span>👤</span> <span>${firstName}</span>
+            </a>
+            <button class="gold-btn-outline" style="padding: 5px 10px; font-size: 9.5px;" onclick="Auth.logout()">Sign Out</button>
+          </div>
+        `;
+      }
+      // Update any "Sign In" link in nav-links
+      document.querySelectorAll(".nav-links a").forEach(link => {
+        if (link.textContent.trim().toLowerCase() === "sign in") {
+          link.textContent = "My Account";
+          link.href = "account.html";
+        }
+      });
     }
   }
 };

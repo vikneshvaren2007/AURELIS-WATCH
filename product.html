@@ -122,8 +122,8 @@
         <!-- Color / Finish Selector -->
         <div class="variant-selector-section" id="variantSection">
           <div class="variant-label-row">
-            <span style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-secondary);">Color & Finish:</span>
-            <span class="selected-variant-name" id="selectedVariantName">Gold & Silver</span>
+            <span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-secondary);">Colour:</span>
+            <span class="selected-variant-name" id="selectedVariantName" style="color: var(--gold-light); font-weight: 600; margin-left: 6px;"></span>
           </div>
           <div class="variant-cards-grid" id="variantCardsGrid"></div>
         </div>
@@ -184,15 +184,6 @@
       <h2 style="font-size: 32px;">Atelier Technical Specifications</h2>
       <table class="specs-table" id="pdpSpecsTable"></table>
     </section>
-
-    <!-- Other Timepieces Recommendations -->
-    <section style="margin-top: 80px;">
-      <div style="text-align: center; margin-bottom: 40px;">
-        <p class="eyebrow">CONTINUE EXPLORATION</p>
-        <h2 style="font-size: 28px;">Other Atelier Editions</h2>
-      </div>
-      <div class="products-grid" id="relatedProductsGrid"></div>
-    </section>
   </main>
 
   <!-- Luxury Footer -->
@@ -214,10 +205,11 @@
           <h4>NAVIGATION</h4>
           <ul>
             <li><a href="index.html">Atelier Hero</a></li>
-            <li><a href="shop.html">10 Timepieces Collection</a></li>
+            <li><a href="shop.html">Collection Catalog</a></li>
             <li><a href="warranty.html">6-Month Warranty Policy</a></li>
             <li><a href="track-order.html">Track Order</a></li>
             <li><a href="cart.html">Commission Cart</a></li>
+            <li><a href="admin/login.html">Admin Portal</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -230,9 +222,12 @@
           </ul>
         </div>
       </div>
-      <div class="footer-bottom">
+      <div class="footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
         <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
-        <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+          <a href="admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase;">ADMIN PANEL</a>
+        </div>
       </div>
     </div>
   </footer>

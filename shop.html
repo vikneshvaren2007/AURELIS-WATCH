@@ -259,7 +259,12 @@
           <div class="category-card active" onclick="Shop.setFilterStyle('')" data-category="">
             <span class="category-card-icon">👑</span>
             <div class="category-card-title">All Editions</div>
-            <div class="category-card-count">10 Timepieces</div>
+            <div class="category-card-count">15 Timepieces</div>
+          </div>
+          <div class="category-card" onclick="Shop.setFilterStyle('Masterpiece Collection')" data-category="Masterpiece Collection" style="border-color: rgba(212,175,55,0.4);">
+            <span class="category-card-icon">⚜️</span>
+            <div class="category-card-title" style="color: var(--gold-light);">Masterpieces</div>
+            <div class="category-card-count" style="color: var(--gold-primary);">5 Calibers</div>
           </div>
           <div class="category-card" onclick="Shop.setFilterStyle('Classic Luxury')" data-category="Classic Luxury">
             <span class="category-card-icon">🏛️</span>
@@ -293,8 +298,8 @@
     <!-- 4. ALL WATCHES CATALOG & FILTER SECTION -->
     <section class="shop-header" id="collectionSection">
       <p class="eyebrow">HAUTE HORLOGERIE &bull; INDIA</p>
-      <h1>The 10 Timepieces Collection</h1>
-      <p>Precision-sculpted in solid 316L surgical stainless steel and high-clarity sapphire crystals. All 10 timepieces are strictly priced starting from <strong>₹5,299</strong> with our complete <strong>6-Month Atelier Warranty</strong>.</p>
+      <h1>The Complete Timepieces Collection</h1>
+      <p>Precision-sculpted in solid 316L surgical stainless steel, titanium, and high-clarity sapphire crystals. Discover our core masterwork timepieces and pinnacle Masterpiece Collection calibers, all backed by our complete <strong>6-Month Atelier Warranty</strong>.</p>
     </section>
 
     <!-- Shop Layout with Sidebar & Products Grid -->
@@ -311,7 +316,8 @@
         <div class="filter-group">
           <p class="filter-title">Horological Style</p>
           <div class="filter-pill-list" id="styleFilterList">
-            <div class="filter-pill-item active" data-style=""><span>All Styles</span><span>(10)</span></div>
+            <div class="filter-pill-item active" data-style=""><span>All Styles</span><span>(15)</span></div>
+            <div class="filter-pill-item" data-style="Masterpiece Collection" style="color: var(--gold-light);"><span>Masterpiece Collection</span><span>(5)</span></div>
             <div class="filter-pill-item" data-style="Classic Luxury"><span>Classic Luxury</span><span>(2)</span></div>
             <div class="filter-pill-item" data-style="Chronograph"><span>Chronographs</span><span>(2)</span></div>
             <div class="filter-pill-item" data-style="Minimalist"><span>Minimalist</span><span>(2)</span></div>
@@ -320,16 +326,16 @@
           </div>
         </div>
 
-        <!-- Price Range Filter (₹5,000 - ₹15,000) -->
+        <!-- Price Range Filter -->
         <div class="filter-group">
           <p class="filter-title">Price Filter (₹)</p>
           <div class="price-range-inputs">
-            <input type="number" id="minPrice" placeholder="Min" value="5000" min="5000" max="15000">
+            <input type="number" id="minPrice" placeholder="Min" value="2000" min="2000" max="60000">
             <span style="color: var(--text-muted);">&mdash;</span>
-            <input type="number" id="maxPrice" placeholder="Max" value="15000" min="5000" max="15000">
+            <input type="number" id="maxPrice" placeholder="Max" value="60000" min="2000" max="60000">
           </div>
           <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
-            Range: ₹5,000 &ndash; ₹15,000
+            Range: ₹2,000 &ndash; ₹60,000
           </div>
         </div>
 
@@ -452,8 +458,9 @@
           </ul>
         </div>
       </div>
-      <div class="footer-bottom">
+      <div class="footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
         <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+        <a href="admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase; transition: all 0.2s ease;">ADMIN PANEL</a>
         <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
       </div>
     </div>

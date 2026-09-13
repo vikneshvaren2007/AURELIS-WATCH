@@ -83,9 +83,10 @@ def get_products():
             cursor.execute("""
                 SELECT id, product_id, color_name, color_code, sku, price, discount_price,
                        stock_quantity, reserved_quantity, (stock_quantity - reserved_quantity) as available_stock,
-                       low_stock_threshold, image_url
+                       low_stock_threshold, image_url, strap_color, accent_color
                 FROM product_variants
                 WHERE product_id = ?
+                ORDER BY id ASC
             """, (p["id"],))
             variants = dicts_from_rows(cursor.fetchall())
 
@@ -156,7 +157,7 @@ def get_product_detail(identifier):
         cursor.execute("""
             SELECT id, product_id, color_name, color_code, sku, price, discount_price,
                    stock_quantity, reserved_quantity, (stock_quantity - reserved_quantity) as available_stock,
-                   low_stock_threshold, image_url
+                   low_stock_threshold, image_url, strap_color, accent_color
             FROM product_variants
             WHERE product_id = ?
             ORDER BY id ASC

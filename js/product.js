@@ -10,19 +10,37 @@ const ProductPage = {
   async init() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id") || "1";
-    await this.loadProduct(id);
+    const variantId = params.get("variant");
+    await this.loadProduct(id, variantId);
     this.bindEvents();
-    this.loadRelatedProducts();
   },
 
-  async loadProduct(identifier) {
+  async loadProduct(identifier, initialVariantId = null) {
     try {
       const res = await apiRequest(`/api/products/${identifier}`);
       this.product = res.product;
-      this.selectedVariant = (this.product.variants && this.product.variants.length > 0)
-        ? this.product.variants[0]
-        : null;
+      if (this.product.variants && this.product.variants.length > 0) {
+        // Preload all variant images immediately to ensure zero flicker when switching
+        this.product.variants.forEach(v => {
+          if (v.image_url) {
+            const pre = new Image();
+            let pSrc = v.image_url.startsWith('/') ? '.' + v.image_url : v.image_url;
+            pre.src = pSrc;
+          }
+        });
+        if (initialVariantId) {
+          const matched = this.product.variants.find(v => v.id === parseInt(initialVariantId));
+          this.selectedVariant = matched || this.product.variants[0];
+        } else {
+          this.selectedVariant = this.product.variants[0];
+        }
+      } else {
+        this.selectedVariant = null;
+      }
       this.render();
+      if (this.selectedVariant) {
+        this.updateVariantDisplay();
+      }
     } catch (e) {
       showToast("Timepiece edition could not be loaded: " + e.message, "error");
     }
@@ -40,19 +58,15 @@ const ProductPage = {
   updateVariantDisplay() {
     if (!this.selectedVariant) return;
 
-    // Update Main Image
+    // Update Main Image smoothly and immediately
     const mainImg = document.getElementById("pdpMainImage");
     if (mainImg) {
-      mainImg.style.opacity = "0.4";
-      setTimeout(() => {
-        let src = this.selectedVariant.image_url || this.product.main_image || './assets/fallback-watch.svg';
-        if (src.startsWith('/')) src = '.' + src;
-        mainImg.src = src;
-        mainImg.style.opacity = "1";
-      }, 150);
+      let src = this.selectedVariant.image_url || this.product.main_image || './assets/fallback-watch.svg';
+      if (src.startsWith('/')) src = '.' + src;
+      mainImg.src = src;
     }
 
-    // Update Variant Cards Active Class
+    // Update Variant Cards Active Class (border highlight)
     document.querySelectorAll(".variant-option-card").forEach(card => {
       const cardId = parseInt(card.dataset.variantId);
       card.classList.toggle("active", cardId === this.selectedVariant.id);
@@ -125,20 +139,27 @@ const ProductPage = {
     // Render Color Variants
     const variantGrid = document.getElementById("variantCardsGrid");
     const nameLabel = document.getElementById("selectedVariantName");
-    if (nameLabel) nameLabel.textContent = this.product.color || (this.selectedVariant ? this.selectedVariant.color_name : 'Artisan Finish');
+    if (nameLabel) nameLabel.textContent = this.selectedVariant ? this.selectedVariant.color_name : (this.product.color || 'Artisan Finish');
 
     if (variantGrid && this.product.variants && this.product.variants.length > 0) {
       variantGrid.innerHTML = this.product.variants.map((v, idx) => {
         let vSrc = v.image_url || this.product.main_image || './assets/fallback-watch.svg';
         if (vSrc.startsWith('/')) vSrc = '.' + vSrc;
+        const isSelected = this.selectedVariant ? this.selectedVariant.id === v.id : idx === 0;
+        const vPrice = v.price || this.product.base_price;
+        const vOrigPrice = v.discount_price || this.product.discount_price;
         return `
-        <div class="variant-option-card ${idx === 0 ? 'active' : ''}" data-variant-id="${v.id}" onclick="ProductPage.selectVariant(${v.id})">
+        <div class="variant-option-card ${isSelected ? 'active' : ''}" 
+             data-variant-id="${v.id}" 
+             onclick="ProductPage.selectVariant(${v.id})" 
+             role="button" 
+             tabindex="0"
+             title="${v.color_name}">
           <img src="${vSrc}" alt="${v.color_name}" class="variant-card-thumb" onerror="this.src='./assets/fallback-watch.svg'">
-          <div>
-            <div class="variant-card-title">${v.color_name}</div>
-            <div class="variant-card-stock" style="color: ${(v.stock_quantity || 10) <= 3 ? '#e67e22' : '#2ecc71'};">
-              ${(v.stock_quantity || 10) <= 3 ? `Only ${v.stock_quantity} left` : 'In Stock'}
-            </div>
+          <div class="variant-card-title">${v.color_name}</div>
+          <div class="variant-card-price-row">
+            <span class="variant-card-price">${formatINR(vPrice)}</span>
+            ${vOrigPrice ? `<span class="variant-card-orig-price">${formatINR(vOrigPrice)}</span>` : ''}
           </div>
         </div>
       `;
@@ -150,9 +171,9 @@ const ProductPage = {
       variantGrid.innerHTML = `
         <div class="variant-option-card active">
           <img src="${sSrc}" alt="${this.product.name}" class="variant-card-thumb" onerror="this.src='./assets/fallback-watch.svg'">
-          <div>
-            <div class="variant-card-title">${this.product.color || 'Signature Finish'}</div>
-            <div class="variant-card-stock" style="color: #2ecc71;">In Stock &bull; Tenkasi Atelier</div>
+          <div class="variant-card-title">${this.product.color || 'Signature Finish'}</div>
+          <div class="variant-card-price-row">
+            <span class="variant-card-price">${formatINR(this.product.base_price)}</span>
           </div>
         </div>
       `;
@@ -287,41 +308,6 @@ const ProductPage = {
         }
       });
     }
-  },
-
-  async loadRelatedProducts() {
-    const grid = document.getElementById("relatedProductsGrid");
-    if (!grid) return;
-
-    try {
-      const res = await apiRequest("/api/products");
-      const others = (res.products || []).filter(p => !this.product || p.id !== this.product.id).slice(0, 3);
-      grid.innerHTML = others.map(p => {
-        let pSrc = p.primary_image || p.main_image || './assets/fallback-watch.svg';
-        if (pSrc.startsWith('/')) pSrc = '.' + pSrc;
-        return `
-        <div class="product-card">
-          <div class="product-card-badges">
-            <span class="badge-gold">${p.style || 'Atelier'}</span>
-            <span class="badge-stock">In Stock</span>
-          </div>
-          <a href="product.html?id=${p.id}" class="product-image-wrap">
-            <img src="${pSrc}" alt="${p.name}" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
-          </a>
-          <div class="product-info">
-            <div style="font-size: 10px; color: var(--gold-light); margin-bottom: 4px;">🛡️ 6-Month Warranty</div>
-            <h3 class="product-title"><a href="product.html?id=${p.id}">${p.name}</a></h3>
-            <div class="product-price-row">
-              <span class="product-price">${formatINR(p.base_price)}</span>
-            </div>
-            <div class="product-card-actions">
-              <a href="product.html?id=${p.id}" class="gold-btn" style="text-align: center;">View Timepiece</a>
-            </div>
-          </div>
-        </div>
-      `;
-      }).join("");
-    } catch (e) {}
   }
 };
 

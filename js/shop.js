@@ -7,8 +7,8 @@ const Shop = {
   filters: {
     search: "",
     style: "",
-    min_price: 5000,
-    max_price: 15000,
+    min_price: 2000,
+    max_price: 60000,
     availability: "",
     sort: "featured"
   },
@@ -98,10 +98,34 @@ const Shop = {
         ? `<span class="badge-low-stock">Only ${stock} Left</span>`
         : `<span class="badge-stock">In Stock</span>`;
 
+      const isMasterpiece = p.style === 'Masterpiece Collection' || p.category_name === 'Masterpiece Collection' || displayPrice >= 20000;
+      const styleBadge = isMasterpiece
+        ? `<span class="badge-gold" style="background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%); color: #000; font-weight: 700; border: none;">HAUTE HORLOGERIE</span>`
+        : `<span class="badge-gold">${p.style || 'Artisan Edition'}</span>`;
+
+      const variants = p.variants || [];
+      const hasMultipleVariants = variants.length > 1;
+
+      const colorSelectorHtml = hasMultipleVariants ? `
+        <div class="card-color-selector">
+          <div class="color-dots-group">
+            ${variants.map((v, vIdx) => `
+              <button type="button" class="color-dot ${vIdx === 0 ? 'active' : ''}" 
+                style="background: ${v.color_code || '#d4af37'};" 
+                title="${v.color_name}${v.strap_color ? ' — ' + v.strap_color : ''}"
+                onclick="Shop.selectCardVariant(${p.id}, ${vIdx}, event)"
+                aria-label="${v.color_name}">
+              </button>
+            `).join('')}
+          </div>
+          <span class="card-variant-label" id="cardVariantLabel-${p.id}">${variants[0].color_name}</span>
+        </div>
+      ` : '';
+
       return `
-        <div class="product-card">
+        <div class="product-card" id="productCard-${p.id}" ${isMasterpiece ? 'style="border: 1px solid rgba(212,175,55,0.4); box-shadow: 0 10px 30px rgba(212,175,55,0.06);"' : ''}>
           <div class="product-card-badges">
-            <span class="badge-gold">${p.style || 'Artisan Edition'}</span>
+            ${styleBadge}
             ${stockBadge}
           </div>
 
@@ -109,15 +133,16 @@ const Shop = {
             ♡
           </button>
 
-          <a href="product.html?id=${p.id}" class="product-image-wrap">
+          <a href="product.html?id=${p.id}${primaryVariant ? `&variant=${primaryVariant.id}` : ''}" class="product-image-wrap">
             <img src="${imgSrc}" alt="${p.name}" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
           </a>
 
           <div class="product-info">
             <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
-            <p class="product-variant-tag">${p.color || 'Signature Finish'}</p>
+            ${colorSelectorHtml}
+            <p class="product-variant-tag">${primaryVariant && primaryVariant.strap_color ? `${primaryVariant.color_name} • ${primaryVariant.strap_color}` : (p.color || 'Signature Finish')}</p>
             <h3 class="product-title">
-              <a href="product.html?id=${p.id}">${p.name}</a>
+              <a href="product.html?id=${p.id}${primaryVariant ? `&variant=${primaryVariant.id}` : ''}">${p.name}</a>
             </h3>
 
             <div class="product-rating">
@@ -134,7 +159,7 @@ const Shop = {
               <button class="gold-btn" onclick="Shop.quickAdd(${p.id}, ${primaryVariant ? primaryVariant.id : 1}, event)">
                 Acquire Now
               </button>
-              <a href="product.html?id=${p.id}" class="dark-btn" style="text-align: center;">
+              <a href="product.html?id=${p.id}${primaryVariant ? `&variant=${primaryVariant.id}` : ''}" class="dark-btn" style="text-align: center;">
                 Discover
               </a>
             </div>
@@ -144,11 +169,87 @@ const Shop = {
     }).join("");
   },
 
+  selectedCardVariants: {},
+
+  selectCardVariant(productId, variantIndex, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const product = this.products.find(p => p.id === productId);
+    if (!product || !product.variants || !product.variants[variantIndex]) return;
+    const variant = product.variants[variantIndex];
+    this.selectedCardVariants[productId] = variant;
+
+    const card = document.getElementById(`productCard-${productId}`);
+    if (!card) return;
+
+    // Toggle active dot
+    const dots = card.querySelectorAll(".color-dot");
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle("active", idx === variantIndex);
+    });
+
+    // Update image with smooth swap
+    const img = card.querySelector(".product-image-wrap img");
+    if (img) {
+      img.classList.add("switching");
+      setTimeout(() => {
+        let src = variant.image_url || product.main_image || './assets/fallback-watch.svg';
+        if (src.startsWith('/')) src = '.' + src;
+        img.src = src;
+        img.classList.remove("switching");
+      }, 120);
+    }
+
+    // Update label & tag
+    const label = card.querySelector(`#cardVariantLabel-${productId}`);
+    if (label) label.textContent = variant.color_name;
+
+    const tag = card.querySelector(".product-variant-tag");
+    if (tag) {
+      tag.textContent = variant.strap_color 
+        ? `${variant.color_name} • ${variant.strap_color}`
+        : variant.color_name;
+    }
+
+    // Update price if variant has custom pricing
+    const priceEl = card.querySelector(".product-price");
+    if (priceEl && variant.price) {
+      priceEl.textContent = formatINR(variant.price);
+    }
+    const origPriceEl = card.querySelector(".product-original-price");
+    if (origPriceEl) {
+      if (variant.discount_price) {
+        origPriceEl.textContent = formatINR(variant.discount_price);
+        origPriceEl.style.display = "inline";
+      } else {
+        origPriceEl.style.display = "none";
+      }
+    }
+
+    // Update Acquire Now button onclick handler
+    const buyBtn = card.querySelector(".product-card-actions .gold-btn");
+    if (buyBtn) {
+      buyBtn.setAttribute("onclick", `Shop.quickAdd(${productId}, ${variant.id}, event)`);
+    }
+
+    // Update link targets
+    const links = card.querySelectorAll("a[href*='product.html']");
+    links.forEach(a => {
+      a.href = `product.html?id=${productId}&variant=${variant.id}`;
+    });
+  },
+
   async quickAdd(productId, variantId, event) {
     if (event) event.stopPropagation();
     try {
-      await Cart.addItem(productId, variantId, 1);
-      showToast("Timepiece added to your commission cart", "success");
+      const targetVariantId = variantId || (this.selectedCardVariants[productId] ? this.selectedCardVariants[productId].id : 1);
+      await Cart.addItem(productId, targetVariantId, 1);
+      const product = this.products.find(p => p.id === productId);
+      const variant = product?.variants?.find(v => v.id === targetVariantId);
+      const variantDesc = variant ? ` (${variant.color_name})` : '';
+      showToast(`Timepiece added to your cart${variantDesc}`, "success");
     } catch (e) {
       showToast("Could not add timepiece: " + e.message, "error");
     }
@@ -186,8 +287,8 @@ const Shop = {
     const minInput = document.getElementById("minPrice");
     const maxInput = document.getElementById("maxPrice");
     const onPriceChange = () => {
-      this.filters.min_price = minInput ? parseFloat(minInput.value) || 5000 : 5000;
-      this.filters.max_price = maxInput ? parseFloat(maxInput.value) || 15000 : 15000;
+      this.filters.min_price = minInput ? parseFloat(minInput.value) || 2000 : 2000;
+      this.filters.max_price = maxInput ? parseFloat(maxInput.value) || 60000 : 60000;
       this.loadProducts();
     };
     if (minInput) minInput.addEventListener("change", onPriceChange);
@@ -207,8 +308,8 @@ const Shop = {
     this.filters = {
       search: "",
       style: "",
-      min_price: 5000,
-      max_price: 15000,
+      min_price: 2000,
+      max_price: 60000,
       availability: "",
       sort: "featured"
     };
@@ -220,10 +321,10 @@ const Shop = {
     if (sortEl) sortEl.value = "featured";
 
     const minInput = document.getElementById("minPrice");
-    if (minInput) minInput.value = 5000;
+    if (minInput) minInput.value = 2000;
 
     const maxInput = document.getElementById("maxPrice");
-    if (maxInput) maxInput.value = 15000;
+    if (maxInput) maxInput.value = 60000;
 
     const availInput = document.getElementById("availFilter");
     if (availInput) availInput.checked = false;

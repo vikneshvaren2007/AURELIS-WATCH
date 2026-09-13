@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Placed Successfully — AURELIS Haute Horlogerie</title>
+  <meta name="description" content="Your horological timepiece order has been placed successfully. Verified insured dispatch assigned.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+  <style>
+    .success-hero {
+      text-align: center;
+      padding: 40px 20px 30px;
+    }
+    .success-checkmark-circle {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(214, 179, 106, 0.25) 0%, rgba(12, 11, 9, 0.95) 75%);
+      border: 2px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 45px rgba(214, 179, 106, 0.4), inset 0 0 20px rgba(214, 179, 106, 0.2);
+      animation: pulseGlow 2.5s ease-in-out infinite alternate;
+    }
+    @keyframes pulseGlow {
+      0% { transform: scale(0.96); box-shadow: 0 0 25px rgba(214, 179, 106, 0.3); }
+      100% { transform: scale(1.04); box-shadow: 0 0 50px rgba(214, 179, 106, 0.55); }
+    }
+    .success-checkmark-circle svg {
+      width: 44px;
+      height: 44px;
+      stroke: var(--gold-light);
+      stroke-width: 2.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      animation: checkAnim 0.8s ease-out forwards;
+    }
+    @keyframes checkAnim {
+      0% { stroke-dasharray: 60; stroke-dashoffset: 60; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .order-id-badge-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(214, 179, 106, 0.08);
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
+      padding: 12px 24px;
+      margin: 18px 0 10px;
+    }
+    .order-id-text {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      letter-spacing: 0.12em;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+    .copy-id-btn {
+      background: transparent;
+      border: 1px solid var(--border-gold);
+      color: var(--gold-primary);
+      font-size: 11px;
+      padding: 5px 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+    .copy-id-btn:hover {
+      background: var(--gold-primary);
+      color: #080807;
+    }
+    .success-box {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #0d0c0a;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    }
+    .order-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 24px;
+      background: #080706;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      margin: 25px 0;
+      text-align: left;
+    }
+    .meta-block h5 {
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 6px;
+    }
+    .meta-block p {
+      font-size: 13.5px;
+      color: var(--text-primary);
+      margin: 0;
+      line-height: 1.5;
+    }
+    .items-section-title {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .order-item-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      text-align: left;
+    }
+    .order-item-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+      object-fit: cover;
+      background: #14120f;
+    }
+    .order-item-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .order-item-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .order-item-price {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      color: var(--gold-light);
+      font-weight: 600;
+      text-align: right;
+    }
+    .address-card {
+      background: #080706;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 22px;
+      text-align: left;
+      margin: 25px 0;
+    }
+    .address-card h5 {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 10px;
+    }
+    .address-card p {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin: 0;
+    }
+    .totals-breakdown {
+      margin: 25px 0 35px;
+      text-align: left;
+    }
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+    .totals-row.grand-total {
+      border-top: 1px solid var(--border-gold);
+      padding-top: 14px;
+      margin-top: 8px;
+      font-size: 17px;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .grand-price {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      color: var(--gold-primary);
+    }
+    .action-buttons-group {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 35px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 30px;
+    }
+    .action-btn {
+      min-width: 190px;
+      text-align: center;
+      padding: 16px 26px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.25s ease;
+      display: inline-block;
+    }
+    @media (max-width: 600px) {
+      .success-box {
+        padding: 24px 16px;
+      }
+      .order-item-row {
+        grid-template-columns: 65px 1fr;
+        gap: 12px;
+      }
+      .order-item-price {
+        grid-column: 1/-1;
+        text-align: left;
+        margin-top: 4px;
+      }
+      .action-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Atelier</a>
+      <a href="shop.html">Collection</a>
+      <a href="craftsmanship.html">Craftsmanship</a>
+      <a href="warranty.html">6-Month Warranty</a>
+      <a href="track-order.html">Track Order</a>
+      <a href="contact.html">Concierge</a>
+    </nav>
+    <div style="font-size: 11px; letter-spacing: 0.15em; color: var(--gold-primary); text-transform: uppercase;">
+      🛡️ Verified Commission
+    </div>
+  </header>
+
+  <main style="padding: 130px 5vw 100px;">
+    <div class="success-box">
+      <!-- Success Hero Banner -->
+      <div class="success-hero">
+        <div class="success-checkmark-circle">
+          <svg viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+
+        <p class="eyebrow" style="color: var(--gold-primary); letter-spacing: 0.25em; margin-bottom: 8px;">COMMISSION SECURED & RECORDED</p>
+        <h1 style="font-size: clamp(26px, 4vw, 38px); margin: 0 0 10px; color: var(--text-primary);">Order Placed Successfully</h1>
+        <p style="color: var(--text-secondary); font-size: 15px; margin: 0 0 20px;">
+          Thank you for shopping with us. Your timepiece acquisition is recorded in our atelier ledger.
+        </p>
+
+        <!-- Order ID Container -->
+        <div class="order-id-badge-container">
+          <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Order ID:</span>
+          <span class="order-id-text" id="displayOrderId">WT-2026-XXXXXX</span>
+          <button class="copy-id-btn" id="copyIdBtn" onclick="copyOrderNumber()">Copy ID</button>
+        </div>
+      </div>
+
+      <!-- 6-Month Warranty Activation Pill -->
+      <div style="background: rgba(214, 179, 106, 0.08); border: 1px solid var(--border-gold); padding: 14px 20px; border-radius: 4px; margin-bottom: 25px; display: flex; align-items: center; gap: 14px;">
+        <span style="font-size: 26px;">🛡️</span>
+        <div style="text-align: left;">
+          <h4 style="color: var(--gold-light); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; margin: 0 0 3px;">
+            6-Month Official Atelier Movement Warranty Activated
+          </h4>
+          <p style="color: var(--text-secondary); font-size: 12px; margin: 0; line-height: 1.5;">
+            Complimentary insured reverse courier pickup across India for movement calibration and servicing.
+          </p>
+        </div>
+      </div>
+
+      <!-- Order Metadata Grid -->
+      <div class="order-meta-grid">
+        <div class="meta-block">
+          <h5>Order Date & Time</h5>
+          <p id="displayOrderDateTime">-</p>
+        </div>
+        <div class="meta-block">
+          <h5>Customer Name</h5>
+          <p id="displayCustomerName">-</p>
+        </div>
+        <div class="meta-block">
+          <h5>Payment Method</h5>
+          <p id="displayPaymentMethod">Cash on Delivery</p>
+        </div>
+        <div class="meta-block">
+          <h5>Order Status</h5>
+          <p><span class="badge-gold" id="displayOrderStatus">CONFIRMED</span></p>
+        </div>
+      </div>
+
+      <!-- Commissioned Products List -->
+      <div>
+        <h4 class="items-section-title">Commissioned Timepiece(s)</h4>
+        <div id="orderedItemsContainer">
+          <div style="padding: 20px; text-align: center; color: var(--text-muted);">Loading commissioned timepiece details...</div>
+        </div>
+      </div>
+
+      <!-- Delivery Destination Address -->
+      <div class="address-card">
+        <h5>Insured Delivery Destination</h5>
+        <p id="displayDeliveryAddress" style="color: var(--text-primary); font-size: 14px;">-</p>
+        <p style="margin-top: 6px; font-size: 12.5px; color: var(--text-muted);" id="displayDeliveryContact">-</p>
+      </div>
+
+      <!-- Payment & Price Totals Breakdown -->
+      <div class="totals-breakdown">
+        <div class="totals-row">
+          <span>Subtotal</span>
+          <span id="displaySubtotal">₹0</span>
+        </div>
+        <div class="totals-row">
+          <span>Insured Transit across India</span>
+          <span style="color: #2ecc71;">Complimentary</span>
+        </div>
+        <div class="totals-row">
+          <span>Applicable GST (18%)</span>
+          <span style="color: var(--text-muted);">Included in MRP</span>
+        </div>
+        <div class="totals-row grand-total">
+          <span>Total Amount</span>
+          <span class="grand-price" id="displayTotalAmount">₹0</span>
+        </div>
+      </div>
+
+      <!-- 3 Primary Action Buttons -->
+      <div class="action-buttons-group">
+        <a id="trackOrderBtn" href="track-order.html" class="action-btn gold-btn">
+          Track Order
+        </a>
+        <a id="viewMyOrdersBtn" href="orders.html" class="action-btn gold-btn-outline">
+          View My Orders
+        </a>
+        <a href="shop.html" class="action-btn dark-btn">
+          Continue Shopping
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    let activeOrderNumber = "";
+
+    async function initOrderSuccess() {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get("order_id");
+
+      if (!orderId) {
+        showToast("No order ID specified.", "error");
+        setTimeout(() => window.location.href = "shop.html", 1500);
+        return;
+      }
+
+      activeOrderNumber = orderId;
+      document.getElementById("displayOrderId").textContent = orderId;
+      document.getElementById("trackOrderBtn").href = `track-order.html?order_id=${encodeURIComponent(orderId)}`;
+
+      try {
+        const res = await apiRequest(`/api/orders/${encodeURIComponent(orderId)}`);
+        const order = res.order;
+        if (!order) {
+          throw new Error("Order records not found in atelier registry.");
+        }
+
+        // Render Meta
+        document.getElementById("displayOrderId").textContent = order.order_number || orderId;
+        const orderDateStr = order.order_date ? `${order.order_date}, ${order.order_time || ''}` : (order.created_at || new Date().toLocaleDateString());
+        document.getElementById("displayOrderDateTime").textContent = orderDateStr;
+        document.getElementById("displayCustomerName").textContent = order.customer_name || "Valued Collector";
+        
+        const isCod = (order.payment_method || '').toUpperCase().includes("COD");
+        document.getElementById("displayPaymentMethod").textContent = isCod ? "Cash on Delivery" : (order.payment_method || "UPI / Prepaid");
+        document.getElementById("displayOrderStatus").textContent = (order.order_status || "CONFIRMED").replace(/_/g, " ");
+
+        // Delivery Address
+        let addr = order.shipping_address;
+        if (typeof addr === "string") {
+          try { addr = JSON.parse(addr); } catch (_) { addr = { address_line: addr }; }
+        }
+        if (addr) {
+          const flat = addr.flat_no || addr.house || addr.flat || "";
+          const street = addr.street || addr.address_line || "";
+          const area = addr.area || "";
+          const city = addr.city || "";
+          const state = addr.state || "";
+          const pincode = addr.pincode || "";
+
+          const fullAddress = [flat, street, area, city, state ? `${state} - ${pincode}` : pincode, "India"]
+            .filter(Boolean)
+            .join(", ");
+
+          document.getElementById("displayDeliveryAddress").textContent = fullAddress || addr.address_line || "On File";
+          document.getElementById("displayDeliveryContact").textContent = `Recipient: ${order.customer_name} • Phone: +91 ${order.customer_phone || ''} • Email: ${order.customer_email || ''}`;
+        }
+
+        // Pricing
+        document.getElementById("displaySubtotal").textContent = formatINR(order.subtotal || order.total_amount);
+        document.getElementById("displayTotalAmount").textContent = formatINR(order.total_amount);
+
+        // Render Ordered Items
+        const itemsContainer = document.getElementById("orderedItemsContainer");
+        if (itemsContainer && order.items && order.items.length > 0) {
+          itemsContainer.innerHTML = order.items.map(item => {
+            let imgSrc = item.image_url || './assets/fallback-watch.svg';
+            if (imgSrc.startsWith('/')) imgSrc = '.' + imgSrc;
+            const itemTotal = item.total_price || (item.price * item.quantity);
+
+            return `
+              <div class="order-item-row">
+                <img src="${imgSrc}" alt="${item.product_name}" class="order-item-thumb" onerror="this.src='./assets/fallback-watch.svg'">
+                <div>
+                  <div class="order-item-title">${item.product_name}</div>
+                  <div class="order-item-meta">
+                    Edition / Finish: <span style="color: var(--gold-light);">${item.color_name || 'Signature'}</span> &bull; 
+                    Quantity: <strong>${item.quantity}</strong> &bull; 
+                    Price: ${formatINR(item.price)}
+                  </div>
+                </div>
+                <div class="order-item-price">
+                  ${formatINR(itemTotal)}
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+      } catch (err) {
+        console.warn("Could not fetch full order details:", err);
+      }
+    }
+
+    function copyOrderNumber() {
+      if (!activeOrderNumber) return;
+      navigator.clipboard.writeText(activeOrderNumber);
+      const btn = document.getElementById("copyIdBtn");
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = "COPIED!";
+        setTimeout(() => btn.textContent = orig, 1800);
+      }
+      showToast(`Order ID ${activeOrderNumber} copied to clipboard`, "success");
+    }
+
+    document.addEventListener("DOMContentLoaded", initOrderSuccess);
+  </script>
+</body>
+</html>

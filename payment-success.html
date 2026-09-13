@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment Successful — AURELIS Haute Horlogerie</title>
+  <meta name="description" content="Your payment has been cryptographically confirmed by AURELIS Atelier servers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+  <style>
+    .success-icon-wrap {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(214, 179, 106, 0.22) 0%, rgba(12, 11, 9, 0.9) 70%);
+      border: 1.5px solid var(--gold-primary);
+      color: var(--gold-primary);
+      display: grid;
+      place-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 0 35px rgba(214, 179, 106, 0.3);
+      animation: successPulse 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes successPulse {
+      0% { transform: scale(0.96); box-shadow: 0 0 20px rgba(214, 179, 106, 0.25); }
+      100% { transform: scale(1.04); box-shadow: 0 0 45px rgba(214, 179, 106, 0.45); }
+    }
+    .order-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      background: #0d0c09;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 24px;
+      margin: 25px 0;
+      text-align: left;
+    }
+    .order-details-block h4 {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 8px;
+    }
+    .order-details-block p {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 3px 0;
+    }
+    .order-details-block strong {
+      color: var(--text-primary);
+    }
+    .order-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      text-align: left;
+    }
+    .order-items-table th {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .order-items-table td {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 13.5px;
+    }
+    .order-success-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 35px;
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Atelier</a>
+      <a href="shop.html">Collection</a>
+      <a href="index.html#craft">Craftsmanship</a>
+      <a href="warranty.html">6-Month Warranty</a>
+      <a href="track-order.html">Track Order</a>
+      <a href="contact.html">Concierge</a>
+    </nav>
+    <div style="font-size: 11px; letter-spacing: 0.15em; color: var(--gold-primary); text-transform: uppercase;">
+      🛡️ Verified Commission
+    </div>
+  </header>
+
+  <main style="padding: 140px 5vw 100px;">
+    <div class="order-success-card" style="max-width: 820px; margin: 0 auto; text-align: center;">
+      <!-- Success Icon Animation -->
+      <div class="success-icon-wrap">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+
+      <p class="eyebrow" style="color: var(--gold-primary); letter-spacing: 0.25em;">TRANSACTION CRYPTOGRAPHICALLY VERIFIED</p>
+      <h1 style="font-size: clamp(28px, 4vw, 40px); margin-bottom: 10px;">Payment Successful</h1>
+      <p style="color: var(--text-secondary); max-width: 540px; margin: 0 auto 25px; font-size: 14px; line-height: 1.7;">
+        Your prepaid acquisition has been verified by our servers. Your timepiece has been assigned for master watchmaker inspection and complimentary insured dispatch.
+      </p>
+
+      <!-- Order ID Bar -->
+      <div class="order-number-display" style="margin: 0 auto 15px; max-width: 440px;">
+        <span id="displayOrderId">AUR-2026-XXXXXX</span>
+        <button class="copy-btn" onclick="copyOrderId()">Copy Order ID</button>
+      </div>
+      <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 25px;" id="displayTxnId"></p>
+
+      <!-- 6-Month Warranty Activated Pill -->
+      <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border-radius: 20px; background: rgba(214, 179, 106, 0.12); border: 1px solid var(--border-gold); color: var(--gold-light); font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 25px;">
+        <span>🛡️ 6-Month Comprehensive Atelier Warranty Activated</span>
+      </div>
+
+      <!-- Order Details Grid -->
+      <div class="order-details-grid">
+        <div class="order-details-block">
+          <h4>Collector Details</h4>
+          <p><strong>Name:</strong> <span id="displayCustomerName">-</span></p>
+          <p><strong>Contact:</strong> <span id="displayCustomerContact">-</span></p>
+          <p><strong>Commission Date:</strong> <span id="displayOrderDate">-</span></p>
+        </div>
+
+        <div class="order-details-block">
+          <h4>Payment Breakdown</h4>
+          <p><strong>Method:</strong> <span id="displayPaymentMethod">Google Pay / UPI</span></p>
+          <p><strong>Status:</strong> <span class="badge-gold" id="displayPaymentStatus">PAID</span></p>
+          <p><strong>Total Amount:</strong> <strong style="color: var(--gold-primary); font-size: 15px;" id="displayTotalAmount">₹0</strong></p>
+        </div>
+
+        <div class="order-details-block" style="grid-column: 1/-1;">
+          <h4>Insured Delivery Destination</h4>
+          <p id="displayShippingAddress" style="color: var(--text-primary); font-size: 14px;">-</p>
+          <p><strong>PIN Code:</strong> <span id="displayPincode">-</span> &bull; <strong>Country:</strong> India</p>
+        </div>
+      </div>
+
+      <!-- Ordered Products Table -->
+      <div style="background: #090807; border: 1px solid var(--border-subtle); border-radius: 4px; padding: 20px; margin-bottom: 30px;">
+        <h3 style="font-size: 15px; text-align: left; margin-bottom: 15px; color: var(--gold-light); letter-spacing: 0.1em; text-transform: uppercase;">Commissioned Timepieces</h3>
+        <table class="order-items-table">
+          <thead>
+            <tr>
+              <th>Timepiece</th>
+              <th>Variant</th>
+              <th>Qty</th>
+              <th style="text-align: right;">Amount (INR)</th>
+            </tr>
+          </thead>
+          <tbody id="displayItemsTable"></tbody>
+        </table>
+      </div>
+
+      <!-- Buttons: CONTINUE SHOPPING, VIEW ORDER, TRACK ORDER -->
+      <div class="order-success-actions">
+        <a id="continueBtn" href="shop.html" class="gold-btn" style="min-width: 180px; text-align: center;">
+          Continue Shopping
+        </a>
+        <a id="viewOrderBtn" href="order-confirmation.html" class="gold-btn-outline" style="min-width: 180px; text-align: center;">
+          View Order Receipt
+        </a>
+        <a id="trackBtn" href="track-order.html" class="gold-btn-outline" style="min-width: 180px; text-align: center;">
+          Track Order Live
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderNumber = params.get("order_id");
+    const txn = params.get("txn") || "TXN-VERIFIED-ATELIER";
+
+    async function loadSuccessDetails() {
+      if (orderNumber) {
+        window.location.replace(`order-success.html?order_id=${encodeURIComponent(orderNumber)}&txn=${encodeURIComponent(txn)}`);
+        return;
+      }
+      return;
+
+      try {
+        const res = await apiRequest(`/api/orders/${orderNumber}`);
+        const order = res.order;
+        if (!order) return;
+
+        document.getElementById("displayCustomerName").textContent = order.customer_name || "-";
+        document.getElementById("displayCustomerContact").textContent = `${order.customer_email || ''} (${order.customer_phone || ''})`;
+        document.getElementById("displayOrderDate").textContent = order.created_at || new Date().toLocaleString("en-IN");
+        document.getElementById("displayPaymentMethod").textContent = order.payment_method || "UPI / Razorpay";
+        document.getElementById("displayPaymentStatus").textContent = order.payment_status || "PAID";
+        document.getElementById("displayTotalAmount").textContent = formatINR(order.total_amount);
+
+        let addr = order.shipping_address;
+        if (typeof addr === "string") {
+          try { addr = JSON.parse(addr); } catch (_) { addr = { address_line: addr }; }
+        }
+
+        const fullAddr = addr.address_line || `${addr.flat_no || ''}, ${addr.street || ''}, ${addr.area || ''}, ${addr.city || ''}, ${addr.state || ''}`;
+        document.getElementById("displayShippingAddress").textContent = fullAddr;
+        document.getElementById("displayPincode").textContent = addr.pincode || "-";
+
+        const tbody = document.getElementById("displayItemsTable");
+        if (tbody && order.items) {
+          tbody.innerHTML = order.items.map(i => `
+            <tr>
+              <td><strong>${i.product_name}</strong></td>
+              <td style="color: var(--gold-light); font-size: 12px;">${i.color_name || 'Signature'}</td>
+              <td>${i.quantity}</td>
+              <td style="text-align: right; font-weight: 600;">${formatINR(i.total_price || (i.price * i.quantity))}</td>
+            </tr>
+          `).join("");
+        }
+      } catch (e) {
+        console.warn("Error fetching order details for success screen:", e);
+      }
+    }
+
+    function copyOrderId() {
+      if (!orderNumber) return;
+      navigator.clipboard.writeText(orderNumber);
+      showToast("Order ID copied to clipboard", "success");
+    }
+
+    document.addEventListener("DOMContentLoaded", loadSuccessDetails);
+  </script>
+</body>
+</html>

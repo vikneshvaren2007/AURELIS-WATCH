@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cancel Commission — AURELIS Luxury Timepieces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <div class="nav-actions">
+      <a href="orders.html" class="nav-cta">My Commissions</a>
+    </div>
+  </header>
+
+  <main style="padding: 130px 5vw 100px;">
+    <div class="container" style="max-width: 650px;">
+      <div class="luxury-card" style="padding: 40px;">
+        <p class="eyebrow" style="color: #e74c3c;">COMMISSION CANCELLATION DESK</p>
+        <h2 style="font-size: 28px; margin-bottom: 12px;">Request Cancellation</h2>
+        <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.6; margin-bottom: 30px;">
+          Commissions may be cancelled prior to dispatch. If prepaid via UPI, your payment will be refunded to your original source upon confirmation.
+        </p>
+
+        <form onsubmit="event.preventDefault(); submitCancellation();">
+          <div class="form-group">
+            <label class="form-label">Order Number</label>
+            <input type="text" id="cancelOrderNumber" class="form-input" placeholder="e.g. AUR-2026-XXXXXX" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Reason for Cancellation</label>
+            <select id="cancelReason" class="form-select" required>
+              <option value="">Select a reason...</option>
+              <option value="Changed my mind">Changed my mind</option>
+              <option value="Ordered by mistake">Ordered by mistake</option>
+              <option value="Delivery taking too long">Delivery taking too long</option>
+              <option value="Found another product">Found another timepiece edition</option>
+              <option value="Other">Other horological reason</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Additional Comments</label>
+            <textarea id="cancelComments" class="form-textarea" rows="4" placeholder="Please provide any additional feedback for our atelier concierge..."></textarea>
+          </div>
+
+          <div style="background: #090807; border: 1px solid var(--border-subtle); padding: 16px; border-radius: 4px; margin-bottom: 25px; font-size: 12px; color: var(--text-secondary); line-height: 1.6;">
+            <p><strong>Prepaid Orders:</strong> Amount will be credited to your bank/UPI within 3-5 business days.</p>
+            <p style="margin-top: 4px;"><strong>COD Orders:</strong> Order will be revoked without any penalty.</p>
+          </div>
+
+          <button type="submit" class="gold-btn" id="cancelSubmitBtn" style="width: 100%;">
+            Confirm Cancellation Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("order_id");
+    if (orderId) {
+      document.getElementById("cancelOrderNumber").value = orderId;
+    }
+
+    async function submitCancellation() {
+      const orderNumber = document.getElementById("cancelOrderNumber").value.trim();
+      const reason = document.getElementById("cancelReason").value;
+      const comments = document.getElementById("cancelComments").value.trim();
+
+      const btn = document.getElementById("cancelSubmitBtn");
+      btn.disabled = true;
+      btn.textContent = "PROCESSING CANCELLATION...";
+
+      try {
+        const res = await apiRequest(`/api/orders/${orderNumber}/cancel`, {
+          method: "POST",
+          body: JSON.stringify({ reason, comments })
+        });
+        showToast(res.message, "success");
+        setTimeout(() => {
+          window.location.href = `track-order.html?order_id=${orderNumber}&contact=user`;
+        }, 1200);
+      } catch (e) {
+        showToast(e.message, "error");
+        btn.disabled = false;
+        btn.textContent = "Confirm Cancellation Request";
+      }
+    }
+  </script>
+</body>
+</html>

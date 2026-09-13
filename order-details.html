@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commission Invoice & Details — AURELIS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+  <style>
+    @media print {
+      body { background: #fff !important; color: #000 !important; }
+      .nav, .luxury-footer, .no-print { display: none !important; }
+      .luxury-card { border: 1px solid #ccc !important; background: none !important; color: #000 !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav no-print">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <div class="nav-actions">
+      <a href="orders.html" class="nav-cta">Back to Orders</a>
+    </div>
+  </header>
+
+  <main style="padding: 130px 5vw 100px;">
+    <div class="container" style="max-width: 840px;">
+      <div class="luxury-card" style="padding: 40px;">
+        <div style="display: flex; justify-content: space-between; align-items: start; border-bottom: 1px solid var(--border-subtle); padding-bottom: 25px; margin-bottom: 30px;">
+          <div>
+            <h2 style="font-size: 26px; color: var(--gold-primary); letter-spacing: 0.15em;">AURELIS TIMEPIECES</h2>
+            <p style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 4px;">Atelier Commission Certificate & Invoice</p>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
+              AURELIS Client Concierge Desk &bull; Tenkasi, Main Road, opposite the bus stand
+            </p>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge-gold" id="invoiceOrderNumber" style="font-size: 13px; padding: 6px 14px;">AUR-2026-XXXXXX</span>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;" id="invoiceDate">-</p>
+            <span id="invoiceStatusPill" class="status-pill status-CONFIRMED" style="margin-top: 6px;">CONFIRMED</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 35px;">
+          <div>
+            <h4 style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 8px;">Billed & Delivered To</h4>
+            <p style="font-weight: 600;" id="invoiceCustomerName">-</p>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;" id="invoiceAddress">-</p>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;" id="invoiceContact">-</p>
+          </div>
+          <div>
+            <h4 style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 8px;">Payment Details</h4>
+            <p style="font-size: 13px; color: var(--text-secondary);">Method: <strong style="color: var(--text-primary);" id="invoicePayMethod">-</strong></p>
+            <p style="font-size: 13px; color: var(--text-secondary);">Status: <strong style="color: var(--gold-light);" id="invoicePayStatus">-</strong></p>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Estimated Transit: <strong style="color: var(--text-primary);" id="invoiceDelivery">-</strong></p>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--border-subtle); text-align: left;">
+              <th style="padding: 12px 0; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-primary);">Timepiece Edition</th>
+              <th style="padding: 12px 0; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-primary);">SKU</th>
+              <th style="padding: 12px 0; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-primary); text-align: center;">Qty</th>
+              <th style="padding: 12px 0; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-primary); text-align: right;">Total</th>
+            </tr>
+          </thead>
+          <tbody id="invoiceItemsList"></tbody>
+        </table>
+
+        <!-- Totals Breakdown -->
+        <div style="max-width: 320px; margin-left: auto; border-top: 1px solid var(--border-subtle); padding-top: 15px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-secondary);">
+            <span>Subtotal</span>
+            <span id="invoiceSubtotal">₹0</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-secondary);">
+            <span>Insured Courier</span>
+            <span style="color: #2ecc71;">Complimentary</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-secondary);">
+            <span>GST (18%)</span>
+            <span id="invoiceTax">₹0</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--border-subtle); padding-top: 12px; margin-top: 12px;">
+            <span style="font-weight: 600; font-size: 15px;">Total Commission</span>
+            <span style="font-family: var(--font-serif); font-size: 24px; color: var(--gold-primary); font-weight: 600;" id="invoiceTotal">₹0</span>
+          </div>
+        </div>
+
+        <div class="no-print" style="margin-top: 40px; padding-top: 25px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+          <button class="gold-btn-outline" onclick="window.print()">Print Official Invoice</button>
+          <a id="invoiceTrackLink" href="track-order.html" class="gold-btn">Track Order</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer no-print">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script>
+    async function loadInvoice() {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get("order_id");
+      if (!orderId) return;
+
+      try {
+        const res = await apiRequest(`/api/orders/${orderId}`);
+        const o = res.order;
+
+        document.getElementById("invoiceOrderNumber").textContent = o.order_number;
+        document.getElementById("invoiceDate").textContent = new Date(o.created_at).toLocaleDateString();
+        document.getElementById("invoiceCustomerName").textContent = o.customer_name;
+        document.getElementById("invoiceContact").textContent = `${o.customer_email} • ${o.customer_phone}`;
+        document.getElementById("invoicePayMethod").textContent = o.payment_method;
+        document.getElementById("invoicePayStatus").textContent = o.payment_status;
+        document.getElementById("invoiceDelivery").textContent = o.estimated_delivery || "3-5 Business Days";
+
+        const pill = document.getElementById("invoiceStatusPill");
+        pill.textContent = o.order_status.replace(/_/g, " ");
+        pill.className = `status-pill status-${o.order_status}`;
+
+        const addr = o.shipping_address;
+        document.getElementById("invoiceAddress").textContent = 
+          `${addr.name}, ${addr.address_line}, ${addr.city}, ${addr.state} - ${addr.pincode}`;
+
+        const listEl = document.getElementById("invoiceItemsList");
+        if (o.items) {
+          listEl.innerHTML = o.items.map(i => `
+            <tr style="border-bottom: 1px solid var(--border-subtle);">
+              <td style="padding: 14px 0;">
+                <strong>${i.product_name}</strong><br>
+                <span style="font-size: 11px; color: var(--gold-light);">${i.color_name}</span>
+              </td>
+              <td style="padding: 14px 0; font-size: 12px; color: var(--text-muted);">${i.sku}</td>
+              <td style="padding: 14px 0; text-align: center;">${i.quantity}</td>
+              <td style="padding: 14px 0; text-align: right; font-family: var(--font-serif);">${formatINR(i.total_price)}</td>
+            </tr>
+          `).join("");
+        }
+
+        document.getElementById("invoiceSubtotal").textContent = formatINR(o.subtotal);
+        document.getElementById("invoiceTax").textContent = formatINR(o.tax_amount);
+        document.getElementById("invoiceTotal").textContent = formatINR(o.total_amount);
+        document.getElementById("invoiceTrackLink").href = `track-order.html?order_id=${o.order_number}&contact=${encodeURIComponent(o.customer_email)}`;
+      } catch (e) {
+        showToast(e.message, "error");
+      }
+    }
+    document.addEventListener("DOMContentLoaded", loadInvoice);
+  </script>
+</body>
+</html>

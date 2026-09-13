@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Store Configuration — AURELIS Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <h2>AURELIS</h2>
+      <span>Atelier Executive Console</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="index.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="products.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 12 12 16 14"></polygon></svg>
+        <span>Products & Variants</span>
+      </a>
+      <a href="orders.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span>Orders Lifecycle</span>
+      </a>
+      <a href="inventory.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        <span>Live Inventory</span>
+      </a>
+      <a href="settings.html" class="admin-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <span>Store Settings</span>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="admin-header-title">
+        <h3>Atelier & Store Configurations</h3>
+        <p>Manage taxation, shipping, return window, COD availability, and administration profile</p>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+        <!-- Store Settings -->
+        <div class="luxury-card" style="padding: 30px;">
+          <h4 style="font-size: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">Commercial Policies</h4>
+          
+          <div class="form-group">
+            <label class="form-label">GST Tax Percentage (%)</label>
+            <input type="number" id="settingTaxPercent" class="form-input" value="18">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Insured Courier Fee (₹) [0 for Complimentary]</label>
+            <input type="number" id="settingShippingFee" class="form-input" value="0">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Return Window Period (Days)</label>
+            <input type="number" id="settingReturnDays" class="form-input" value="7">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Cash on Delivery (COD) Enabled</label>
+            <select id="settingCodEnabled" class="form-select">
+              <option value="true">Enabled (Accept COD)</option>
+              <option value="false">Disabled (Prepaid UPI Only)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Admin Profile Details -->
+        <div class="luxury-card" style="padding: 30px;">
+          <h4 style="font-size: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">Administrator Profile</h4>
+          
+          <div class="form-group">
+            <label class="form-label">Administrator Name</label>
+            <input type="text" id="settingAdminName" class="form-input" value="Vikneshvaren">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Support Telephone</label>
+            <input type="tel" id="settingAdminPhone" class="form-input" value="9445437069">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Atelier Location / Address</label>
+            <input type="text" id="settingAdminLocation" class="form-input" value="Tenkasi, Main Road, opposite the bus stand">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Administrator Gmail</label>
+            <input type="email" id="settingAdminEmail" class="form-input" value="vikneshvaren@gmail.com">
+          </div>
+
+          <button class="gold-btn" style="width: 100%; margin-top: 20px;" onclick="Admin.saveSettings()">Save Store Configuration</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

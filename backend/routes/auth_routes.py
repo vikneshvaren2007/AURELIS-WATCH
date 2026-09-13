@@ -1,0 +1,319 @@
+import jwt
+import datetime
+import secrets
+from zoneinfo import ZoneInfo
+from functools import wraps
+from flask import Blueprint, request, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
+from backend.config import Config
+from backend.database import get_db, dict_from_row, dicts_from_rows
+from backend.services.email_service import EmailService
+
+IST = ZoneInfo("Asia/Kolkata")
+
+auth_bp = Blueprint("auth", __name__)
+
+
+def generate_token(user_id, role, email, name):
+    payload = {
+        "sub": str(user_id),
+        "role": role,
+        "email": email,
+        "name": name,
+        "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7),
+        "iat": datetime.datetime.now(datetime.timezone.utc)
+    }
+    return jwt.encode(payload, Config.SECRET_KEY, algorithm="HS256")
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth_header = request.headers.get("Authorization")
+        if not auth_header or not auth_header.startswith("Bearer "):
+            return jsonify({"error": "Authorization token is missing or malformed"}), 401
+        
+        token = auth_header.split(" ")[1]
+        try:
+            payload = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+            request.current_user = payload
+        except jwt.ExpiredSignatureError:
+            return jsonify({"error": "Token has expired, please log in again"}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({"error": "Invalid authentication token"}), 401
+        
+        return f(*args, **kwargs)
+    return decorated
+
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth_header = request.headers.get("Authorization")
+        if not auth_header or not auth_header.startswith("Bearer "):
+            return jsonify({"error": "Admin authorization token required"}), 401
+        
+        token = auth_header.split(" ")[1]
+        try:
+            payload = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+            if payload.get("role") != "admin":
+                return jsonify({"error": "Forbidden: Administrator privilege required"}), 403
+            request.current_user = payload
+        except Exception:
+            return jsonify({"error": "Invalid or expired administrator token"}), 401
+            
+        return f(*args, **kwargs)
+    return decorated
+
+@auth_bp.route("/register", methods=["POST"])
+def register():
+    data = request.get_json() or {}
+    name = data.get("name", "").strip()
+    email = data.get("email", "").strip().lower()
+    phone = data.get("phone", "").strip()
+    password = data.get("password", "")
+
+    if not name or not email or not password:
+        return jsonify({"error": "Name, email, and password are required"}), 400
+    if len(password) < 6:
+        return jsonify({"error": "Password must be at least 6 characters long"}), 400
+
+    password_hash = generate_password_hash(password)
+
+    try:
+        with get_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
+            if cursor.fetchone():
+                return jsonify({"error": "An account with this email address already exists"}), 409
+
+            now_ist = datetime.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")
+            cursor.execute("""
+                INSERT INTO users (name, email, phone, password_hash, role, created_at, updated_at)
+                VALUES (?, ?, ?, ?, 'customer', ?, ?)
+            """, (name, email, phone, password_hash, now_ist, now_ist))
+            user_id = cursor.lastrowid
+
+            token = generate_token(user_id, "customer", email, name)
+            return jsonify({
+                "message": "Account created successfully",
+                "token": token,
+                "user": {
+                    "id": user_id,
+                    "name": name,
+                    "email": email,
+                    "phone": phone,
+                    "role": "customer"
+                }
+            }), 201
+    except Exception as e:
+        return jsonify({"error": f"Failed to register account: {str(e)}"}), 500
+
+@auth_bp.route("/login", methods=["POST"])
+def login():
+    data = request.get_json() or {}
+    email = data.get("email", "").strip().lower()
+    password = data.get("password", "")
+
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
+
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, email, phone, password_hash, role FROM users WHERE email = ?", (email,))
+        user = cursor.fetchone()
+
+        if not user or not check_password_hash(user["password_hash"], password):
+            return jsonify({"error": "Invalid email or password"}), 401
+
+        token = generate_token(user["id"], user["role"], user["email"], user["name"])
+        return jsonify({
+            "message": "Login successful",
+            "token": token,
+            "user": {
+                "id": user["id"],
+                "name": user["name"],
+                "email": user["email"],
+                "phone": user["phone"],
+                "role": user["role"]
+            }
+        }), 200
+
+@auth_bp.route("/me", methods=["GET"])
+@token_required
+def get_current_user_profile():
+    user_id = int(request.current_user["sub"])
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, email, phone, role, created_at FROM users WHERE id = ?", (user_id,))
+        user = cursor.fetchone()
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+        return jsonify({"user": dict_from_row(user)})
+
+@auth_bp.route("/addresses", methods=["GET", "POST"])
+@token_required
+def manage_addresses():
+    user_id = int(request.current_user["sub"])
+    with get_db() as conn:
+        cursor = conn.cursor()
+        if request.method == "GET":
+            cursor.execute("SELECT * FROM addresses WHERE user_id = ? ORDER BY is_default DESC, id DESC", (user_id,))
+            rows = cursor.fetchall()
+            return jsonify({"addresses": dicts_from_rows(rows)})
+
+        data = request.get_json() or {}
+        name = data.get("name", "").strip()
+        phone = data.get("phone", "").strip()
+        address_line = data.get("address_line", "").strip()
+        city = data.get("city", "").strip()
+        state = data.get("state", "").strip()
+        pincode = data.get("pincode", "").strip()
+        country = data.get("country", "India").strip()
+        is_default = 1 if data.get("is_default") else 0
+
+        if not name or not phone or not address_line or not city or not pincode:
+            return jsonify({"error": "All address fields are required"}), 400
+
+        if is_default:
+            cursor.execute("UPDATE addresses SET is_default = 0 WHERE user_id = ?", (user_id,))
+
+        cursor.execute("""
+            INSERT INTO addresses (user_id, name, phone, address_line, city, state, pincode, country, is_default)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (user_id, name, phone, address_line, city, state, pincode, country, is_default))
+        
+        return jsonify({"message": "Address saved successfully", "address_id": cursor.lastrowid}), 201
+
+@auth_bp.route("/addresses/<int:address_id>", methods=["DELETE"])
+@token_required
+def delete_address(address_id):
+    user_id = request.current_user["sub"]
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM addresses WHERE id = ? AND user_id = ?", (address_id, user_id))
+        return jsonify({"message": "Address deleted successfully"})
+
+@auth_bp.route("/forgot-password", methods=["POST"])
+def forgot_password():
+    data = request.get_json() or {}
+    email = data.get("email", "").strip().lower()
+
+    if not email:
+        return jsonify({"error": "Registered email address is required"}), 400
+
+    try:
+        with get_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, name, email FROM users WHERE LOWER(email) = ?", (email,))
+            user = cursor.fetchone()
+
+            if user:
+                token = secrets.token_urlsafe(32)
+                now_utc = datetime.datetime.now(datetime.timezone.utc)
+                expires_at = (now_utc + datetime.timedelta(minutes=15)).isoformat()
+
+                cursor.execute("""
+                    UPDATE users
+                    SET reset_token = ?, reset_token_expires = ?, updated_at = CURRENT_TIMESTAMP
+                    WHERE id = ?
+                """, (token, expires_at, user["id"]))
+
+                origin = request.headers.get("Origin") or request.host_url.rstrip("/")
+                reset_link = f"{origin}/reset-password.html?token={token}"
+                EmailService.send_password_reset_email(user["email"], user["name"], token, reset_link)
+
+                return jsonify({
+                    "message": "If an account with this email address exists in our atelier registry, a secure reset token has been dispatched to your inbox.",
+                    "success": True,
+                    "reset_token": token,
+                    "token": token
+                }), 200
+
+            # Safe response even if user not found to protect privacy
+            return jsonify({
+                "message": "If an account with this email address exists in our atelier registry, a secure reset token has been dispatched to your inbox.",
+                "success": True
+            }), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to process password recovery request: {str(e)}"}), 500
+
+@auth_bp.route("/verify-reset-token", methods=["GET"])
+def verify_reset_token():
+    token = request.args.get("token", "").strip()
+    if not token:
+        return jsonify({"error": "Reset token is required", "valid": False}), 400
+
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, email, reset_token_expires FROM users WHERE reset_token = ?", (token,))
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({"error": "Invalid or already used password reset token", "valid": False}), 400
+
+        expires_str = user["reset_token_expires"]
+        if expires_str:
+            try:
+                expires_dt = datetime.datetime.fromisoformat(expires_str)
+                if expires_dt.tzinfo is None:
+                    expires_dt = expires_dt.replace(tzinfo=datetime.timezone.utc)
+                if datetime.datetime.now(datetime.timezone.utc) > expires_dt:
+                    return jsonify({"error": "This password reset token has expired. Please request a new recovery link.", "valid": False}), 400
+            except Exception:
+                pass
+
+        return jsonify({
+            "valid": True,
+            "message": "Token is valid and verified",
+            "email": user["email"],
+            "name": user["name"]
+        }), 200
+
+@auth_bp.route("/reset-password", methods=["POST"])
+def reset_password():
+    data = request.get_json() or {}
+    token = data.get("token", "").strip()
+    new_password = data.get("new_password") or data.get("password") or ""
+    confirm_password = data.get("confirm_password") or data.get("password") or ""
+
+    if not token:
+        return jsonify({"error": "Reset token is required"}), 400
+    if not new_password or not confirm_password:
+        return jsonify({"error": "New password and confirmation are required"}), 400
+    if len(new_password) < 6:
+        return jsonify({"error": "New password must be at least 6 characters long"}), 400
+    if new_password != confirm_password:
+        return jsonify({"error": "Passwords do not match. Please verify and re-enter."}), 400
+
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, email, reset_token_expires FROM users WHERE reset_token = ?", (token,))
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({"error": "Invalid or expired password reset token"}), 400
+
+        expires_str = user["reset_token_expires"]
+        if expires_str:
+            try:
+                expires_dt = datetime.datetime.fromisoformat(expires_str)
+                if expires_dt.tzinfo is None:
+                    expires_dt = expires_dt.replace(tzinfo=datetime.timezone.utc)
+                if datetime.datetime.now(datetime.timezone.utc) > expires_dt:
+                    return jsonify({"error": "Reset token has expired. Please initiate a new recovery request."}), 400
+            except Exception:
+                pass
+
+        new_hash = generate_password_hash(new_password)
+        now_ist = datetime.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")
+
+        cursor.execute("""
+            UPDATE users
+            SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL, updated_at = ?
+            WHERE id = ?
+        """, (new_hash, now_ist, user["id"]))
+
+        return jsonify({
+            "message": "Your password has been reset successfully.",
+            "success": True
+        }), 200
+

@@ -1,0 +1,44 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Databases (Local SQLite database files; auto-initialized via backend/models.py)
+*.db
+*.sqlite3
+*.db-journal
+
+# Junction / duplicate folders
+frame 2/
+
+# Operating System & Editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archives & Temporary files
+*.zip
+*.tar.gz
+*.log

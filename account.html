@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collector Account — AURELIS Luxury Timepieces</title>
+  <meta name="description" content="Manage your personal AURELIS collector profile and saved delivery addresses.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Atelier</a>
+      <a href="shop.html">Collection</a>
+      <a href="craftsmanship.html">Craftsmanship</a>
+      <a href="orders.html">My Orders</a>
+      <a href="track-order.html">Track Order</a>
+      <a href="contact.html">Concierge</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="gold-btn-outline" style="padding: 8px 16px; font-size: 10px;" onclick="Auth.logout()">Sign Out</button>
+    </div>
+  </header>
+
+  <main style="padding: 130px 5vw 100px;">
+    <div class="container" style="max-width: 900px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 40px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+        <div>
+          <p class="eyebrow">COLLECTOR ATELIER PROFILE</p>
+          <h1 style="font-size: 36px;" id="accountNameHeader">Collector Profile</h1>
+          <p style="color: var(--text-secondary); font-size: 14px;" id="accountEmailSub">-</p>
+        </div>
+        <div>
+          <a href="orders.html" class="gold-btn" style="padding: 12px 24px;">View All Commissions</a>
+        </div>
+      </div>
+
+      <!-- Auth Prompt (if not logged in) -->
+      <div id="authPromptCard" class="luxury-card" style="display: none; padding: 40px; text-align: center; margin-bottom: 40px;">
+        <p class="eyebrow">AUTHENTICATION REQUIRED</p>
+        <h3 style="font-size: 24px; margin: 10px 0 16px;">Sign In to Your Collector Account</h3>
+        <p style="color: var(--text-secondary); max-width: 440px; margin: 0 auto 25px; font-size: 14px;">
+          Access your private horology commissions, saved addresses, and concierge support.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 15px;">
+          <button class="gold-btn" onclick="openLoginModal()">Sign In</button>
+          <button class="gold-btn-outline" onclick="openRegisterModal()">Create Collector Profile</button>
+        </div>
+      </div>
+
+      <!-- Logged-in Content -->
+      <div id="accountDashboardContent">
+        <!-- Saved Addresses Section -->
+        <div class="luxury-card" style="padding: 30px; margin-bottom: 40px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div>
+              <h3 style="font-size: 18px;">Saved Delivery Addresses</h3>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Used for priority express insured courier shipments.</p>
+            </div>
+            <button class="gold-btn-outline" style="font-size: 10px; padding: 8px 16px;" onclick="document.getElementById('newAddressModal').classList.add('active')">
+              + Add Address
+            </button>
+          </div>
+          <div id="accountAddressesList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="document.getElementById('loginModal').classList.remove('active')">&times;</button>
+        <p class="eyebrow">COLLECTOR ACCESS</p>
+        <h3 style="font-size: 22px; margin-bottom: 20px;">Sign In</h3>
+        <form id="userLoginForm" onsubmit="event.preventDefault(); handleUserLogin();">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="loginEmail" class="form-input" placeholder="collector@domain.com" required>
+          </div>
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label" style="margin-bottom: 0;">Password</label>
+              <a href="forgot-password.html" style="font-size: 11.5px; color: var(--gold-primary); text-decoration: underline;">Forgot Password?</a>
+            </div>
+            <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="gold-btn" style="width: 100%; margin-top: 10px;">Sign In</button>
+          <p style="text-align: center; margin-top: 18px; font-size: 12px; color: var(--text-muted);">
+            Don't have an account? <a href="#" style="color: var(--gold-primary);" onclick="switchAuthModal('register')">Register here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="document.getElementById('registerModal').classList.remove('active')">&times;</button>
+        <p class="eyebrow">NEW COLLECTOR</p>
+        <h3 style="font-size: 22px; margin-bottom: 20px;">Create Profile</h3>
+        <form id="userRegisterForm" onsubmit="event.preventDefault(); handleUserRegister();">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="regName" class="form-input" placeholder="e.g. Vikramaditya S." required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="regEmail" class="form-input" placeholder="collector@domain.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mobile Phone Number</label>
+            <input type="tel" id="regPhone" class="form-input" placeholder="+91 9445437069" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="regPassword" class="form-input" placeholder="At least 6 characters" minlength="6" required>
+          </div>
+          <button type="submit" class="gold-btn" style="width: 100%; margin-top: 10px;">Create Profile</button>
+          <p style="text-align: center; margin-top: 18px; font-size: 12px; color: var(--text-muted);">
+            Already registered? <a href="#" style="color: var(--gold-primary);" onclick="switchAuthModal('login')">Sign in</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- New Address Modal -->
+    <div class="modal-overlay" id="newAddressModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="document.getElementById('newAddressModal').classList.remove('active')">&times;</button>
+        <p class="eyebrow">DELIVERY DESTINATION</p>
+        <h3 style="font-size: 22px; margin-bottom: 20px;">Add New Address</h3>
+        <form onsubmit="event.preventDefault(); handleSaveNewAddress();">
+          <div class="form-group">
+            <label class="form-label">Recipient Name</label>
+            <input type="text" id="newAddrName" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Phone</label>
+            <input type="tel" id="newAddrPhone" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address Line</label>
+            <input type="text" id="newAddrLine" class="form-input" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label">City</label>
+              <input type="text" id="newAddrCity" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">State</label>
+              <input type="text" id="newAddrState" class="form-input" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pincode</label>
+            <input type="text" id="newAddrPincode" class="form-input" required>
+          </div>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); margin-bottom: 20px;">
+            <input type="checkbox" id="newAddrDefault" style="accent-color: var(--gold-primary);">
+            <span>Set as default delivery address</span>
+          </label>
+          <button type="submit" class="gold-btn" style="width: 100%;">Save Delivery Address</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    async function initAccount() {
+      if (!Auth.isLoggedIn()) {
+        document.getElementById("authPromptCard").style.display = "block";
+        document.getElementById("accountDashboardContent").style.display = "none";
+        return;
+      }
+
+      document.getElementById("authPromptCard").style.display = "none";
+      document.getElementById("accountDashboardContent").style.display = "block";
+
+      const user = Auth.getUser();
+      if (user) {
+        document.getElementById("accountNameHeader").textContent = user.name;
+        document.getElementById("accountEmailSub").textContent = `${user.email} • ${user.phone || ''}`;
+      }
+      loadAccountAddresses();
+    }
+
+    async function loadAccountAddresses() {
+      const container = document.getElementById("accountAddressesList");
+      try {
+        const res = await apiRequest("/api/auth/addresses");
+        if (!res.addresses || res.addresses.length === 0) {
+          container.innerHTML = `<p style="color: var(--text-muted); font-size: 13px;">No delivery addresses saved yet.</p>`;
+          return;
+        }
+        container.innerHTML = res.addresses.map(a => `
+          <div class="luxury-card" style="padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>${a.name}</strong> (${a.phone}) ${a.is_default ? '<span class="badge-gold">Default</span>' : ''}
+              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                ${a.address_line}, ${a.city}, ${a.state} - ${a.pincode}
+              </p>
+            </div>
+            <button class="gold-btn-outline" style="padding: 6px 12px; font-size: 10px;" onclick="deleteAddress(${a.id})">Delete</button>
+          </div>
+        `).join("");
+      } catch (e) {
+        container.innerHTML = `<p style="color: #e74c3c;">Failed to load addresses</p>`;
+      }
+    }
+
+    async function handleSaveNewAddress() {
+      const payload = {
+        name: document.getElementById("newAddrName").value.trim(),
+        phone: document.getElementById("newAddrPhone").value.trim(),
+        address_line: document.getElementById("newAddrLine").value.trim(),
+        city: document.getElementById("newAddrCity").value.trim(),
+        state: document.getElementById("newAddrState").value.trim(),
+        pincode: document.getElementById("newAddrPincode").value.trim(),
+        is_default: document.getElementById("newAddrDefault").checked
+      };
+
+      try {
+        await apiRequest("/api/auth/addresses", {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        showToast("Address saved successfully", "success");
+        document.getElementById("newAddressModal").classList.remove("active");
+        loadAccountAddresses();
+      } catch (e) {
+        showToast(e.message, "error");
+      }
+    }
+
+    async function deleteAddress(id) {
+      if (confirm("Remove this address from your profile?")) {
+        try {
+          await apiRequest(`/api/auth/addresses/${id}`, { method: "DELETE" });
+          showToast("Address removed", "success");
+          loadAccountAddresses();
+        } catch (e) {
+          showToast(e.message, "error");
+        }
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById("loginModal").classList.add("active");
+    }
+    function openRegisterModal() {
+      document.getElementById("registerModal").classList.add("active");
+    }
+    function switchAuthModal(target) {
+      document.getElementById("loginModal").classList.remove("active");
+      document.getElementById("registerModal").classList.remove("active");
+      if (target === "login") openLoginModal();
+      if (target === "register") openRegisterModal();
+    }
+
+    async function handleUserLogin() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+      try {
+        const res = await apiRequest("/api/auth/login", {
+          method: "POST",
+          body: JSON.stringify({ email, password })
+        });
+        Auth.setAuth(res.token, res.user);
+        document.getElementById("loginModal").classList.remove("active");
+        showToast("Welcome back, " + res.user.name, "success");
+        initAccount();
+      } catch (e) {
+        showToast(e.message, "error");
+      }
+    }
+
+    async function handleUserRegister() {
+      const name = document.getElementById("regName").value.trim();
+      const email = document.getElementById("regEmail").value.trim();
+      const phone = document.getElementById("regPhone").value.trim();
+      const password = document.getElementById("regPassword").value;
+
+      try {
+        const res = await apiRequest("/api/auth/register", {
+          method: "POST",
+          body: JSON.stringify({ name, email, phone, password })
+        });
+        Auth.setAuth(res.token, res.user);
+        document.getElementById("registerModal").classList.remove("active");
+        showToast("Collector profile registered successfully", "success");
+        initAccount();
+      } catch (e) {
+        showToast(e.message, "error");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initAccount);
+  </script>
+</body>
+</html>

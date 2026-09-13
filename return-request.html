@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>7-Day Return / Exchange Request — AURELIS</title>
+  <meta name="description" content="Submit a return or exchange request under the AURELIS 7-Day Guarantee.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <div class="nav-actions">
+      <a href="orders.html" class="nav-cta">My Orders</a>
+    </div>
+  </header>
+
+  <main style="padding: 130px 5vw 100px;">
+    <div class="container" style="max-width: 650px;">
+      <div class="luxury-card" style="padding: 40px;">
+        <p class="eyebrow">HOROLOGY CONCIERGE GUARANTEE</p>
+        <h2 style="font-size: 28px; margin-bottom: 12px;">7-Day Return & Exchange</h2>
+        <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.6; margin-bottom: 30px;">
+          All delivered timepieces are eligible for return or exchange within 7 days of verified arrival in their original piano lacquer case with certificates intact.
+        </p>
+
+        <form onsubmit="event.preventDefault(); submitReturn();">
+          <div class="form-group">
+            <label class="form-label">Order Number</label>
+            <input type="text" id="returnOrderNumber" class="form-input" placeholder="e.g. AUR-2026-XXXXXX" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Return Reason</label>
+            <select id="returnReason" class="form-select" required>
+              <option value="">Select reason...</option>
+              <option value="Damaged product">Damaged product in transit</option>
+              <option value="Wrong product">Wrong colour variant or edition delivered</option>
+              <option value="Manufacturing issue">Manufacturing or chronometer issue</option>
+              <option value="Product not as expected">Product not as expected</option>
+              <option value="Other">Other reason</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Detailed Description</label>
+            <textarea id="returnDesc" class="form-textarea" rows="4" placeholder="Please describe the condition of the timepiece and reason for return..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Optional Condition Photo URL</label>
+            <input type="url" id="returnPhotoUrl" class="form-input" placeholder="https://image-link-to-photo.jpg (Optional)">
+          </div>
+
+          <button type="submit" class="gold-btn" id="returnSubmitBtn" style="width: 100%;">
+            Submit Return Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("order_id");
+    if (orderId) {
+      document.getElementById("returnOrderNumber").value = orderId;
+    }
+
+    async function submitReturn() {
+      const orderNumber = document.getElementById("returnOrderNumber").value.trim();
+      const reason = document.getElementById("returnReason").value;
+      const description = document.getElementById("returnDesc").value.trim();
+      const photoUrl = document.getElementById("returnPhotoUrl").value.trim();
+
+      const btn = document.getElementById("returnSubmitBtn");
+      btn.disabled = true;
+      btn.textContent = "REGISTERING RETURN...";
+
+      try {
+        const res = await apiRequest(`/api/orders/${orderNumber}/return`, {
+          method: "POST",
+          body: JSON.stringify({
+            reason,
+            description,
+            photo_urls: photoUrl ? [photoUrl] : []
+          })
+        });
+        showToast("Return request submitted for atelier review", "success");
+        setTimeout(() => {
+          window.location.href = `return-status.html?order_id=${orderNumber}`;
+        }, 1200);
+      } catch (e) {
+        showToast(e.message, "error");
+        btn.disabled = false;
+        btn.textContent = "Submit Return Request";
+      }
+    }
+  </script>
+</body>
+</html>

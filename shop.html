@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Collection — 10 Masterwork Timepieces &bull; AURELIS</title>
+  <meta name="description" content="Explore all 10 AURELIS luxury horological timepieces. Handcrafted timepieces starting at ₹5,299 with 6-month comprehensive warranty and complimentary insured shipping across India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <style>
+    .badge-warranty-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: rgba(217, 174, 85, 0.12);
+      color: var(--gold-light);
+      border: 1px solid var(--border-gold);
+      margin-bottom: 8px;
+    }
+    .filter-pill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .filter-pill-item {
+      padding: 8px 12px;
+      background: #090807;
+      border: 1px solid var(--border-subtle);
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .filter-pill-item:hover, .filter-pill-item.active {
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+      background: rgba(217, 174, 85, 0.08);
+    }
+    .assurance-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      text-align: center;
+      padding: 50px 5vw;
+      background: #0a0907;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Atelier</a>
+      <a href="shop.html" class="active">Collection</a>
+      <a href="craftsmanship.html">Craftsmanship</a>
+      <a href="warranty.html">6-Month Warranty</a>
+      <a href="track-order.html">Track Order</a>
+      <a href="contact.html">Concierge</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="account.html" class="nav-icon-btn" id="navAccountBtn" title="Collector Account">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <a href="cart.html" class="nav-icon-btn" title="Commission Cart">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="nav-badge cart-badge-count" style="display: none;">0</span>
+      </a>
+      <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. FULL-WIDTH 1080P LUXURY CINEMATIC VIDEO HERO -->
+    <section class="shop-hero-section" id="shopHeroSection">
+      <div class="shop-hero-video-wrapper">
+        <video class="shop-hero-video" id="shopHeroVideo" autoplay muted loop playsinline poster="./assets/videos/shop-hero-poster.jpg">
+          <source src="./assets/videos/shop-hero.mp4" type="video/mp4">
+          Your browser does not support high-definition HTML5 video streaming.
+        </video>
+        <div class="shop-hero-overlay"></div>
+        <div class="shop-hero-vignette"></div>
+      </div>
+
+      <!-- Luxury Overlay Copy -->
+      <div class="shop-hero-content">
+        <div class="shop-hero-badge">
+          <span>AURELIS ATELIER</span>
+          <span>&bull;</span>
+          <span>CINEMATIC HOROLOGY</span>
+        </div>
+        <h1 class="shop-hero-title">
+          THE 10 MASTERWORK<br>
+          <em>TIMEPIECES</em>
+        </h1>
+        <p class="shop-hero-desc">
+          Sculpted in solid 316L surgical stainless steel and flame-fusion sapphire crystal. Masterwork editions starting from <strong>₹5,299</strong>, backed by our comprehensive <strong>6-Month Manufacturer Warranty</strong> and complimentary insured shipping across India.
+        </p>
+        <div class="shop-hero-actions">
+          <a href="#collectionSection" class="gold-btn" style="padding: 16px 36px;">
+            <span>EXPLORE ALL 10 EDITIONS</span>
+            <span>&darr;</span>
+          </a>
+          <a href="#featuredSection" class="gold-btn-outline" style="padding: 16px 32px;">
+            FEATURED EDITIONS
+          </a>
+        </div>
+      </div>
+
+      <!-- Video Audio & Playback Controls -->
+      <div class="shop-hero-video-controls">
+        <button class="video-ctrl-btn" id="videoSoundBtn" title="Toggle Audio">
+          <span id="videoSoundIcon">🔇</span>
+          <span id="videoSoundText">SOUND</span>
+        </button>
+        <button class="video-ctrl-btn" id="videoPlayPauseBtn" title="Toggle Playback">
+          <span id="videoPlayPauseIcon">⏸</span>
+          <span id="videoPlayPauseText">PAUSE</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. FEATURED EDITIONS SHOWCASE -->
+    <section class="featured-showcase-section" id="featuredSection">
+      <div class="container">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto;">
+          <p class="eyebrow">CURATED HIGHLIGHTS</p>
+          <h2 style="font-size: clamp(28px, 3.5vw, 42px); margin-bottom: 12px;">Flagship Horological Editions</h2>
+          <p style="color: var(--text-secondary); font-size: 14px;">
+            Three standout architectures representing the pinnacle of classical symmetry, chronograph engineering, and stealth luxury.
+          </p>
+        </div>
+
+        <div class="featured-grid">
+          <!-- Featured Watch 1 -->
+          <div class="product-card" style="border: 1px solid var(--border-gold);">
+            <div class="product-card-badges">
+              <span class="badge-gold">Heritage Master</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=1" class="product-image-wrap">
+              <img src="./assets/watches/watch_1.jpg" alt="AURELIS CLASSIC" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Classic Luxury &bull; Gold & Silver</p>
+              <h3 class="product-title"><a href="product.html?id=1">AURELIS CLASSIC</a></h3>
+              <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 14px; line-height: 1.6;">
+                Signature fluted bezel with sunburst champagne dial, sapphire glass, and Japanese caliber.
+              </p>
+              <div class="product-price-row">
+                <span class="product-price">₹6,499</span>
+                <span class="product-original-price">₹8,499</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=1" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=1" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Watch 2 -->
+          <div class="product-card" style="border: 1px solid var(--border-gold);">
+            <div class="product-card-badges">
+              <span class="badge-gold">Chronograph</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=2" class="product-image-wrap">
+              <img src="./assets/watches/watch_2.jpg" alt="VELOR CHRONOGRAPH" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Precision Chronograph &bull; Gunmetal & Charcoal</p>
+              <h3 class="product-title"><a href="product.html?id=2">VELOR CHRONOGRAPH</a></h3>
+              <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 14px; line-height: 1.6;">
+                Triple-register chronometer dial with tachymeter scale and solid surgical steel links.
+              </p>
+              <div class="product-price-row">
+                <span class="product-price">₹6,999</span>
+                <span class="product-original-price">₹8,999</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=2" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=2" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Watch 3 -->
+          <div class="product-card" style="border: 1px solid var(--border-gold);">
+            <div class="product-card-badges">
+              <span class="badge-gold">DLC Black</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=6" class="product-image-wrap">
+              <img src="./assets/watches/watch_6.jpg" alt="OBSIDIAN ELITE" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Black Luxury &bull; All-Black DLC & Metal</p>
+              <h3 class="product-title"><a href="product.html?id=6">OBSIDIAN ELITE</a></h3>
+              <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 14px; line-height: 1.6;">
+                Diamond-Like Carbon stealth coating, anti-reflective crystal, and black brushed links.
+              </p>
+              <div class="product-price-row">
+                <span class="product-price">₹7,499</span>
+                <span class="product-original-price">₹9,499</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=6" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=6" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. HOROLOGICAL CATEGORIES QUICK SELECTOR -->
+    <section class="categories-showcase-section" id="categoriesSection">
+      <div class="container">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+          <p class="eyebrow">HOROLOGICAL ARCHITECTURES</p>
+          <h2 style="font-size: clamp(24px, 3vw, 36px);">Select By Design Category</h2>
+        </div>
+
+        <div class="category-cards-grid">
+          <div class="category-card active" onclick="Shop.setFilterStyle('')" data-category="">
+            <span class="category-card-icon">👑</span>
+            <div class="category-card-title">All Editions</div>
+            <div class="category-card-count">10 Timepieces</div>
+          </div>
+          <div class="category-card" onclick="Shop.setFilterStyle('Classic Luxury')" data-category="Classic Luxury">
+            <span class="category-card-icon">🏛️</span>
+            <div class="category-card-title">Classic Luxury</div>
+            <div class="category-card-count">2 Editions</div>
+          </div>
+          <div class="category-card" onclick="Shop.setFilterStyle('Chronograph')" data-category="Chronograph">
+            <span class="category-card-icon">⏱️</span>
+            <div class="category-card-title">Chronographs</div>
+            <div class="category-card-count">2 Editions</div>
+          </div>
+          <div class="category-card" onclick="Shop.setFilterStyle('Minimalist')" data-category="Minimalist">
+            <span class="category-card-icon">✨</span>
+            <div class="category-card-title">Minimalist</div>
+            <div class="category-card-count">2 Editions</div>
+          </div>
+          <div class="category-card" onclick="Shop.setFilterStyle('Business Luxury')" data-category="Business Luxury">
+            <span class="category-card-icon">💼</span>
+            <div class="category-card-title">Business Luxury</div>
+            <div class="category-card-count">2 Editions</div>
+          </div>
+          <div class="category-card" onclick="Shop.setFilterStyle('Modern Mesh')" data-category="Modern Mesh">
+            <span class="category-card-icon">⛓️</span>
+            <div class="category-card-title">Modern Mesh</div>
+            <div class="category-card-count">2 Editions</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. ALL WATCHES CATALOG & FILTER SECTION -->
+    <section class="shop-header" id="collectionSection">
+      <p class="eyebrow">HAUTE HORLOGERIE &bull; INDIA</p>
+      <h1>The 10 Timepieces Collection</h1>
+      <p>Precision-sculpted in solid 316L surgical stainless steel and high-clarity sapphire crystals. All 10 timepieces are strictly priced starting from <strong>₹5,299</strong> with our complete <strong>6-Month Atelier Warranty</strong>.</p>
+    </section>
+
+    <!-- Shop Layout with Sidebar & Products Grid -->
+    <div class="shop-layout container" id="catalogSection">
+      <!-- Filter Sidebar -->
+      <aside class="filter-sidebar">
+        <!-- Search -->
+        <div class="filter-group">
+          <label class="filter-title" for="shopSearch">Search Catalog</label>
+          <input type="text" id="shopSearch" class="form-input" placeholder="Search by name, style, color...">
+        </div>
+
+        <!-- Horological Style Filter -->
+        <div class="filter-group">
+          <p class="filter-title">Horological Style</p>
+          <div class="filter-pill-list" id="styleFilterList">
+            <div class="filter-pill-item active" data-style=""><span>All Styles</span><span>(10)</span></div>
+            <div class="filter-pill-item" data-style="Classic Luxury"><span>Classic Luxury</span><span>(2)</span></div>
+            <div class="filter-pill-item" data-style="Chronograph"><span>Chronographs</span><span>(2)</span></div>
+            <div class="filter-pill-item" data-style="Minimalist"><span>Minimalist</span><span>(2)</span></div>
+            <div class="filter-pill-item" data-style="Business Luxury"><span>Business Luxury</span><span>(2)</span></div>
+            <div class="filter-pill-item" data-style="Modern Mesh"><span>Modern Mesh</span><span>(2)</span></div>
+          </div>
+        </div>
+
+        <!-- Price Range Filter (₹5,000 - ₹15,000) -->
+        <div class="filter-group">
+          <p class="filter-title">Price Filter (₹)</p>
+          <div class="price-range-inputs">
+            <input type="number" id="minPrice" placeholder="Min" value="5000" min="5000" max="15000">
+            <span style="color: var(--text-muted);">&mdash;</span>
+            <input type="number" id="maxPrice" placeholder="Max" value="15000" min="5000" max="15000">
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+            Range: ₹5,000 &ndash; ₹15,000
+          </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="filter-group">
+          <p class="filter-title">Availability</p>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; margin-bottom: 8px;">
+            <input type="checkbox" id="availFilter" onchange="Shop.filters.availability = this.checked ? 'in_stock' : ''; Shop.loadProducts();" style="accent-color: var(--gold-primary);">
+            <span>In Stock Only</span>
+          </label>
+        </div>
+
+        <button class="gold-btn-outline" style="width: 100%;" onclick="Shop.resetFilters()">Reset All Filters</button>
+      </aside>
+
+      <!-- Products Column -->
+      <section>
+        <div class="catalog-controls">
+          <span class="catalog-count" id="catalogCount">Loading 10 Editions...</span>
+          <div class="catalog-sort">
+            <label for="shopSort" style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);">Sort By:</label>
+            <select id="shopSort">
+              <option value="featured">Featured Atelier Pieces</option>
+              <option value="price_asc">Price: Low to High (₹)</option>
+              <option value="price_desc">Price: High to Low (₹)</option>
+              <option value="name_asc">Name: A to Z</option>
+              <option value="newest">Newest Releases</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Grid Container: Rendered dynamically with all 10 watches -->
+        <div class="products-grid" id="productsGrid"></div>
+      </section>
+    </div>
+
+    <!-- 5. ATELIER ASSURANCES & GUARANTEES -->
+    <section class="assurance-badge-grid">
+      <div>
+        <h4 style="color: var(--gold-primary); font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">COMPLIMENTARY SHIPPING</h4>
+        <p style="color: var(--text-secondary); font-size: 12px;">Fully insured door-to-door transit across India.</p>
+      </div>
+      <div>
+        <h4 style="color: var(--gold-primary); font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">7-DAY RETURN PRIVILEGE</h4>
+        <p style="color: var(--text-secondary); font-size: 12px;">Hassle-free return & refund guarantee upon delivery.</p>
+      </div>
+      <div>
+        <h4 style="color: var(--gold-primary); font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">6-MONTH ATELIER WARRANTY</h4>
+        <p style="color: var(--text-secondary); font-size: 12px;">Comprehensive manufacturer movement protection.</p>
+      </div>
+      <div>
+        <h4 style="color: var(--gold-primary); font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">AUTHENTICITY GUARANTEED</h4>
+        <p style="color: var(--text-secondary); font-size: 12px;">Individually serialized with holograph certificate.</p>
+      </div>
+    </section>
+
+    <!-- 6. VIP COLLECTOR NEWSLETTER -->
+    <section class="vip-newsletter-section">
+      <div class="container">
+        <div class="vip-newsletter-box">
+          <p class="eyebrow" style="color: var(--gold-primary);">ATELIER PRIVILEGE CIRCLE</p>
+          <h2 style="font-size: clamp(28px, 4vw, 42px); margin: 10px 0 14px;">Receive First Access to New Calibers</h2>
+          <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">
+            Subscribe to our private horological dispatches for exclusive edition announcements and early allocation privileges.
+          </p>
+          <form class="vip-form" onsubmit="event.preventDefault(); showToast('Thank you for subscribing to the Aurelis Privilege Circle.', 'success'); this.reset();">
+            <input type="email" placeholder="Enter your private email address..." required>
+            <button type="submit" class="gold-btn" style="padding: 14px 28px;">JOIN CIRCLE</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Luxury Footer -->
+  <footer class="luxury-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 style="font-size: 20px; letter-spacing: 0.2em; color: var(--gold-primary); margin-bottom: 12px;">AURELIS</h3>
+          <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.8;">
+            High horology timepieces crafted for commanding wrist presence. Sculpted in solid 316L surgical stainless steel and flame-fusion sapphire crystals.
+          </p>
+          <div class="concierge-info" style="margin-top: 15px;">
+            <p><strong>Private Concierge:</strong> Atelier Client Services</p>
+            <p><strong>Telephone:</strong> +91 9445437069</p>
+            <p><strong>Email:</strong> concierge@aurelis.in</p>
+            <p>Master Horological Manufacture &bull; Insured Delivery Across India</p>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>NAVIGATION</h4>
+          <ul>
+            <li><a href="index.html">Atelier Hero</a></li>
+            <li><a href="shop.html">10 Timepieces Collection</a></li>
+            <li><a href="warranty.html">6-Month Warranty Policy</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="cart.html">Commission Cart</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>CLIENT ASSURANCES</h4>
+          <ul>
+            <li><a href="warranty.html">6-Month Movement Warranty</a></li>
+            <li><a href="return-refund-policy.html">7-Day Returns & Refunds</a></li>
+            <li><a href="shipping-policy.html">Complimentary Insured Shipping</a></li>
+            <li><a href="contact.html">Concierge Contact</a></li>
+            <li><a href="admin/login.html">Admin Portal</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>POLICIES</h4>
+          <ul>
+            <li><a href="warranty.html">6-Month Warranty Details</a></li>
+            <li><a href="shipping-policy.html">Shipping & Delivery</a></li>
+            <li><a href="return-refund-policy.html">7-Day Returns & Refunds</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms & Conditions</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+        <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/shop.js"></script>
+  <script>
+    // Video Controls & Quick Filter Handlers
+    document.addEventListener("DOMContentLoaded", () => {
+      const video = document.getElementById("shopHeroVideo");
+      const soundBtn = document.getElementById("videoSoundBtn");
+      const soundIcon = document.getElementById("videoSoundIcon");
+      const soundText = document.getElementById("videoSoundText");
+      const playPauseBtn = document.getElementById("videoPlayPauseBtn");
+      const playPauseIcon = document.getElementById("videoPlayPauseIcon");
+      const playPauseText = document.getElementById("videoPlayPauseText");
+
+      if (video && soundBtn) {
+        soundBtn.addEventListener("click", () => {
+          video.muted = !video.muted;
+          if (video.muted) {
+            soundIcon.textContent = "🔇";
+            soundText.textContent = "SOUND";
+          } else {
+            soundIcon.textContent = "🔊";
+            soundText.textContent = "MUTE";
+          }
+        });
+      }
+
+      if (video && playPauseBtn) {
+        playPauseBtn.addEventListener("click", () => {
+          if (video.paused) {
+            video.play();
+            playPauseIcon.textContent = "⏸";
+            playPauseText.textContent = "PAUSE";
+          } else {
+            video.pause();
+            playPauseIcon.textContent = "▶";
+            playPauseText.textContent = "PLAY";
+          }
+        });
+      }
+
+      // Responsive Mobile Menu Drawer Toggle
+      const mobileBtn = document.getElementById("mobileMenuBtn");
+      const navLinks = document.getElementById("navLinks");
+      if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener("click", () => {
+          navLinks.classList.toggle("open");
+        });
+      }
+    });
+
+    // Helper for category card clicks
+    Shop.setFilterStyle = function(style) {
+      this.filters.style = style;
+      const pills = document.querySelectorAll("#styleFilterList .filter-pill-item");
+      pills.forEach(p => {
+        if (p.getAttribute("data-style") === style) p.classList.add("active");
+        else p.classList.remove("active");
+      });
+      const catCards = document.querySelectorAll(".category-card");
+      catCards.forEach(c => {
+        if (c.getAttribute("data-category") === style) c.classList.add("active");
+        else c.classList.remove("active");
+      });
+      this.loadProducts();
+      const el = document.getElementById("catalogSection");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    };
+  </script>
+</body>
+</html>

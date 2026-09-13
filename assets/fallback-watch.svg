@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#191714"/>
+      <stop offset="100%" stop-color="#070605"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8c779"/>
+      <stop offset="50%" stop-color="#d9ae55"/>
+      <stop offset="100%" stop-color="#8a6d2b"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bgGrad)"/>
+  <rect x="175" y="30" width="50" height="80" rx="6" fill="#141310" stroke="url(#goldGrad)" stroke-width="2"/>
+  <rect x="175" y="290" width="50" height="80" rx="6" fill="#141310" stroke="url(#goldGrad)" stroke-width="2"/>
+  <circle cx="200" cy="200" r="105" fill="#0d0c0a" stroke="url(#goldGrad)" stroke-width="6"/>
+  <circle cx="200" cy="200" r="95" fill="#090807" stroke="#332c20" stroke-width="1.5"/>
+  <!-- Hour markers -->
+  <line x1="200" y1="112" x2="200" y2="124" stroke="url(#goldGrad)" stroke-width="3"/>
+  <line x1="200" y1="276" x2="200" y2="288" stroke="url(#goldGrad)" stroke-width="3"/>
+  <line x1="112" y1="200" x2="124" y2="200" stroke="url(#goldGrad)" stroke-width="3"/>
+  <line x1="276" y1="200" x2="288" y2="200" stroke="url(#goldGrad)" stroke-width="3"/>
+  <!-- Hands -->
+  <line x1="200" y1="200" x2="200" y2="140" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="200" y1="200" x2="245" y2="200" stroke="url(#goldGrad)" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="200" cy="200" r="5" fill="url(#goldGrad)"/>
+  <!-- Brand text -->
+  <text x="200" y="172" font-family="'Playfair Display', serif" font-size="12" fill="#d9ae55" letter-spacing="3" text-anchor="middle">AURELIS</text>
+  <text x="200" y="235" font-family="'DM Sans', sans-serif" font-size="7" fill="#8a8376" letter-spacing="2" text-anchor="middle">ATELIER HORLOGERIE</text>
+  <text x="200" y="247" font-family="'DM Sans', sans-serif" font-size="6.5" fill="#665f54" letter-spacing="1" text-anchor="middle">6-MONTH WARRANTY</text>
+</svg>

@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AURELIS — Haute Horlogerie & Luxury Timepieces</title>
+  <meta name="description" content="Cinematic luxury watch atelier. Discover 10 masterwork timepieces sculpted in 316L solid surgical steel, flame-fusion sapphire crystal, and 6-month comprehensive warranty.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <style>
+    .warranty-banner-section {
+      background: linear-gradient(135deg, #12100c 0%, #1a1610 50%, #0d0c09 100%);
+      border-top: 1px solid var(--border-gold);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 70px 5vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .warranty-banner-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 50%, rgba(217, 174, 85, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .warranty-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 50px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .warranty-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .warranty-feat-card {
+      background: rgba(10, 9, 7, 0.7);
+      border: 1px solid rgba(217, 174, 85, 0.25);
+      border-radius: 4px;
+      padding: 20px;
+    }
+    .badge-warranty-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: rgba(217, 174, 85, 0.15);
+      color: var(--gold-light);
+      border: 1px solid var(--border-gold);
+      margin-bottom: 10px;
+    }
+    @media (max-width: 860px) {
+      .warranty-grid { grid-template-columns: 1fr; gap: 30px; }
+      .warranty-features { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Luxury Showroom Entrance Preloader -->
+  <div class="loader" id="loader">
+    <div class="loader-vignette"></div>
+    <div class="loader-horology">
+      <div class="loader-gear-outer"></div>
+      <div class="loader-gear-inner"></div>
+      <div class="loader-balance-wheel"></div>
+      <div class="loader-hand"></div>
+      <div class="loader-center-pivot"></div>
+    </div>
+    <h1 class="loader-brand">AURELIS</h1>
+    <div class="loader-sub">Haute Horlogerie Atelier</div>
+    <div class="loader-progress-wrap">
+      <div class="loader-line"><span id="loaderBar"></span></div>
+      <div class="loader-status-row">
+        <span id="loaderStatus">CALIBRATING CALIBER</span>
+        <span id="loaderPercent">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Luxury Navigation Bar -->
+  <header class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Atelier</a>
+      <a href="shop.html">Collection</a>
+      <a href="#craft">Craftsmanship</a>
+      <a href="warranty.html">6-Month Warranty</a>
+      <a href="track-order.html">Track Order</a>
+      <a href="contact.html">Concierge</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="account.html" class="nav-icon-btn" title="Collector Account">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <a href="cart.html" class="nav-bag-link" id="navBagLink" title="Shopping Bag">
+        BAG (<span class="cart-badge-count" id="navBagCount">0</span>)
+      </a>
+      <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION: 240-FRAME SCROLLYTELLING ANIMATION SEQUENCE -->
+    <section class="hero" id="hero">
+      <div class="hero-sticky-stage">
+        <canvas id="watchCanvas" aria-label="Aurelis luxury chronograph 240-frame animation sequence"></canvas>
+        <div class="hero-gradient-overlay"></div>
+        <div class="hero-cinematic-outro-overlay" id="heroOutroOverlay"></div>
+
+        <!-- 0% - 20%: Negative Space Hero Copy (Left Mineral Rock Alignment) -->
+        <div class="hero-intro-wrap" id="heroIntro">
+          <div class="hero-eyebrow-brand">
+            <span class="brand-badge">AURELIS</span>
+            <span class="brand-sep">&bull;</span>
+            <span>PRECISION IN EVERY SECOND</span>
+          </div>
+          <h1 class="hero-headline">
+            TIME,<br>
+            <span class="headline-refined">REFINED.</span>
+          </h1>
+          <p class="hero-support-text">
+            A mechanical masterpiece designed for those who value precision, craftsmanship, and timeless luxury.
+          </p>
+          <div class="hero-actions">
+            <a href="#collection" class="hero-cta-btn" id="heroExploreBtn">
+              <span>EXPLORE THE COLLECTION</span>
+              <span class="btn-arrow">&darr;</span>
+            </a>
+            <a href="#craft" class="hero-cta-secondary" id="heroCraftBtn">
+              <span>DISCOVER THE CRAFT</span>
+              <span style="font-size: 13px;">⚙</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Minimalist Scroll Cue -->
+        <div class="hero-scroll-indicator" id="heroScrollCue">
+          <span class="indicator-line"></span>
+          <span>SCROLL TO EXPERIENCE CALIBER</span>
+        </div>
+
+        <!-- Minimalist Progress Indicator -->
+        <div class="hero-progress-tag" id="heroProgressTag">
+          <span>HOROLOGICAL FRAME</span>
+          <span class="progress-num" id="heroProgressNum">001 / 240</span>
+        </div>
+
+        <!-- 80% - 100%: Luxury Outro Statement -->
+        <div class="hero-outro-wrap" id="heroOutro">
+          <p class="eyebrow" style="letter-spacing: 0.32em; margin-bottom: 14px;">HAUTE HORLOGERIE MANIFESTO</p>
+          <h2 class="hero-outro-statement">CRAFTED FOR THE MOMENTS THAT MATTER.</h2>
+          <div class="hero-outro-line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: 10 MASTERWORK WATCHES SHOWCASE -->
+    <section class="section-padding" id="collection" style="background: #080706; border-top: 1px solid var(--border-subtle);">
+      <div id="showcase"></div>
+      <div class="container">
+        <div style="text-align: center; max-width: 760px; margin: 0 auto 50px;">
+          <p class="eyebrow">THE 10 MASTERWORK TIMEPIECES</p>
+          <h2 style="font-size: clamp(34px, 4.5vw, 54px); margin-bottom: 16px;">Curated Horological Editions</h2>
+          <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+            Each timepiece represents an individual horological design philosophy. Hand-assembled masterwork editions starting from <strong>₹5,299</strong>, backed by our comprehensive <strong>6-Month Manufacturer Warranty</strong> with complimentary insured door-to-door transit across India.
+          </p>
+        </div>
+
+        <div class="products-grid" id="homeProductsGrid">
+          <!-- 10 Static Cards for Instant Rendering & SEO (Hydrated / Synced by JS) -->
+
+          <!-- Watch 1 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Heritage Master</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=1" class="product-image-wrap">
+              <img src="./assets/watches/watch_1.jpg" alt="AURELIS CLASSIC" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Classic Luxury &bull; Gold & Silver</p>
+              <h3 class="product-title"><a href="product.html?id=1">AURELIS CLASSIC</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹6,499</span>
+                <span class="product-original-price">₹8,499</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=1" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=1" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 2 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Chronograph</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=2" class="product-image-wrap">
+              <img src="./assets/watches/watch_2.jpg" alt="VELOR CHRONOGRAPH" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Precision Chronograph &bull; Gunmetal & Charcoal</p>
+              <h3 class="product-title"><a href="product.html?id=2">VELOR CHRONOGRAPH</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹6,999</span>
+                <span class="product-original-price">₹8,999</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=2" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=2" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 3 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Stealth Edge</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=3" class="product-image-wrap">
+              <img src="./assets/watches/watch_3.jpg" alt="NOIR EDGE" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Minimalist &bull; Matte Stealth Black</p>
+              <h3 class="product-title"><a href="product.html?id=3">NOIR EDGE</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹5,999</span>
+                <span class="product-original-price">₹7,999</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=3" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=3" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 4 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Executive</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=4" class="product-image-wrap">
+              <img src="./assets/watches/watch_4.jpg" alt="IMPERIAL STEEL" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Business Luxury &bull; Silver & Slate Blue</p>
+              <h3 class="product-title"><a href="product.html?id=4">IMPERIAL STEEL</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹7,499</span>
+                <span class="product-original-price">₹9,499</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=4" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=4" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 5 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Milanese Mesh</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=5" class="product-image-wrap">
+              <img src="./assets/watches/watch_5.jpg" alt="ROYALE MESH" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Modern Mesh &bull; Milanese Mesh & Silver</p>
+              <h3 class="product-title"><a href="product.html?id=5">ROYALE MESH</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹6,299</span>
+                <span class="product-original-price">₹8,299</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=5" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=5" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 6 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">DLC Black</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=6" class="product-image-wrap">
+              <img src="./assets/watches/watch_6.jpg" alt="OBSIDIAN ELITE" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Chronograph &bull; DLC Black & Gunmetal</p>
+              <h3 class="product-title"><a href="product.html?id=6">OBSIDIAN ELITE</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹7,999</span>
+                <span class="product-original-price">₹9,999</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=6" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=6" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 7 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Satin Dress</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=7" class="product-image-wrap">
+              <img src="./assets/watches/watch_7.jpg" alt="TITAN CLASSIC" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Minimalist &bull; Titanium & Rose Gold</p>
+              <h3 class="product-title"><a href="product.html?id=7">TITAN CLASSIC</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹5,499</span>
+                <span class="product-original-price">₹7,499</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=7" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=7" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 8 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Avant-Garde</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=8" class="product-image-wrap">
+              <img src="./assets/watches/watch_8.jpg" alt="AUREN SIGNATURE" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Classic Luxury &bull; 18K Gold-Tone & Cognac Leather</p>
+              <h3 class="product-title"><a href="product.html?id=8">AUREN SIGNATURE</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹5,799</span>
+                <span class="product-original-price">₹7,299</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=8" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=8" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 9 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Modern Sports</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=9" class="product-image-wrap">
+              <img src="./assets/watches/watch_9.jpg" alt="MONARCH BLACK" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Modern Mesh &bull; Steel, Black & Emerald Green</p>
+              <h3 class="product-title"><a href="product.html?id=9">MONARCH BLACK</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹6,799</span>
+                <span class="product-original-price">₹8,499</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=9" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=9" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Watch 10 -->
+          <div class="product-card">
+            <div class="product-card-badges">
+              <span class="badge-gold">Jubilee Silver</span>
+              <span class="badge-stock">In Stock</span>
+            </div>
+            <a href="product.html?id=10" class="product-image-wrap">
+              <img src="./assets/watches/watch_10.jpg" alt="SILVER CREST" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+            </a>
+            <div class="product-info">
+              <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
+              <p class="product-variant-tag">Business Luxury &bull; Solid Steel & Ice Blue Dial</p>
+              <h3 class="product-title"><a href="product.html?id=10">SILVER CREST</a></h3>
+              <div class="product-price-row">
+                <span class="product-price">₹5,299</span>
+                <span class="product-original-price">₹6,999</span>
+              </div>
+              <div class="product-card-actions">
+                <a href="product.html?id=10" class="gold-btn" style="text-align: center;">Acquire Now</a>
+                <a href="product.html?id=10" class="dark-btn" style="text-align: center;">Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+          <a href="shop.html" class="gold-btn" style="padding: 18px 42px; font-size: 11px;">VIEW COMPLETE CATALOG & FILTERS</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEDICATED 6-MONTH WARRANTY SECTION -->
+    <section class="warranty-banner-section" id="warranty-section">
+      <div class="container">
+        <div class="warranty-grid">
+          <div>
+            <p class="eyebrow" style="color: var(--gold-light);">ATELIER HOROLOGICAL ASSURANCE</p>
+            <h2 style="font-size: clamp(32px, 4.5vw, 50px); line-height: 1.1; margin-bottom: 20px;">
+              6-Month Comprehensive<br><em>Movement & Craft Warranty</em>
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8; margin-bottom: 25px;">
+              Every AURELIS timepiece is handcrafted to stringent standards. We protect your acquisition with a full 6-Month Manufacturer Warranty covering internal caliber accuracy, mechanical movement integrity, hands alignment, and metallurgical defects.
+            </p>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+              <a href="warranty.html" class="gold-btn" style="padding: 14px 28px; font-size: 11px;">READ WARRANTY POLICY</a>
+              <a href="contact.html" class="gold-btn-outline" style="padding: 14px 28px; font-size: 11px;">CONTACT CONCIERGE</a>
+            </div>
+          </div>
+
+          <div class="warranty-features">
+            <div class="warranty-feat-card">
+              <h4 style="color: var(--gold-primary); font-size: 14px; margin-bottom: 8px;">Caliber Protection</h4>
+              <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.6;">Full coverage for quartz & mechanical movement timing variations and chronograph gears.</p>
+            </div>
+            <div class="warranty-feat-card">
+              <h4 style="color: var(--gold-primary); font-size: 14px; margin-bottom: 8px;">Dial & Hands Integrity</h4>
+              <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.6;">Guaranteed placement of applied indices, markers, hands, and crown stem assembly.</p>
+            </div>
+            <div class="warranty-feat-card">
+              <h4 style="color: var(--gold-primary); font-size: 14px; margin-bottom: 8px;">Insured Door Pickup</h4>
+              <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.6;">Hassle-free reverse courier pickup across all Indian postal codes during the warranty period.</p>
+            </div>
+            <div class="warranty-feat-card">
+              <h4 style="color: var(--gold-primary); font-size: 14px; margin-bottom: 8px;">Direct Horologist Desk</h4>
+              <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.6;">Direct support from our Master Horologist Concierge with 7-day turnaround.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: THE PHILOSOPHY / HERITAGE -->
+    <section class="section-padding" id="story" style="background: #050504;">
+      <div class="container">
+        <div style="max-width: 840px;">
+          <p class="eyebrow">THE HOROLOGICAL MANIFESTO</p>
+          <h2 style="font-size: clamp(36px, 5.5vw, 68px); line-height: 1.05; margin: 18px 0 28px;">Built to outlast trends.<br><em>Forged to be remembered.</em></h2>
+          <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.9; margin-bottom: 30px;">
+            AURELIS was established to make luxury horological architecture accessible. We combine 316L solid surgical steel, scratch-resistant sapphire crystals, and precise Japanese movements into commanding designs. Every timepiece is individually inspected and certified at our Tenkasi atelier prior to dispatch.
+          </p>
+          <div style="display: flex; gap: 40px; flex-wrap: wrap;">
+            <div>
+              <span style="font-family: var(--font-serif); font-size: 38px; color: var(--gold-primary); display: block;">316L</span>
+              <span style="font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase;">Solid Surgical Steel</span>
+            </div>
+            <div>
+              <span style="font-family: var(--font-serif); font-size: 38px; color: var(--gold-primary); display: block;">50M</span>
+              <span style="font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase;">Water Resistance</span>
+            </div>
+            <div>
+              <span style="font-family: var(--font-serif); font-size: 38px; color: var(--gold-primary); display: block;">6 Mos</span>
+              <span style="font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase;">Atelier Movement Warranty</span>
+            </div>
+            <div>
+              <span style="font-family: var(--font-serif); font-size: 38px; color: var(--gold-primary); display: block;">100%</span>
+              <span style="font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase;">Insured India Delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: CRAFTSMANSHIP & 3D EXPLODED MOVEMENT (FRAME 2 SCROLLYTELLING) -->
+    <section class="craft-scrolly-section" id="craft">
+      <div class="craft-sticky-stage">
+        <canvas id="craftCanvas" aria-label="AURELIS 3D exploded watch movement scrollytelling sequence"></canvas>
+        <div class="craft-vignette"></div>
+
+        <!-- Luxury Interactive HUD -->
+        <div class="craft-hud-container">
+          <div class="craft-hud-header">
+            <div class="craft-header-left">
+              <p class="eyebrow" style="color: var(--gold-primary); margin-bottom: 6px;">HAUTE HORLOGERIE &bull; 3D DISASSEMBLY</p>
+              <h2>Internal Movement Architecture</h2>
+              <p>
+                Scroll down to explode the 240-frame mechanical caliber; scroll up to reassemble with precision tolerances.
+              </p>
+            </div>
+            <div class="craft-header-right">
+              <span class="craft-frame-badge" id="craftFrameNum">EXPLODED FRAME 001 / 240</span>
+              <span style="font-size: 10px; color: var(--gold-light); letter-spacing: 0.15em; text-transform: uppercase;">
+                🛡️ 6-Month Movement Warranty
+              </span>
+            </div>
+          </div>
+
+          <!-- Component Callout Overlays -->
+          <div class="craft-callouts-grid">
+            <div class="craft-callout-item active" data-stage="0">
+              <div class="craft-callout-num">01 &bull; EXTERIOR</div>
+              <h4 class="craft-callout-title">Bezel & Sapphire</h4>
+              <p class="craft-callout-desc">Flame-fusion scratchproof crystal & ceramic bezel</p>
+            </div>
+            <div class="craft-callout-item" data-stage="1">
+              <div class="craft-callout-num">02 &bull; CADRAN</div>
+              <h4 class="craft-callout-title">Guilloché Dial</h4>
+              <p class="craft-callout-desc">Multi-layered textured dial with luminous hands</p>
+            </div>
+            <div class="craft-callout-item" data-stage="2">
+              <div class="craft-callout-num">03 &bull; HEART</div>
+              <h4 class="craft-callout-title">Caliber Movement</h4>
+              <p class="craft-callout-desc">High-beat balance wheel, jewel bearings & rotor</p>
+            </div>
+            <div class="craft-callout-item" data-stage="3">
+              <div class="craft-callout-num">04 &bull; CHASSIS</div>
+              <h4 class="craft-callout-title">316L Solid Case</h4>
+              <p class="craft-callout-desc">Surgical-grade steel with dual-gasket crown</p>
+            </div>
+            <div class="craft-callout-item" data-stage="4">
+              <div class="craft-callout-num">05 &bull; FOUNDATION</div>
+              <h4 class="craft-callout-title">Exhibition & Clasp</h4>
+              <p class="craft-callout-desc">Sapphire see-through back & deployant bracelet</p>
+            </div>
+          </div>
+
+          <!-- Interactive Scrubber -->
+          <div class="craft-scrubber-bar-wrap">
+            <div class="craft-scrubber-track">
+              <div class="craft-scrubber-progress" id="craftProgressBar"></div>
+            </div>
+            <input type="range" class="craft-scrubber-slider" id="craftScrubber" min="0" max="100" value="0" aria-label="Exploded view scrubber">
+            <div class="craft-scrubber-label-row">
+              <span>ASSEMBLED TIMEPIECE</span>
+              <span>INTERACTIVE HOROLOGY SCRUB</span>
+              <span>FULL EXPLODED VIEW</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: CRAFTSMANSHIP & MATERIALS SPECIFICATIONS -->
+    <section class="section-padding" style="background: linear-gradient(135deg, #090806 0%, #14120e 100%); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center;">
+          <div>
+            <p class="eyebrow">HIGH HOROLOGY SPECIFICATIONS</p>
+            <h2 style="font-size: clamp(32px, 4vw, 52px); margin: 14px 0 24px;">Artisanal Metal.<br><em>Calibrated Balance.</em></h2>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 30px;">
+              <!-- 1. Automatic Movement -->
+              <div class="luxury-card" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <h4 style="color: var(--gold-primary); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;">1. Automatic Movement</h4>
+                  <span style="font-size: 10px; color: var(--gold-light); letter-spacing: 0.15em;">CALIBER ARCHITECTURE</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">
+                  Calibrated high-precision mechanical balance wheel escapement with smooth sweeping seconds hand and automatic winding rotor.
+                </p>
+              </div>
+
+              <!-- 2. Premium Stainless Steel Case -->
+              <div class="luxury-card" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <h4 style="color: var(--gold-primary); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;">2. Premium Stainless Steel Case</h4>
+                  <span style="font-size: 10px; color: var(--gold-light); letter-spacing: 0.15em;">316L SURGICAL GRADE</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">
+                  Solid 316L corrosion-resistant surgical steel case, individually sculpted with satin-brushed surfaces and mirror-polished bevels.
+                </p>
+              </div>
+
+              <!-- 3. Precision Engineering -->
+              <div class="luxury-card" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <h4 style="color: var(--gold-primary); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;">3. Precision Engineering</h4>
+                  <span style="font-size: 10px; color: var(--gold-light); letter-spacing: 0.15em;">SUB-MICRON TOLERANCES</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">
+                  Laser-cut applied indices, micro-machined gear trains, and flame-fusion sapphire crystal with anti-reflective double coating.
+                </p>
+              </div>
+
+              <!-- 4. 50M Water Resistance -->
+              <div class="luxury-card" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <h4 style="color: var(--gold-primary); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;">4. 50M Water Resistance</h4>
+                  <span style="font-size: 10px; color: var(--gold-light); letter-spacing: 0.15em;">5 ATM HERMETIC SEAL</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">
+                  Hermetically sealed screw-down caseback with dual-gasket crown assembly engineered for everyday splash and moisture resistance.
+                </p>
+              </div>
+
+              <!-- 5. 6-Month Warranty -->
+              <div class="luxury-card" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <h4 style="color: var(--gold-primary); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;">5. 6-Month Warranty</h4>
+                  <span style="font-size: 10px; color: var(--gold-light); letter-spacing: 0.15em;">ATELIER GUARANTEE</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">
+                  Comprehensive atelier assurance covering internal movement calibration, gear alignment, and manufacturing defects with door-to-door courier turnaround.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <img src="/assets/variant_hero_shot.jpg" alt="Artisan Chronograph Detailing" style="width: 100%; border-radius: 4px; border: 1px solid var(--border-gold); box-shadow: var(--shadow-luxury);" onerror="this.src='/assets/watches/watch_1.jpg'">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: ASSURANCES & GUARANTEES -->
+    <section style="background: #090807; padding: 60px 5vw; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; text-align: center;">
+        <div>
+          <h4 style="color: var(--gold-primary); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">COMPLIMENTARY SHIPPING</h4>
+          <p style="color: var(--text-secondary); font-size: 12px;">Fully insured door-to-door transit across India.</p>
+        </div>
+        <div>
+          <h4 style="color: var(--gold-primary); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">7-DAY RETURN PRIVILEGE</h4>
+          <p style="color: var(--text-secondary); font-size: 12px;">Hassle-free return & refund guarantee upon delivery.</p>
+        </div>
+        <div>
+          <h4 style="color: var(--gold-primary); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">6-MONTH ATELIER WARRANTY</h4>
+          <p style="color: var(--text-secondary); font-size: 12px;">Comprehensive manufacturer movement protection.</p>
+        </div>
+        <div>
+          <h4 style="color: var(--gold-primary); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">AUTHENTICITY GUARANTEED</h4>
+          <p style="color: var(--text-secondary); font-size: 12px;">Individually serialized with holograph certificate.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: FINAL CTA -->
+    <section class="final-cta-section" id="final-cta" style="background: radial-gradient(circle at 50% 40%, #171511 0%, #080706 70%, #040403 100%); padding: 140px 5vw; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); position: relative; overflow: hidden; text-align: center;">
+      <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(214, 179, 106, 0.08) 0%, transparent 60%); pointer-events: none;"></div>
+      <div class="container" style="max-width: 860px; margin: 0 auto; position: relative; z-index: 2;">
+        <p class="eyebrow" style="letter-spacing: 0.32em; margin-bottom: 22px;">THE FINAL MOMENT</p>
+        <h2 style="font-size: clamp(52px, 8vw, 104px); line-height: 0.90; letter-spacing: -0.04em; margin: 0 0 28px; text-transform: uppercase; font-weight: 500;">
+          OWN YOUR<br><em style="color: var(--gold-primary); font-style: italic; font-weight: 400; text-shadow: 0 0 40px rgba(214, 179, 106, 0.25);">SECOND.</em>
+        </h2>
+        <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.85; max-width: 520px; margin: 0 auto 40px;">
+          Ten masterwork editions designed for those who command their time. Strictly ₹2,000 to ₹2,500, backed by our 6-month comprehensive atelier warranty.
+        </p>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <a href="shop.html" class="gold-btn" style="padding: 18px 48px; font-size: 11.5px; letter-spacing: 0.22em; font-weight: 700; display: inline-flex; align-items: center; gap: 12px;">
+            <span>SHOP AURELIS</span>
+            <span style="font-size: 15px; font-weight: 400;">↗</span>
+          </a>
+          <a href="#collection" class="gold-btn-outline" style="padding: 18px 36px; font-size: 11px; letter-spacing: 0.2em;">
+            VIEW COLLECTION
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Luxury Footer -->
+  <footer class="luxury-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 style="font-size: 22px; letter-spacing: 0.2em; color: var(--gold-primary); margin-bottom: 12px;">AURELIS</h3>
+          <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.8; max-width: 320px; margin-bottom: 20px;">
+            Haute Horlogerie atelier uniting mythological symbolism with architectural chronometric engineering.
+          </p>
+          <div class="concierge-info">
+            <p><strong>Private Client Concierge:</strong> AURELIS Horology Desk</p>
+            <p><strong>Telephone:</strong> +91 9445437069</p>
+            <p><strong>Email:</strong> concierge@aurelis.in</p>
+            <p><strong>Atelier Address:</strong> Tenkasi, Main Road, opposite the bus stand</p>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>EXPLORE</h4>
+          <ul>
+            <li><a href="shop.html">All 10 Timepieces</a></li>
+            <li><a href="product.html?id=1">Aurelis Classic</a></li>
+            <li><a href="product.html?id=2">Velor Chronograph</a></li>
+            <li><a href="product.html?id=4">Imperial Steel</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="cart.html">Commission Cart</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>CLIENT SERVICE</h4>
+          <ul>
+            <li><a href="warranty.html">6-Month Warranty Policy</a></li>
+            <li><a href="account.html">My Account</a></li>
+            <li><a href="orders.html">Order History</a></li>
+            <li><a href="cancellation-request.html">Cancel Order</a></li>
+            <li><a href="return-request.html">Return / Exchange</a></li>
+            <li><a href="contact.html">Concierge Contact</a></li>
+            <li><a href="admin/login.html">Admin Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>POLICIES</h4>
+          <ul>
+            <li><a href="warranty.html">6-Month Warranty Details</a></li>
+            <li><a href="shipping-policy.html">Shipping & Delivery</a></li>
+            <li><a href="return-refund-policy.html">7-Day Returns & Refunds</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms & Conditions</a></li>
+            <li><a href="faq.html">Frequently Asked Questions</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+        <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+        <span>TIME / FORM / PRECISION</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    window.FRAME_COUNT = 240;
+    window.FRAME_EXT = ".jpg";
+
+    // Responsive Mobile Menu Drawer Toggle
+    document.addEventListener("DOMContentLoaded", () => {
+      const mobileBtn = document.getElementById("mobileMenuBtn");
+      const navLinks = document.getElementById("navLinks");
+      if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener("click", () => {
+          navLinks.classList.toggle("open");
+        });
+        navLinks.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            navLinks.classList.remove("open");
+          });
+        });
+      }
+    });
+  </script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/hero-scroll.js"></script>
+  <script src="js/craft-scroll.js"></script>
+</body>
+</html>

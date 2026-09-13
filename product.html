@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Timepiece Details — AURELIS Haute Horlogerie</title>
+  <meta name="description" content="Acquire an AURELIS masterwork timepiece. Sculpted in solid 316L surgical stainless steel, flame-fusion sapphire crystal, and 6-month comprehensive warranty.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/product.css">
+  <style>
+    .pdp-warranty-box {
+      background: linear-gradient(135deg, rgba(217, 174, 85, 0.12) 0%, rgba(10, 9, 7, 0.8) 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
+      padding: 16px 20px;
+      margin: 22px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .pdp-warranty-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Atelier</a>
+      <a href="shop.html" class="active">Collection</a>
+      <a href="craftsmanship.html">Craftsmanship</a>
+      <a href="warranty.html">6-Month Warranty</a>
+      <a href="track-order.html">Track Order</a>
+      <a href="contact.html">Concierge</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="account.html" class="nav-icon-btn" id="navAccountBtn" title="Collector Account">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <a href="cart.html" class="nav-icon-btn" title="Commission Cart">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="nav-badge cart-badge-count" style="display: none;">0</span>
+      </a>
+      <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="pdp-wrapper container">
+    <!-- Breadcrumb -->
+    <div style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 30px;">
+      <a href="index.html" style="color: var(--text-secondary);">Atelier</a> &bull;
+      <a href="shop.html" style="color: var(--text-secondary);">Collection</a> &bull;
+      <span style="color: var(--gold-primary);" id="pdpBreadcrumb">Timepiece</span>
+    </div>
+
+    <!-- Main PDP Grid -->
+    <div class="pdp-grid">
+      <!-- Gallery Column -->
+      <div class="pdp-gallery">
+        <div class="pdp-main-image-wrap">
+          <img id="pdpMainImage" src="./assets/watches/watch_1.jpg" alt="AURELIS Timepiece Main View" onerror="this.src='./assets/fallback-watch.svg'">
+        </div>
+        <div class="pdp-thumbnails" id="pdpThumbnails"></div>
+      </div>
+
+      <!-- Details Column -->
+      <div class="pdp-details">
+        <p class="eyebrow" id="pdpEyebrow">HAUTE HORLOGERIE &bull; LIMITED ATELIER EDITION</p>
+        <h1 class="pdp-title" id="pdpTitle">AURELIS CLASSIC</h1>
+        <p class="pdp-sku" id="pdpSku">REFERENCE / SKU: AUR-CLA-01</p>
+
+        <!-- Price Box -->
+        <div class="pdp-price-box">
+          <span class="pdp-price" id="pdpPrice">₹6,499</span>
+          <span class="pdp-original-price" id="pdpOriginalPrice">₹8,499</span>
+          <span class="pdp-discount-badge" id="pdpDiscountBadge">Complimentary Insured Courier</span>
+        </div>
+
+        <!-- Stock Availability -->
+        <div style="margin-bottom: 18px;" id="pdpStockStatus">
+          <span class="badge-stock">In Stock &bull; Ready for Atelier Dispatch</span>
+        </div>
+
+        <!-- 6-Month Warranty Prominent Box -->
+        <div class="pdp-warranty-box">
+          <span class="pdp-warranty-icon">🛡️</span>
+          <div>
+            <div style="font-size: 13px; font-weight: 600; color: var(--gold-light); margin-bottom: 3px;">
+              6-Month Comprehensive Atelier Warranty
+            </div>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.5;">
+              Guaranteed movement calibration, dial integrity, hands alignment, and manufacturing protection with complimentary reverse pickup across India.
+            </p>
+            <a href="warranty.html" style="font-size: 11px; color: var(--gold-primary); text-decoration: underline; letter-spacing: 0.05em;">
+              Read Complete Warranty Coverage &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Color / Finish Selector -->
+        <div class="variant-selector-section" id="variantSection">
+          <div class="variant-label-row">
+            <span style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-secondary);">Color & Finish:</span>
+            <span class="selected-variant-name" id="selectedVariantName">Gold & Silver</span>
+          </div>
+          <div class="variant-cards-grid" id="variantCardsGrid"></div>
+        </div>
+
+        <!-- Short Description -->
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8; margin-bottom: 25px;" id="pdpShortDesc">
+          Timeless elegance featuring a polished silver bezel, radiant white dial, and bi-color Jubilee steel bracelet.
+        </p>
+
+        <!-- Actions: Stepper + Add to Cart + Buy Now -->
+        <div class="pdp-actions-row">
+          <div class="qty-stepper">
+            <button class="qty-btn" id="qtyMinus" type="button">-</button>
+            <input type="text" class="qty-input" id="pdpQuantityInput" value="1" readonly>
+            <button class="qty-btn" id="qtyPlus" type="button">+</button>
+          </div>
+          <button class="gold-btn" id="pdpAddToCartBtn" type="button">Add to Commission</button>
+          <button class="gold-btn-outline" id="pdpBuyNowBtn" type="button">Acquire Now</button>
+        </div>
+
+        <!-- Security & Delivery Assurances -->
+        <div class="pdp-assurances">
+          <div class="assurance-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+            <span>Free Express Insured Transit</span>
+          </div>
+          <div class="assurance-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span><a href="warranty.html" style="color: inherit; text-decoration: underline;">6-Month Atelier Movement Warranty</a></span>
+          </div>
+          <div class="assurance-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            <span>7-Day Return & Refund Guarantee</span>
+          </div>
+        </div>
+
+        <!-- Long Description -->
+        <div style="margin-top: 25px;">
+          <h4 style="font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 12px;">Horological Architecture</h4>
+          <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;" id="pdpFullDesc"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Specifications Table -->
+    <section class="specs-section">
+      <p class="eyebrow">CHRONOMETRIC EXCELLENCE</p>
+      <h2 style="font-size: 32px;">Atelier Technical Specifications</h2>
+      <table class="specs-table" id="pdpSpecsTable"></table>
+    </section>
+
+    <!-- Other Timepieces Recommendations -->
+    <section style="margin-top: 80px;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <p class="eyebrow">CONTINUE EXPLORATION</p>
+        <h2 style="font-size: 28px;">Other Atelier Editions</h2>
+      </div>
+      <div class="products-grid" id="relatedProductsGrid"></div>
+    </section>
+  </main>
+
+  <!-- Luxury Footer -->
+  <footer class="luxury-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 style="font-size: 20px; letter-spacing: 0.2em; color: var(--gold-primary); margin-bottom: 12px;">AURELIS</h3>
+          <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.8;">
+            High horology timepieces crafted for commanding wrist presence.
+          </p>
+          <div class="concierge-info" style="margin-top: 15px;">
+            <p><strong>Concierge:</strong> AURELIS Horology Desk &bull; +91 9445437069</p>
+            <p><strong>Email:</strong> concierge@aurelis.in</p>
+            <p>Tenkasi, Main Road, opposite the bus stand</p>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>NAVIGATION</h4>
+          <ul>
+            <li><a href="index.html">Atelier Hero</a></li>
+            <li><a href="shop.html">10 Timepieces Collection</a></li>
+            <li><a href="warranty.html">6-Month Warranty Policy</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="cart.html">Commission Cart</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>WARRANTY & ASSURANCES</h4>
+          <ul>
+            <li><a href="warranty.html">6-Month Comprehensive Warranty</a></li>
+            <li><a href="return-refund-policy.html">7-Day Returns & Refunds</a></li>
+            <li><a href="shipping-policy.html">Insured Courier Logistics</a></li>
+            <li><a href="contact.html">Concierge Desk</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+        <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/product.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const mobileBtn = document.getElementById("mobileMenuBtn");
+      const navLinks = document.getElementById("navLinks");
+      if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener("click", () => {
+          navLinks.classList.toggle("open");
+        });
+      }
+    });
+  </script>
+</body>
+</html>

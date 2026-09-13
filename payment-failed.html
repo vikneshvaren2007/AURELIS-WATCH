@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment Incomplete — AURELIS Luxury Timepieces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+  </header>
+
+  <main style="padding: 140px 5vw 100px;">
+    <div class="order-success-card" style="border-color: #e74c3c;">
+      <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #e74c3c; display: grid; place-content: center; font-size: 24px; margin: 0 auto 20px;">
+        ✕
+      </div>
+      <p class="eyebrow" style="color: #e74c3c;">PAYMENT AUTHORIZATION FAILED</p>
+      <h1 style="font-size: 34px; margin-bottom: 12px;">Payment Incomplete</h1>
+      <p style="color: var(--text-secondary); max-width: 480px; margin: 0 auto 25px; font-size: 14px;" id="failReasonText">
+        Your payment attempt was declined or interrupted. No funds were captured for this commission.
+      </p>
+
+      <div style="display: flex; justify-content: center; gap: 16px; margin-top: 30px; flex-wrap: wrap;">
+        <a id="retryBtn" href="payment.html" class="gold-btn">Retry Payment Session</a>
+        <a href="contact.html" class="gold-btn-outline">Contact Concierge</a>
+      </div>
+
+      <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid var(--border-subtle); font-size: 12px; color: var(--text-muted);">
+        <p>Private Concierge Support: AURELIS Concierge Desk &bull; +91 9445437069</p>
+        <p>Tenkasi, Main Road, opposite the bus stand</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("order_id");
+    const reason = params.get("reason");
+
+    if (reason) {
+      document.getElementById("failReasonText").textContent = `Reason: ${decodeURIComponent(reason)}. You can retry payment with UPI or select Cash on Delivery.`;
+    }
+    if (orderId) {
+      document.getElementById("retryBtn").href = `payment.html?order_id=${orderId}`;
+    }
+  </script>
+</body>
+</html>

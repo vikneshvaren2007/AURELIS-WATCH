@@ -1,0 +1,313 @@
+/* ==========================================================================
+   AURELIS — Product Detail Page (PDP) Styles
+   ========================================================================== */
+
+.pdp-wrapper {
+  padding: 130px 5vw 100px;
+}
+
+.pdp-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Gallery Section */
+.pdp-gallery {
+  position: sticky;
+  top: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pdp-main-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 50% 50%, #1c1913 0%, #090807 80%);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.pdp-main-image-wrap img {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.pdp-thumbnails {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.pdp-thumb {
+  width: 84px;
+  height: 84px;
+  border-radius: 3px;
+  border: 1px solid var(--border-subtle);
+  background: #0d0c09;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.pdp-thumb.active,
+.pdp-thumb:hover {
+  border-color: var(--gold-primary);
+  background: #171510;
+}
+
+.pdp-thumb img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+/* Product Info Column */
+.pdp-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.pdp-title {
+  font-size: clamp(32px, 3.5vw, 48px);
+  line-height: 1.15;
+  margin: 10px 0 16px;
+}
+
+.pdp-sku {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.pdp-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 25px;
+}
+
+.pdp-price {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.pdp-original-price {
+  font-size: 16px;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.pdp-discount-badge {
+  background: rgba(217, 174, 85, 0.15);
+  color: var(--gold-primary);
+  padding: 4px 10px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* Color Variant Selector */
+.variant-selector-section {
+  margin-bottom: 30px;
+}
+
+.variant-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.selected-variant-name {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+.variant-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.variant-option-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition);
+}
+
+.variant-option-card:hover {
+  border-color: var(--border-gold);
+  background: var(--bg-card-hover);
+}
+
+.variant-option-card.active {
+  border-color: var(--gold-primary);
+  background: rgba(217, 174, 85, 0.08);
+  box-shadow: 0 0 15px rgba(217, 174, 85, 0.15);
+}
+
+.variant-card-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 3px;
+  object-fit: contain;
+  background: #090807;
+}
+
+.variant-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.variant-card-stock {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  margin-top: 3px;
+}
+
+/* Quantity & Action Controls */
+.pdp-actions-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 35px;
+}
+
+.qty-stepper {
+  display: flex;
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  background: #090807;
+  overflow: hidden;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  width: 38px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.qty-btn:hover {
+  background: #191712;
+  color: var(--gold-primary);
+}
+
+.qty-input {
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: center;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+}
+
+/* Security Assurances */
+.pdp-assurances {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding: 24px 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 40px;
+}
+
+.assurance-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.assurance-item svg {
+  color: var(--gold-primary);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Specs Accordion / Table */
+.specs-section {
+  margin-top: 50px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 60px;
+}
+
+.specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+}
+
+.specs-table tr {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.specs-table td {
+  padding: 14px 18px;
+  font-size: 13px;
+}
+
+.specs-table td:first-child {
+  color: var(--text-secondary);
+  width: 35%;
+  font-weight: 500;
+}
+
+.specs-table td:last-child {
+  color: var(--text-primary);
+}
+
+@media (max-width: 900px) {
+  .pdp-grid {
+    grid-template-columns: 1fr;
+  }
+  .pdp-gallery {
+    position: static;
+  }
+  .pdp-actions-row {
+    grid-template-columns: 1fr;
+  }
+  .pdp-assurances {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

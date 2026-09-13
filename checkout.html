@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout — AURELIS Luxury Timepieces</title>
+  <meta name="description" content="Secure acquisition checkout for AURELIS luxury timepieces. Insured door-to-door delivery across India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <div style="font-size: 11px; letter-spacing: 0.15em; color: var(--gold-primary); text-transform: uppercase;">
+      🔒 256-Bit Encrypted Atelier Checkout
+    </div>
+  </header>
+
+  <main>
+    <section class="checkout-page-header">
+      <p class="eyebrow">FINAL STEP OF ACQUISITION</p>
+      <h1>Secure Checkout</h1>
+      <p style="color: var(--text-secondary); font-size: 13.5px; max-width: 500px; margin: 0 auto;">
+        All acquisitions include a complimentary lacquered presentation case, certificate of authenticity, and our <strong>6-Month Atelier Warranty</strong>.
+      </p>
+    </section>
+
+    <div class="checkout-layout container">
+      <!-- Left Column: Customer Details & Complete Delivery Address -->
+      <div>
+        <!-- Saved Addresses (if logged in) -->
+        <div id="savedAddressesContainer" style="display: none; margin-bottom: 30px;">
+          <h4 style="font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 12px;">Saved Delivery Addresses</h4>
+          <div id="savedAddressesList"></div>
+        </div>
+
+        <!-- 1. Customer Contact Form -->
+        <div class="luxury-card" style="margin-bottom: 30px;">
+          <h3 style="font-size: 17px; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            1. Collector Contact Information
+          </h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group" style="grid-column: 1/-1;">
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="checkoutName" class="form-input" placeholder="e.g. Vikramaditya Sharma" autocomplete="name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address (for Invoice & Order Updates) *</label>
+              <input type="email" id="checkoutEmail" class="form-input" placeholder="name@domain.com" autocomplete="email" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mobile Phone Number (10 Digits) *</label>
+              <input type="tel" id="checkoutPhone" class="form-input" placeholder="9876543210" maxlength="10" autocomplete="tel" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Complete Delivery Address -->
+        <div class="luxury-card" style="margin-bottom: 30px;">
+          <h3 style="font-size: 17px; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            2. Insured Doorstep Delivery Address
+          </h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group" style="grid-column: 1/-1;">
+              <label class="form-label">Flat / House / Door / Apartment No. *</label>
+              <input type="text" id="checkoutFlatNo" class="form-input" placeholder="e.g. Villa 42, Oberoi Splendor, 3rd Floor" autocomplete="address-line1" required>
+            </div>
+            <div class="form-group" style="grid-column: 1/-1;">
+              <label class="form-label">Street Address / Road Name *</label>
+              <input type="text" id="checkoutStreet" class="form-input" placeholder="e.g. MG Road, Near Central Plaza" autocomplete="address-line2" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Area / Landmark *</label>
+              <input type="text" id="checkoutArea" class="form-input" placeholder="e.g. Indiranagar, Opp. Metro Pillar 120" autocomplete="address-level3" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">City / Town *</label>
+              <input type="text" id="checkoutCity" class="form-input" placeholder="e.g. Bengaluru" autocomplete="address-level2" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">District</label>
+              <input type="text" id="checkoutDistrict" class="form-input" placeholder="e.g. Bengaluru Urban">
+            </div>
+            <div class="form-group">
+              <label class="form-label">State *</label>
+              <select id="checkoutState" class="form-select" autocomplete="address-level1" required>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Haryana">Haryana</option>
+                <option value="Goa">Goa</option>
+                <option value="Odisha">Odisha</option>
+                <option value="Assam">Assam</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Chandigarh">Chandigarh</option>
+                <option value="Other">Other States & Union Territories</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">PIN Code (6 Digits) *</label>
+              <input type="text" id="checkoutPincode" class="form-input" placeholder="e.g. 560038" maxlength="6" autocomplete="postal-code" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Country</label>
+              <input type="text" class="form-input" value="India" readonly style="background: #060605; color: var(--text-muted);" autocomplete="country-name">
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional Order Note -->
+        <div class="luxury-card" style="margin-bottom: 30px;">
+          <h3 style="font-size: 17px; margin-bottom: 12px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            Special Instructions / Order Note (Optional)
+          </h3>
+          <div class="form-group">
+            <label class="form-label">Delivery Note or Bespoke Inscription</label>
+            <textarea id="checkoutNote" class="form-textarea" rows="2" placeholder="e.g. Please leave with concierge or deliver after 2 PM..."></textarea>
+          </div>
+        </div>
+
+        <!-- 3. Payment Method Selection -->
+        <div class="luxury-card">
+          <h3 style="font-size: 17px; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            3. Preferred Acquisition Method
+          </h3>
+          <div class="payment-methods-grid">
+            <!-- Method 1: Google Pay / UPI -->
+            <div class="payment-method-card active" data-method="UPI">
+              <input type="radio" name="payMethod" class="payment-method-radio" checked>
+              <div class="payment-method-info">
+                <div class="payment-method-title">
+                  <span>Google Pay / UPI &bull; Instant Verification</span>
+                  <span class="badge-gold">Recommended</span>
+                </div>
+                <p class="payment-method-desc">Pay securely with Google Pay, PhonePe, Paytm, or BHIM with instant order confirmation.</p>
+              </div>
+            </div>
+
+            <!-- Method 2: Credit / Debit Card & Net Banking -->
+            <div class="payment-method-card" data-method="CARD">
+              <input type="radio" name="payMethod" class="payment-method-radio">
+              <div class="payment-method-info">
+                <div class="payment-method-title">
+                  <span>Credit / Debit Cards & Net Banking</span>
+                </div>
+                <p class="payment-method-desc">Pay securely with Visa, Mastercard, RuPay, or major Indian bank net banking.</p>
+              </div>
+            </div>
+
+            <!-- Method 3: Cash on Delivery -->
+            <div class="payment-method-card" data-method="COD">
+              <input type="radio" name="payMethod" class="payment-method-radio">
+              <div class="payment-method-info">
+                <div class="payment-method-title">
+                  <span>Cash on Delivery (COD)</span>
+                </div>
+                <p class="payment-method-desc">Pay upon physical door delivery after inspecting the tamper-evident security seal.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Order Summary -->
+      <div class="order-summary-card">
+        <h3 class="summary-title">Commission Summary</h3>
+        <div id="checkoutItemsList"></div>
+
+        <div class="summary-row" style="margin-top: 20px;">
+          <span>Subtotal</span>
+          <span id="checkoutSubtotal">₹0</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Insured Transit across India</span>
+          <span id="checkoutShipping" style="color: #2ecc71;">Complimentary</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Applicable GST</span>
+          <span id="checkoutTax" style="color: var(--text-muted);">Included in MRP</span>
+        </div>
+
+        <div class="summary-row" id="checkoutDiscountRow" style="display: none; color: var(--gold-primary);">
+          <span>Privilege Discount</span>
+          <span id="checkoutDiscount">-₹0</span>
+        </div>
+
+        <div class="summary-row total-row">
+          <span>Total Payable</span>
+          <span class="total-price" id="checkoutTotal">₹0</span>
+        </div>
+
+        <button class="gold-btn" id="placeOrderBtn" style="width: 100%; margin-top: 25px; padding: 18px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.15em;">
+          PLACE ORDER
+        </button>
+
+        <!-- Assurances -->
+        <div style="margin-top: 25px; border-top: 1px solid var(--border-subtle); padding-top: 15px; font-size: 11.5px; color: var(--text-muted); line-height: 1.8;">
+          <p>🔒 256-bit cryptographic SSL protection.</p>
+          <p>📦 Insured delivery within 3-5 business days.</p>
+          <p>🛡️ <a href="warranty.html" style="color: var(--gold-light); text-decoration: underline;">6-Month Atelier Manufacturer Movement Warranty</a>.</p>
+          <p>🔄 7-day hassle-free return and exchange privilege.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

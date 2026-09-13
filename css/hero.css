@@ -1,0 +1,823 @@
+/* ==========================================================================
+   AURELIS — Hero Scrollytelling & Luxury Cinematic Styles
+   ========================================================================== */
+
+.hero-wrapper {
+  position: relative;
+  background-color: var(--bg-primary);
+}
+
+.hero {
+  position: relative;
+  height: 380vh; /* Smooth scrollytelling distance across 240 frames */
+  background-color: var(--bg-primary);
+}
+
+.hero-sticky-stage {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 2;
+  background-color: var(--bg-primary);
+}
+
+/* Pinned High-Performance Canvas */
+#watchCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  background-color: #080706;
+}
+
+/* Subtle Cinematic Gradient for Negative Space Readability */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 72% 52%, transparent 35%, rgba(8, 7, 6, 0.35) 70%, #080706 100%),
+    linear-gradient(to right, rgba(8, 7, 6, 0.82) 0%, rgba(8, 7, 6, 0.45) 36%, rgba(8, 7, 6, 0.1) 60%, transparent 75%);
+  transition: opacity 0.5s ease;
+}
+
+/* Final Stage Ambient Darkening (80% - 100%) */
+.hero-cinematic-outro-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(8, 7, 6, 0.4) 0%, rgba(8, 7, 6, 0.85) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* ==========================================================================
+   Hero Intro Copy (0% - 20% scroll)
+   Aligned to the Left Mineral Rock Negative Space
+   ========================================================================== */
+.hero-intro-wrap {
+  position: absolute;
+  top: 50%;
+  left: 7vw;
+  transform: translateY(-50%);
+  z-index: 4;
+  max-width: 520px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.hero-intro-wrap * {
+  pointer-events: auto;
+}
+
+/* Brand Eyebrow */
+.hero-eyebrow-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold-champagne);
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+
+.hero-eyebrow-brand .brand-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(214, 179, 106, 0.12);
+  border: 1px solid rgba(214, 179, 106, 0.3);
+  border-radius: 2px;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  color: var(--gold-light);
+}
+
+.hero-eyebrow-brand .brand-sep {
+  color: var(--border-gold);
+}
+
+/* Headline: TIME, REFINED. */
+.hero-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(52px, 6.8vw, 98px);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 0 0 26px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.hero-headline .headline-refined {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-champagne);
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 35px rgba(214, 179, 106, 0.2);
+}
+
+/* Supporting text */
+.hero-support-text {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  max-width: 440px;
+  margin-bottom: 36px;
+  font-weight: 400;
+}
+
+/* CTA Button */
+.hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 40px;
+  background: transparent;
+  border: 1px solid var(--gold-champagne);
+  color: var(--gold-champagne);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold-champagne);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.hero-cta-btn span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.35s ease;
+}
+
+.hero-cta-btn .btn-arrow {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  font-size: 13px;
+  transition: transform 0.3s ease, color 0.35s ease;
+}
+
+.hero-cta-btn:hover {
+  border-color: var(--gold-champagne);
+  box-shadow: 0 0 30px rgba(214, 179, 106, 0.35);
+  transform: translateY(-2px);
+}
+
+.hero-cta-btn:hover::before {
+  transform: translateY(0);
+}
+
+.hero-cta-btn:hover span,
+.hero-cta-btn:hover .btn-arrow {
+  color: #080706;
+}
+
+.hero-cta-btn:hover .btn-arrow {
+  transform: translateY(3px);
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 36px;
+  background: rgba(14, 13, 11, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(214, 179, 106, 0.4);
+  color: var(--text-primary);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hero-cta-secondary:hover {
+  border-color: var(--gold-champagne);
+  color: var(--gold-champagne);
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(214, 179, 106, 0.25);
+  background: rgba(214, 179, 106, 0.1);
+}
+
+/* ==========================================================================
+   Hero Outro Copy (80% - 100% scroll)
+   Revealed when the Watch Final Shot Re-Assembles
+   ========================================================================== */
+.hero-outro-wrap {
+  position: absolute;
+  bottom: 11vh;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  text-align: center;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  width: 90%;
+  max-width: 780px;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  will-change: opacity, transform;
+}
+
+.hero-outro-statement {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 2.6vw, 36px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  font-weight: 400;
+  line-height: 1.35;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  margin-bottom: 16px;
+}
+
+.hero-outro-line {
+  width: 60px;
+  height: 1px;
+  background: var(--gold-champagne);
+  margin: 0 auto;
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   Scroll Cues & Luxury Indicators
+   ========================================================================== */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 5vh;
+  left: 7vw;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  color: var(--text-secondary);
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.hero-scroll-indicator .indicator-line {
+  width: 36px;
+  height: 1px;
+  background: var(--gold-champagne);
+  display: inline-block;
+  animation: pulseLine 2.2s infinite ease-in-out;
+}
+
+@keyframes pulseLine {
+  0%, 100% { transform: scaleX(0.5); opacity: 0.4; }
+  50% { transform: scaleX(1); opacity: 1; }
+}
+
+.hero-progress-tag {
+  position: absolute;
+  bottom: 5vh;
+  right: 7vw;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  color: var(--text-secondary);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.hero-progress-tag .progress-num {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--gold-champagne);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Entrance Preloader (Instant Fallback Poster + Horology Gear Animation)
+   ========================================================================== */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, #171511 0%, #080706 75%, #000000 100%);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.75s ease, visibility 0.75s ease;
+  overflow: hidden;
+}
+
+.loader.done {
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.85) 90%);
+  pointer-events: none;
+}
+
+.loader-horology {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 22px;
+  display: grid;
+  place-content: center;
+}
+
+.loader-gear-outer {
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed rgba(214, 179, 106, 0.35);
+  border-radius: 50%;
+  animation: rotateGear 16s linear infinite;
+}
+
+.loader-gear-inner {
+  position: absolute;
+  inset: 16px;
+  border: 1.5px solid rgba(214, 179, 106, 0.2);
+  border-top-color: var(--gold-champagne);
+  border-radius: 50%;
+  animation: rotateGearRev 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.loader-balance-wheel {
+  position: absolute;
+  inset: 34px;
+  border: 2px solid rgba(214, 179, 106, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(214, 179, 106, 0.2), inset 0 0 15px rgba(214, 179, 106, 0.15);
+  animation: pulseBalance 2.4s ease-in-out infinite alternate;
+}
+
+.loader-hand {
+  position: absolute;
+  top: 22px;
+  left: 59px;
+  width: 2px;
+  height: 38px;
+  background: linear-gradient(to top, var(--gold-champagne), #fff);
+  transform-origin: bottom center;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(214, 179, 106, 0.8);
+  animation: sweepSecondHand 4s steps(60) infinite;
+}
+
+.loader-center-pivot {
+  position: absolute;
+  inset: 56px;
+  background: var(--gold-champagne);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(214, 179, 106, 0.9);
+}
+
+@keyframes rotateGear {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotateGearRev {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes pulseBalance {
+  0% { transform: scale(0.96); opacity: 0.7; }
+  100% { transform: scale(1.04); opacity: 1; box-shadow: 0 0 35px rgba(214, 179, 106, 0.35); }
+}
+
+@keyframes sweepSecondHand {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-brand {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 3.2vw, 34px);
+  color: var(--text-primary);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin: 0 0 6px 0;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.8);
+}
+
+.loader-sub {
+  font-size: 9.5px;
+  letter-spacing: 0.32em;
+  color: var(--gold-champagne);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.loader-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 240px;
+}
+
+.loader-line {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  border-radius: 3px;
+  position: relative;
+}
+
+.loader-line span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #b89349, #D6B36A, #F3EFE6, #D6B36A);
+  transition: width 0.15s ease-out;
+  box-shadow: 0 0 10px rgba(214, 179, 106, 0.6);
+}
+
+.loader-status-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+#loaderPercent {
+  color: var(--gold-champagne);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .hero-headline {
+    font-size: clamp(42px, 5.5vw, 68px);
+  }
+  .hero-support-text {
+    font-size: 14px;
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 300vh;
+  }
+  
+  .hero-gradient-overlay {
+    background: 
+      radial-gradient(circle at 50% 50%, transparent 20%, rgba(8, 7, 6, 0.6) 80%, #080706 100%),
+      linear-gradient(to bottom, rgba(8, 7, 6, 0.85) 0%, rgba(8, 7, 6, 0.3) 30%, transparent 50%, rgba(8, 7, 6, 0.85) 100%);
+  }
+
+  .hero-intro-wrap {
+    top: 20vh;
+    left: 6vw;
+    right: 6vw;
+    transform: none;
+    max-width: 100%;
+  }
+
+  .hero-headline {
+    font-size: clamp(38px, 9vw, 54px);
+    margin-bottom: 18px;
+  }
+
+  .hero-support-text {
+    font-size: 13.5px;
+    line-height: 1.7;
+    margin-bottom: 26px;
+    max-width: 100%;
+  }
+
+  .hero-cta-btn {
+    padding: 15px 30px;
+    font-size: 10px;
+  }
+
+  .hero-scroll-indicator {
+    left: 6vw;
+    bottom: 3.5vh;
+  }
+
+  .hero-progress-tag {
+    right: 6vw;
+    bottom: 3.5vh;
+  }
+
+  .hero-outro-wrap {
+    bottom: 8vh;
+  }
+
+  .hero-outro-statement {
+    font-size: 18px;
+    letter-spacing: 0.16em;
+  }
+}
+
+/* ==========================================================================
+   Interactive 3D Exploded Craft Stage (Frame 2 Scrollytelling)
+   ========================================================================== */
+.craft-scrolly-section {
+  position: relative;
+  height: 320vh;
+  background: #080706;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.craft-sticky-stage {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #080706;
+}
+
+#craftCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+
+.craft-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(8, 7, 6, 0.6) 80%, #080706 100%);
+}
+
+.craft-hud-container {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  padding: 100px 5vw 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.craft-hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: auto;
+  gap: 20px;
+}
+
+.craft-header-left {
+  max-width: 540px;
+}
+
+.craft-header-left h2 {
+  font-size: clamp(26px, 3.8vw, 44px);
+  line-height: 1.1;
+  margin: 6px 0 10px;
+  color: var(--text-primary);
+}
+
+.craft-header-left p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.craft-header-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.craft-frame-badge {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--gold-light);
+  background: rgba(18, 16, 12, 0.85);
+  border: 1px solid var(--border-gold);
+  padding: 6px 14px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.craft-callouts-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  pointer-events: auto;
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.craft-callout-item {
+  background: rgba(12, 10, 8, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(214, 179, 106, 0.25);
+  border-radius: 4px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.craft-callout-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--gold-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.craft-callout-item:hover {
+  border-color: rgba(214, 179, 106, 0.6);
+  background: rgba(20, 17, 13, 0.92);
+  transform: translateY(-2px);
+}
+
+.craft-callout-item.active {
+  border-color: var(--gold-primary);
+  background: rgba(28, 24, 18, 0.95);
+  box-shadow: 0 0 25px rgba(214, 179, 106, 0.25);
+  transform: translateY(-3px);
+}
+
+.craft-callout-item.active::before {
+  opacity: 1;
+}
+
+.craft-callout-num {
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.craft-callout-title {
+  font-size: 13px;
+  font-family: var(--font-serif);
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.25;
+}
+
+.craft-callout-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.craft-scrubber-bar-wrap {
+  width: 100%;
+  max-width: 580px;
+  margin: 15px auto 0;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.craft-scrubber-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.craft-scrubber-progress {
+  height: 100%;
+  width: 0%;
+  background: var(--gold-gradient);
+  transition: width 0.08s linear;
+}
+
+.craft-scrubber-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+  height: 12px;
+  margin: 0;
+}
+
+.craft-scrubber-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold-primary);
+  box-shadow: 0 0 10px rgba(214, 179, 106, 0.8);
+  cursor: ew-resize;
+}
+
+.craft-scrubber-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+@media (max-width: 1100px) {
+  .craft-callouts-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .craft-scrolly-section {
+    height: 260vh;
+  }
+  .craft-hud-container {
+    padding: 80px 5vw 15px;
+  }
+  .craft-header-left h2 {
+    font-size: 22px;
+  }
+  .craft-callouts-grid {
+    grid-template-columns: 1fr;
+    max-height: 160px;
+    overflow-y: auto;
+    gap: 6px;
+  }
+  .craft-callout-item {
+    padding: 8px 12px;
+  }
+  .craft-callout-desc {
+    display: none;
+  }
+}

@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Craftsmanship &amp; Haute Horlogerie — AURELIS Timepieces</title>
+  <meta name="description" content="Discover the artisan craftsmanship, 316L surgical stainless steel metallurgical engineering, and flame-fusion sapphire crystals of AURELIS luxury timepieces.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <style>
+    /* Dedicated Craftsmanship Page Aesthetics */
+    .craft-hero {
+      position: relative;
+      width: 100%;
+      height: 85vh;
+      min-height: 600px;
+      max-height: 920px;
+      background: #080706;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: none;
+    }
+    .craft-pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 50px;
+    }
+    .craft-pillar-card {
+      background: rgba(14, 13, 11, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 40px 36px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .craft-pillar-card:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+    .craft-pillar-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 0;
+      background: var(--gold-primary);
+      transition: height 0.4s ease;
+    }
+    .craft-pillar-card:hover::before {
+      height: 100%;
+    }
+    .craft-pillar-num {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      color: var(--gold-primary);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .craft-pillar-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+    }
+    .craft-pillar-desc {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+    .spec-table-box {
+      background: rgba(14, 13, 11, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 35px;
+      margin-top: 50px;
+    }
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .spec-table tr {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .spec-table tr:last-child {
+      border-bottom: none;
+    }
+    .spec-table td {
+      padding: 16px 12px;
+      font-size: 13.5px;
+    }
+    .spec-table td:first-child {
+      color: var(--gold-light);
+      font-weight: 500;
+      width: 35%;
+      letter-spacing: 0.05em;
+    }
+    .spec-table td:last-child {
+      color: var(--text-secondary);
+    }
+    @media (max-width: 850px) {
+      .craft-pillar-grid {
+        grid-template-columns: 1fr;
+      }
+      .craft-hero {
+        height: 70vh;
+        min-height: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav" id="mainNav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Atelier</a>
+      <a href="shop.html">Collection</a>
+      <a href="craftsmanship.html" class="active">Craftsmanship</a>
+      <a href="warranty.html">6-Month Warranty</a>
+      <a href="track-order.html">Track Order</a>
+      <a href="contact.html">Concierge</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="account.html" class="nav-icon-btn" id="navAccountBtn" title="Collector Account">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <a href="cart.html" class="nav-icon-btn" title="Commission Cart">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="nav-badge cart-badge-count" style="display: none;">0</span>
+      </a>
+      <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. FULL-WIDTH CINEMATIC CRAFTSMANSHIP VIDEO STAGE (ZERO BOTTOM LINE) -->
+    <section class="craft-hero" id="craftHeroSection">
+      <div class="shop-hero-video-wrapper">
+        <video class="shop-hero-video" id="shopHeroVideo" autoplay muted loop playsinline poster="./assets/videos/shop-hero-poster.jpg">
+          <source src="./assets/videos/shop-hero.mp4" type="video/mp4">
+          Your browser does not support high-definition HTML5 video streaming.
+        </video>
+        <div class="shop-hero-overlay"></div>
+        <div class="shop-hero-vignette"></div>
+      </div>
+
+      <!-- Luxury Overlay Copy -->
+      <div class="shop-hero-content">
+        <div class="shop-hero-badge">
+          <span>ATELIER HORLOGERIE</span>
+          <span>&bull;</span>
+          <span>ARTISANAL PRECISION</span>
+        </div>
+        <h1 class="shop-hero-title">
+          THE ART OF<br>
+          <em>HAUTE HORLOGERIE</em>
+        </h1>
+        <p class="shop-hero-desc">
+          Every AURELIS timepiece is handcrafted with uncompromising metallurgical rigor, flame-fusion sapphire crystal, and micrometer tolerances. Built for generations of discerning collectors.
+        </p>
+        <div class="shop-hero-actions">
+          <a href="#pillarsSection" class="gold-btn" style="padding: 16px 36px;">
+            <span>DISCOVER THE 4 PILLARS</span>
+            <span>&darr;</span>
+          </a>
+          <a href="shop.html" class="gold-btn-outline" style="padding: 16px 32px;">
+            EXPLORE TIMEPIECES
+          </a>
+        </div>
+      </div>
+
+      <!-- Video Audio & Playback Controls -->
+      <div class="shop-hero-video-controls">
+        <button class="video-ctrl-btn" id="videoSoundBtn" title="Toggle Audio">
+          <span id="videoSoundIcon">🔇</span>
+          <span id="videoSoundText">SOUND</span>
+        </button>
+        <button class="video-ctrl-btn" id="videoPlayPauseBtn" title="Toggle Playback">
+          <span id="videoPlayPauseIcon">⏸</span>
+          <span id="videoPlayPauseText">PAUSE</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. FOUR PILLARS OF CRAFTSMANSHIP -->
+    <section id="pillarsSection" style="padding: 90px 5vw 80px; background: #070605;">
+      <div class="container" style="max-width: 1120px;">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto;">
+          <p class="eyebrow">METICULOUS DISCIPLINE</p>
+          <h2 style="font-size: clamp(28px, 3.8vw, 44px); margin-bottom: 14px;">The Four Pillars of AURELIS</h2>
+          <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+            From the raw billet of forged metallurgical steel to the final hand-regulation under stereoscopic magnification, no detail is left to compromise.
+          </p>
+        </div>
+
+        <div class="craft-pillar-grid">
+          <!-- Pillar 1 -->
+          <div class="craft-pillar-card">
+            <span class="craft-pillar-num">01</span>
+            <h3 class="craft-pillar-title">316L Surgical Stainless Steel</h3>
+            <p class="craft-pillar-desc">
+              Forged under 500 metric tons of hydraulic pressure, our monobloc watch cases are milled from solid billets of 316L low-carbon austenitic steel. Features dual-surface finishing: hand-grained satin brush on vertical flanks contrasting with mirror-polished angled chamfers.
+            </p>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="craft-pillar-card">
+            <span class="craft-pillar-num">02</span>
+            <h3 class="craft-pillar-title">Flame-Fusion Sapphire Crystal</h3>
+            <p class="craft-pillar-desc">
+              Rated at Mohs 9 hardness — second only to natural diamond — our watch crystals are synthesized through Verneuil flame-fusion crystallisation. Coated with multi-layered internal and external anti-reflective coatings for optical clarity under any lighting angle.
+            </p>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="craft-pillar-card">
+            <span class="craft-pillar-num">03</span>
+            <h3 class="craft-pillar-title">High Horology Caliber Regulation</h3>
+            <p class="craft-pillar-desc">
+              Every mechanical balance wheel beats at 28,800 vibrations per hour (4Hz) or ultra-precise chronometric quartz synchronization. Hand-adjusted across five anatomical wrist positions and three temperature variances before leaving the atelier bench.
+            </p>
+          </div>
+
+          <!-- Pillar 4 -->
+          <div class="craft-pillar-card">
+            <span class="craft-pillar-num">04</span>
+            <h3 class="craft-pillar-title">Atelier Assembly &amp; 7-Stage QC</h3>
+            <p class="craft-pillar-desc">
+              Constructed within an ISO Class 7 cleanroom environment to eliminate particulate contamination. Each finished piece endures 5 ATM / 50-meter hydrostatic pressure testing, 48-hour chronometer timing runs, and microscopic dial alignment inspection.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TECHNICAL SPECIFICATIONS MATRIX -->
+    <section style="padding: 80px 5vw; background: #090807; border-top: 1px solid var(--border-subtle);">
+      <div class="container" style="max-width: 960px;">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+          <p class="eyebrow">STANDARDS &amp; ARCHITECTURE</p>
+          <h2 style="font-size: clamp(26px, 3.2vw, 38px); margin-bottom: 12px;">Technical Engineering Matrix</h2>
+          <p style="color: var(--text-secondary); font-size: 14px;">
+            The unified metallurgical and chronometric standards across the entire AURELIS collection.
+          </p>
+        </div>
+
+        <div class="spec-table-box">
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <td>Case Metallurgy</td>
+                <td>Solid 316L Surgical Grade Austenitic Stainless Steel (PVD Rose Gold / Noir DLC on select editions)</td>
+              </tr>
+              <tr>
+                <td>Crystal Glass</td>
+                <td>Curved Flame-Fusion Synthetic Sapphire with Dual-Sided Anti-Reflective Fluoride Coating</td>
+              </tr>
+              <tr>
+                <td>Dial Craft</td>
+                <td>Sunburst Guilloché engraved brass base with diamond-cut indices and Swiss Super-LumiNova® markers</td>
+              </tr>
+              <tr>
+                <td>Water Resistance</td>
+                <td>5 ATM (50 Meters / 165 Feet) with Viton® fluoropolymer high-compression screw-down gaskets</td>
+              </tr>
+              <tr>
+                <td>Bracelet &amp; Strap</td>
+                <td>Solid link 316L steel bracelet with butterfly deployant clasp or full-grain genuine Italian calfskin</td>
+              </tr>
+              <tr>
+                <td>Warranty Protection</td>
+                <td>6-Month Comprehensive Movement &amp; Craft Manufacturer Warranty covering internal accuracy and mechanics</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. WARRANTY GUARANTEE BANNER -->
+    <section style="padding: 70px 5vw; background: radial-gradient(circle at 50% 50%, #15130d 0%, #050504 100%); border-top: 1px solid var(--border-subtle);">
+      <div class="container" style="max-width: 900px; text-align: center;">
+        <div style="width: 58px; height: 58px; margin: 0 auto 20px; border-radius: 50%; background: rgba(217,174,85,0.1); border: 1px solid var(--gold-primary); display: grid; place-content: center; color: var(--gold-primary); font-size: 24px;">
+          ★
+        </div>
+        <p class="eyebrow" style="color: var(--gold-primary);">OUR UNCONDITIONAL PROMISE</p>
+        <h2 style="font-size: clamp(26px, 3.2vw, 38px); margin-bottom: 16px;">6-Month Comprehensive Movement Warranty</h2>
+        <p style="color: var(--text-secondary); font-size: 14px; max-width: 600px; margin: 0 auto 30px; line-height: 1.8;">
+          We stand behind the artistry and engineering of every timepiece. Enjoy 100% manufacturer warranty coverage against caliber timing variations, movement anomalies, and metallurgical defects.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <a href="warranty.html" class="gold-btn-outline" style="padding: 14px 28px; font-size: 11px;">
+            VIEW WARRANTY POLICY
+          </a>
+          <a href="shop.html" class="gold-btn" style="padding: 14px 32px; font-size: 11px;">
+            EXPLORE TIMEPIECE COLLECTION
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Luxury Footer -->
+  <footer class="luxury-footer" style="border-top: 1px solid var(--border-subtle); padding: 50px 5vw 30px; background: #050504;">
+    <div class="container" style="max-width: 1120px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px;">
+      <div>
+        <h4 style="font-family: var(--font-serif); font-size: 20px; color: var(--gold-light); margin-bottom: 10px;">AURELIS</h4>
+        <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.8; max-width: 320px;">
+          Haute Horlogerie for the discerning collector. Handcrafted timepieces engineered with Swiss precision and surgical 316L steel.
+        </p>
+      </div>
+      <div>
+        <h5 style="font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 14px;">Boutique</h5>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 12.5px; line-height: 2;">
+          <li><a href="shop.html" style="color: var(--text-secondary); text-decoration: none;">Collection</a></li>
+          <li><a href="craftsmanship.html" style="color: var(--gold-light); text-decoration: none;">Craftsmanship</a></li>
+          <li><a href="warranty.html" style="color: var(--text-secondary); text-decoration: none;">6-Month Warranty</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 style="font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 14px;">Client Care</h5>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 12.5px; line-height: 2;">
+          <li><a href="track-order.html" style="color: var(--text-secondary); text-decoration: none;">Track Order</a></li>
+          <li><a href="orders.html" style="color: var(--text-secondary); text-decoration: none;">My Orders</a></li>
+          <li><a href="contact.html" style="color: var(--text-secondary); text-decoration: none;">Concierge Desk</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 style="font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 14px;">Private Client</h5>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 12.5px; line-height: 2;">
+          <li><a href="account.html" style="color: var(--text-secondary); text-decoration: none;">Collector Sign In</a></li>
+          <li><a href="forgot-password.html" style="color: var(--text-secondary); text-decoration: none;">Password Recovery</a></li>
+          <li><a href="cart.html" style="color: var(--text-secondary); text-decoration: none;">Commission Cart</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom" style="text-align: center; border-top: 1px solid var(--border-subtle); padding-top: 20px; font-size: 11px; color: var(--text-muted);">
+      <span>&copy; 2026 AURELIS HAUTE HORLOGERIE. ALL RIGHTS RESERVED. &bull; TIMEPIECES ENGINEERED IN CHRONOMETRIC EXCELLENCE.</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Mobile menu toggle
+      const mobileBtn = document.getElementById("mobileMenuBtn");
+      const navLinks = document.getElementById("navLinks");
+      if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener("click", () => {
+          navLinks.classList.toggle("open");
+        });
+      }
+
+      // Video Controls (Sound & Play/Pause)
+      const video = document.getElementById("shopHeroVideo");
+      const soundBtn = document.getElementById("videoSoundBtn");
+      const soundIcon = document.getElementById("videoSoundIcon");
+      const soundText = document.getElementById("videoSoundText");
+      const playPauseBtn = document.getElementById("videoPlayPauseBtn");
+      const playPauseIcon = document.getElementById("videoPlayPauseIcon");
+      const playPauseText = document.getElementById("videoPlayPauseText");
+
+      if (video && soundBtn) {
+        soundBtn.addEventListener("click", () => {
+          video.muted = !video.muted;
+          if (video.muted) {
+            soundIcon.textContent = "🔇";
+            soundText.textContent = "SOUND";
+          } else {
+            soundIcon.textContent = "🔊";
+            soundText.textContent = "MUTE";
+          }
+        });
+      }
+
+      if (video && playPauseBtn) {
+        playPauseBtn.addEventListener("click", () => {
+          if (video.paused) {
+            video.play();
+            playPauseIcon.textContent = "⏸";
+            playPauseText.textContent = "PAUSE";
+          } else {
+            video.pause();
+            playPauseIcon.textContent = "▶";
+            playPauseText.textContent = "PLAY";
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

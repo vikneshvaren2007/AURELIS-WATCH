@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products Management — AURELIS Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <h2>AURELIS</h2>
+      <span>Atelier Executive Console</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="index.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="products.html" class="admin-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 12 12 16 14"></polygon></svg>
+        <span>All 10 Timepieces</span>
+      </a>
+      <a href="orders.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span>Orders Lifecycle</span>
+      </a>
+      <a href="messages.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span>Customer Messages</span>
+      </a>
+      <a href="inventory.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        <span>Live Inventory</span>
+      </a>
+      <a href="cancellations.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        <span>Cancellations</span>
+      </a>
+      <a href="returns.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+        <span>Returns & Refunds</span>
+      </a>
+      <a href="customers.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Collectors Directory</span>
+      </a>
+      <a href="settings.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <span>Store Settings</span>
+      </a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-user-card">
+        <div class="admin-avatar">V</div>
+        <div class="admin-user-info">
+          <h5>Vikneshvaren</h5>
+          <p>Tenkasi Atelier</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="admin-header-title">
+        <h3>Product & Timepiece Catalog Management</h3>
+        <p>Manage all 10 watches, adjust pricing (₹2,000–₹2,500), stock, 6-Month warranty, and images</p>
+      </div>
+      <div class="admin-header-right">
+        <button class="gold-btn" onclick="Admin.openAddProductModal()">+ Add New Timepiece</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h4>Active Horological Catalog (10 Timepieces)</h4>
+          <span style="font-size: 11px; color: var(--gold-light);">Standard INR Pricing &bull; 6-Month Warranty Active</span>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Timepiece Name</th>
+              <th>Style / Color</th>
+              <th>SKU</th>
+              <th>Price (INR)</th>
+              <th>Stock</th>
+              <th>Warranty</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminProductsList"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add / Edit Product Modal -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-content" style="max-width: 600px;">
+      <button class="modal-close" onclick="document.getElementById('productModal').classList.remove('active')">&times;</button>
+      <p class="eyebrow" id="productModalEyebrow">CATALOG CURATION</p>
+      <h3 style="font-size: 20px; margin: 8px 0 20px;" id="productModalTitle">Add New Timepiece</h3>
+      <input type="hidden" id="prodEditId">
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="form-group" style="grid-column: 1/-1;">
+          <label class="form-label">Timepiece Name *</label>
+          <input type="text" id="prodName" class="form-input" placeholder="e.g. AURELIS CLASSIC" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Style / Category *</label>
+          <input type="text" id="prodStyle" class="form-input" placeholder="e.g. Classic Luxury, Chronograph">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Color / Finish *</label>
+          <input type="text" id="prodColor" class="form-input" placeholder="e.g. Gold & Silver">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">SKU / Reference *</label>
+          <input type="text" id="prodSku" class="form-input" placeholder="e.g. AUR-CLA-01">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Stock Quantity *</label>
+          <input type="number" id="prodStock" class="form-input" placeholder="15" min="0">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Selling Price (INR ₹2,000–₹2,500) *</label>
+          <input type="number" id="prodPrice" class="form-input" placeholder="2199" min="2000" max="2500" step="1">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Original / MRP Price (INR) *</label>
+          <input type="number" id="prodDiscountPrice" class="form-input" placeholder="2899" min="2000" step="1">
+        </div>
+
+        <div class="form-group" style="grid-column: 1/-1;">
+          <label class="form-label">Warranty Period *</label>
+          <input type="text" id="prodWarranty" class="form-input" value="6-Month Warranty" readonly style="background: #060605; color: var(--gold-primary);">
+        </div>
+
+        <div class="form-group" style="grid-column: 1/-1;">
+          <label class="form-label">Main Image URL or Path *</label>
+          <input type="text" id="prodImage" class="form-input" placeholder="/assets/watches/watch_1.jpg">
+        </div>
+
+        <div class="form-group" style="grid-column: 1/-1;">
+          <label class="form-label">Short Description</label>
+          <textarea id="prodShortDesc" class="form-textarea" rows="2" placeholder="Brief marketing summary..."></textarea>
+        </div>
+
+        <div class="form-group" style="grid-column: 1/-1;">
+          <label class="form-label">Full Horological Architecture Description</label>
+          <textarea id="prodDesc" class="form-textarea" rows="3" placeholder="Case dimensions, materials, dial finishing..."></textarea>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+        <button class="gold-btn-outline" onclick="document.getElementById('productModal').classList.remove('active')">Cancel</button>
+        <button class="gold-btn" onclick="Admin.saveProduct()">Save Timepiece</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      Admin.loadProductsCatalog();
+    });
+  </script>
+</body>
+</html>

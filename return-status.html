@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Return Status — AURELIS Luxury Timepieces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cart-checkout.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-title">AURELIS</span>
+      <span class="brand-sub">Haute Horlogerie</span>
+    </a>
+    <div class="nav-actions">
+      <a href="orders.html" class="nav-cta">My Commissions</a>
+    </div>
+  </header>
+
+  <main style="padding: 130px 5vw 100px;">
+    <div class="container" style="max-width: 680px;">
+      <div class="luxury-card" style="padding: 40px; text-align: center;">
+        <p class="eyebrow" style="color: var(--gold-primary);">ATELIER RETURN WORKFLOW</p>
+        <h2 style="font-size: 28px; margin-bottom: 10px;">Return Lifecycle Status</h2>
+        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 30px;">
+          Tracking review and insured reverse transit for Order <strong id="retOrderNum">-</strong>
+        </p>
+
+        <div style="background: #090807; border: 1px solid var(--border-subtle); padding: 25px; border-radius: 4px; text-align: left; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 13px; color: var(--text-secondary);">Current Return State:</span>
+            <span class="status-pill status-REQUESTED" id="retStatusPill">UNDER REVIEW</span>
+          </div>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;" id="retDescriptionText">
+            Your return request has been logged and assigned to our master horologist for inspection.
+          </p>
+          <div style="border-top: 1px solid var(--border-subtle); margin-top: 15px; padding-top: 12px; font-size: 12px; color: var(--text-muted);">
+            Reverse pickup is scheduled via BlueDart/FedEx Insured Logistics upon approval.
+          </div>
+        </div>
+
+        <a href="orders.html" class="gold-btn-outline">Return to All Orders</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="luxury-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
+      <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("order_id") || "AUR-2026-000001";
+    document.getElementById("retOrderNum").textContent = orderId;
+  </script>
+</body>
+</html>

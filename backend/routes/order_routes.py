@@ -290,11 +290,21 @@ def create_order():
             "items": verified_items
         }
 
-        # Dispatch immediate notification to Administrator vikneshvaren@gmail.com
-        EmailService.notify_admin_new_order(order_dict, verified_items)
+        # Dispatch emails with separate error isolation and comprehensive backend logging
+        admin_email_sent = False
+        customer_email_sent = False
 
-        # Send customer confirmation email immediately
-        EmailService.notify_customer_order_confirmation(order_dict, verified_items)
+        try:
+            admin_email_sent = EmailService.notify_admin_new_order(order_dict, verified_items)
+            print(f"[ORDER {order_number}] Admin email dispatch status: {'SUCCESS' if admin_email_sent else 'FAILED'}")
+        except Exception as e_admin:
+            print(f"[ORDER {order_number}] Admin email exception: {e_admin}")
+
+        try:
+            customer_email_sent = EmailService.notify_customer_order_confirmation(order_dict, verified_items)
+            print(f"[ORDER {order_number}] Customer email dispatch status: {'SUCCESS' if customer_email_sent else 'FAILED'}")
+        except Exception as e_cust:
+            print(f"[ORDER {order_number}] Customer email exception: {e_cust}")
 
         return jsonify({
             "message": "Order placed successfully",
@@ -306,6 +316,10 @@ def create_order():
             "payment_status": initial_payment_status,
             "order_date": date_formatted,
             "order_time": time_formatted,
+            "emails": {
+                "customer": customer_email_sent,
+                "admin": admin_email_sent
+            },
             "order": order_dict
         }), 201
 

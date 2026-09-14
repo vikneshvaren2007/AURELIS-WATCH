@@ -250,19 +250,28 @@
     resize();
     if (firstImg) {
       drawFrame(0);
+      if (bar) bar.style.width = "40%";
+      if (percentEl) percentEl.textContent = "40%";
     }
 
-    // 2. Fast pre-cache of initial 20 frames so scroll is silky from first touch
+    // 2. Fast pre-cache of initial 12 frames so scroll is silky from first touch
     const initialBatch = [];
-    for (let i = 1; i < Math.min(25, frameCount); i++) {
-      initialBatch.push(loadFrame(i));
+    const preloadCount = Math.min(12, frameCount);
+    for (let i = 1; i < preloadCount; i++) {
+      initialBatch.push(
+        loadFrame(i).then(() => {
+          const pct = Math.min(95, Math.round(40 + (loadedCount / preloadCount) * 55));
+          if (bar) bar.style.width = `${pct}%`;
+          if (percentEl) percentEl.textContent = `${pct}%`;
+        })
+      );
     }
 
-    // Absolute fail-safe: Maximum 2-second timeout ceiling guarantees loader dismisses smoothly
-    const safetyTimeout = setTimeout(() => {
-      clearInterval(progressInterval);
+    // Dismiss loader quickly once initial batch is ready (or 600ms ceiling)
+    const dismissLoader = () => {
       if (bar) bar.style.width = "100%";
       if (percentEl) percentEl.textContent = "100%";
+      if (statusEl) statusEl.textContent = "AURELIS ATELIER READY";
       if (loader && !loader.classList.contains("done")) {
         loader.classList.add("done");
       }
@@ -270,42 +279,18 @@
         isRunning = true;
         render();
       }
-      streamRemainingFrames(25);
-    }, 2000);
+      // Stream remaining frames in background chunks
+      streamRemainingFrames(preloadCount);
+    };
 
-    let fakeProgress = 15;
-    const progressInterval = setInterval(() => {
-      fakeProgress += Math.floor(Math.random() * 9) + 6;
-      if (fakeProgress > 100) fakeProgress = 100;
+    const fastTimeout = setTimeout(dismissLoader, 600);
 
-      if (bar) bar.style.width = fakeProgress + "%";
-      if (percentEl) percentEl.textContent = fakeProgress + "%";
-      if (statusEl) {
-        if (fakeProgress < 40) {
-          statusEl.textContent = "SYNCHRONIZING ESCAPEMENT";
-        } else if (fakeProgress < 80) {
-          statusEl.textContent = "CALIBRATING 240 HOROLOGICAL FRAMES";
-        } else {
-          statusEl.textContent = "AURELIS ATELIER READY";
-        }
-      }
-
-      if (fakeProgress >= 100) {
-        clearInterval(progressInterval);
-        clearTimeout(safetyTimeout);
-        setTimeout(() => {
-          if (loader) loader.classList.add("done");
-          if (!isRunning) {
-            isRunning = true;
-            render();
-          }
-          // Stream remaining frames in background chunks
-          streamRemainingFrames(25);
-        }, 250);
-      }
-    }, 35);
-
-    await Promise.all(initialBatch);
+    try {
+      await Promise.all(initialBatch);
+    } finally {
+      clearTimeout(fastTimeout);
+      dismissLoader();
+    }
   }
 
   window.addEventListener("resize", resize, { passive: true });

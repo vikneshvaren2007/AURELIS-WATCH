@@ -348,11 +348,13 @@
                 <input type="email" id="loginEmail" class="form-input" placeholder="collector@domain.com" autocomplete="email" required>
               </div>
               <div class="form-group">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                  <label class="form-label" for="loginPassword" style="margin-bottom: 0;">Password *</label>
-                  <a href="forgot-password.html" style="font-size: 11.5px; color: var(--gold-primary); text-decoration: underline;">Forgot Password?</a>
-                </div>
+                <label class="form-label" for="loginPassword">Password *</label>
                 <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
+                <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+                  <a href="forgot-password.html" style="font-size: 11.5px; color: var(--gold-primary); text-decoration: underline; letter-spacing: 0.05em; transition: all 0.2s ease;">
+                    Forgot Password?
+                  </a>
+                </div>
               </div>
               <button type="submit" class="gold-btn" style="width: 100%; padding: 14px; font-size: 11.5px; letter-spacing: 0.15em; margin-top: 10px;" id="loginSubmitBtn">
                 SIGN IN TO ACCOUNT
@@ -664,7 +666,7 @@
       <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
       <div style="display: flex; align-items: center; gap: 20px;">
         <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
-        <a href="admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase;">ADMIN PANEL</a>
+        <a href="/admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase;">ADMIN PANEL</a>
       </div>
     </div>
   </footer>

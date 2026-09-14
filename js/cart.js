@@ -44,12 +44,30 @@ const Cart = {
   },
 
   async updateQty(itemId, quantity) {
-    if (quantity < 1) {
-      if (confirm("Remove this timepiece from your commission cart?")) {
-        await this.removeItem(itemId);
-      }
-      return;
-    }
+    if (quantity < 1) return;
+    const targetItem = (this.data.items || []).find(i => i.item_id === itemId);
+    if (!targetItem) return;
+
+    const prevQty = targetItem.quantity;
+    if (prevQty === quantity) return;
+
+    // Instant optimistic update for buttery-fast luxury responsiveness
+    targetItem.quantity = quantity;
+    targetItem.total_price = targetItem.price * quantity;
+
+    let newSubtotal = 0;
+    let newCount = 0;
+    (this.data.items || []).forEach(it => {
+      newSubtotal += it.price * it.quantity;
+      newCount += it.quantity;
+    });
+    this.data.subtotal = newSubtotal;
+    this.data.count = newCount;
+    this.data.tax = Math.round((newSubtotal * 18.0) / 100.0);
+    this.data.total = newSubtotal + (this.data.shipping || 0);
+
+    this.updateUI();
+
     try {
       await apiRequest(`/api/cart/${itemId}`, {
         method: "PUT",
@@ -57,7 +75,10 @@ const Cart = {
       });
       await this.fetchCart();
     } catch (e) {
-      showToast(e.message, "error");
+      targetItem.quantity = prevQty;
+      targetItem.total_price = targetItem.price * prevQty;
+      showToast(e.message || "Failed to update quantity", "error");
+      await this.fetchCart();
     }
   },
 
@@ -117,9 +138,10 @@ const Cart = {
         cartTableBody.innerHTML = this.data.items.map(item => {
           let itemImg = item.image_url || './assets/fallback-watch.svg';
           if (itemImg.startsWith('/')) itemImg = '.' + itemImg;
+          const isMin = item.quantity <= 1;
           return `
           <tr>
-            <td>
+            <td data-label="Timepiece">
               <div class="cart-item-flex">
                 <img src="${itemImg}" alt="${item.product_name}" class="cart-item-img" onerror="this.src='./assets/fallback-watch.svg'">
                 <div>
@@ -133,15 +155,15 @@ const Cart = {
                 </div>
               </div>
             </td>
-            <td>${formatINR(item.price)}</td>
-            <td>
-              <div class="qty-stepper" style="width: 100px;">
-                <button class="qty-btn" onclick="Cart.updateQty(${item.item_id}, ${item.quantity - 1})">-</button>
-                <input type="text" class="qty-input" value="${item.quantity}" readonly>
-                <button class="qty-btn" onclick="Cart.updateQty(${item.item_id}, ${item.quantity + 1})">+</button>
+            <td data-label="Price">${formatINR(item.price)}</td>
+            <td data-label="Quantity" style="white-space: nowrap !important; width: 120px !important;">
+              <div class="qty-stepper" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; background: #14120f !important; border: 1px solid #d9ae55 !important; border-radius: 4px !important; padding: 2px !important; height: 32px !important; width: auto !important; min-width: 96px !important; max-width: 106px !important; white-space: nowrap !important; box-sizing: border-box !important;">
+                <button type="button" class="qty-btn" onclick="Cart.updateQty(${item.item_id}, ${item.quantity - 1})" title="Decrease quantity" ${isMin ? 'disabled style="opacity:0.25;cursor:not-allowed;width:28px;height:26px;border:none;background:#14120f;color:#555;"' : 'style="width:28px !important;height:26px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;background:#1e1b15 !important;border:1px solid rgba(217,174,85,0.3) !important;border-radius:2px !important;color:#d9ae55 !important;font-size:14px !important;font-weight:700 !important;cursor:pointer !important;padding:0 !important;line-height:1 !important;user-select:none !important;flex-shrink:0 !important;"'}>&minus;</button>
+                <span class="qty-val" style="min-width: 34px !important; max-width: 38px !important; height: 26px !important; line-height: 26px !important; text-align: center !important; font-family: 'DM Sans', sans-serif !important; font-size: 13px !important; font-weight: 600 !important; color: #f5f0e7 !important; background: transparent !important; display: inline-block !important; user-select: none !important; border: none !important; padding: 0 4px !important; margin: 0 !important;">${item.quantity}</span>
+                <button type="button" class="qty-btn" onclick="Cart.updateQty(${item.item_id}, ${item.quantity + 1})" title="Increase quantity" style="width: 28px !important; height: 26px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; background: #1e1b15 !important; border: 1px solid rgba(217,174,85,0.3) !important; border-radius: 2px !important; color: #d9ae55 !important; font-size: 14px !important; font-weight: 700 !important; cursor: pointer !important; padding: 0 !important; line-height: 1 !important; user-select: none !important; flex-shrink: 0 !important;">&#43;</button>
               </div>
             </td>
-            <td style="font-family: var(--font-serif); font-weight: 600; color: var(--gold-light);">
+            <td data-label="Total" style="font-family: var(--font-serif); font-weight: 600; color: var(--gold-light);">
               ${formatINR(item.price * item.quantity)}
             </td>
           </tr>

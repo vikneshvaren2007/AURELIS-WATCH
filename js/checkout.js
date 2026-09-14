@@ -31,18 +31,18 @@ const Checkout = {
       let imgSrc = item.image_url || "./assets/fallback-watch.svg";
       if (imgSrc.startsWith("/")) imgSrc = "." + imgSrc;
       return `
-        <div style="display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
-          <img src="${imgSrc}" alt="${item.product_name}" style="width: 52px; height: 52px; object-fit: contain; background: #12100c; border-radius: 4px; border: 1px solid var(--border-subtle);" onerror="this.src='./assets/fallback-watch.svg'">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
+          <img src="${imgSrc}" alt="${item.product_name}" style="width: 48px; height: 48px; flex-shrink: 0; object-fit: contain; background: #12100c; border-radius: 4px; border: 1px solid var(--border-subtle);" onerror="this.src='./assets/fallback-watch.svg'">
           <div style="flex: 1; min-width: 0;">
-            <div style="font-size: 13.5px; font-weight: 600; color: var(--text-primary);">${item.product_name}</div>
+            <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); word-break: break-word;">${item.product_name}</div>
             <div style="font-size: 11px; color: var(--gold-primary); margin-top: 2px;">
               ${item.color_name || "Signature Edition"}${item.strap_color ? ` • ${item.strap_color}` : ""}
             </div>
-            <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
               Qty: ${item.quantity} &times; ${formatINR(item.price || item.unit_price)}
             </div>
           </div>
-          <div style="font-family: var(--font-serif); font-size: 14px; font-weight: 600; color: var(--text-primary);">
+          <div style="font-family: var(--font-serif); font-size: 13.5px; font-weight: 600; color: var(--text-primary); white-space: nowrap; margin-left: 8px;">
             ${formatINR((item.price || item.unit_price) * item.quantity)}
           </div>
         </div>
@@ -132,7 +132,11 @@ const Checkout = {
     return /^[6-9]\d{9}$/.test(cleaned) || (/^91[6-9]\d{9}$/.test(cleaned) && cleaned.length === 12);
   },
 
+  isSubmitting: false,
+
   async placeOrder() {
+    if (this.isSubmitting) return;
+
     const nameEl = document.getElementById("checkoutName");
     const emailEl = document.getElementById("checkoutEmail");
     const phoneEl = document.getElementById("checkoutPhone");
@@ -236,6 +240,7 @@ const Checkout = {
     };
 
     const submitBtn = document.getElementById("placeOrderBtn");
+    this.isSubmitting = true;
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = "COMMISSIONING TIMEPIECE...";
@@ -264,23 +269,32 @@ const Checkout = {
 
       // Reset client cart cache now that backend has cleared it in DB
       if (window.Cart) {
-        Cart.cart = { items: [], subtotal: 0, tax: 0, shipping: 0, total: 0, count: 0 };
-        Cart.updateBadges(0);
+        Cart.data = { items: [], subtotal: 0, tax: 0, shipping: 0, total: 0, count: 0 };
+        Cart.updateUI();
       }
 
-      showToast("Order recorded in atelier registry! Redirecting to payment portal...", "success");
-      setTimeout(() => {
-        window.location.href = `payment.html?order_id=${encodeURIComponent(res.order_number)}&method=${encodeURIComponent(this.selectedPaymentMethod)}`;
-      }, 400);
+      const isCod = this.selectedPaymentMethod === "COD";
+      if (isCod) {
+        showToast("Order placed successfully! Redirecting to acquisition confirmation...", "success");
+        setTimeout(() => {
+          window.location.href = `order-success.html?order_id=${encodeURIComponent(res.order_number)}`;
+        }, 500);
+      } else {
+        showToast("Order recorded in atelier registry! Redirecting to payment portal...", "success");
+        setTimeout(() => {
+          window.location.href = `payment.html?order_id=${encodeURIComponent(res.order_number)}&method=${encodeURIComponent(this.selectedPaymentMethod)}`;
+        }, 500);
+      }
 
     } catch (e) {
+      this.isSubmitting = false;
       const friendlyMsg = (e.message && !e.message.includes("status 500") && !e.message.includes("Failed to fetch"))
         ? e.message
         : "Something went wrong while placing your order. Please try again.";
       showToast(friendlyMsg, "error");
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.textContent = this.selectedPaymentMethod === "COD" ? "Place Order (Cash on Delivery)" : "Place Order (Proceed to Payment)";
+        submitBtn.textContent = this.selectedPaymentMethod === "COD" ? "PLACE ORDER (CASH ON DELIVERY)" : "PLACE ORDER (PROCEED TO PAYMENT)";
       }
     }
   },
@@ -295,11 +309,11 @@ const Checkout = {
     });
 
     const submitBtn = document.getElementById("placeOrderBtn");
-    if (submitBtn) {
+    if (submitBtn && !this.isSubmitting) {
       if (method === "COD") {
-        submitBtn.textContent = "Place Order (Cash on Delivery)";
+        submitBtn.textContent = "PLACE ORDER (CASH ON DELIVERY)";
       } else {
-        submitBtn.textContent = "Place Order (UPI / Demo Payment)";
+        submitBtn.textContent = "PLACE ORDER (PROCEED TO PAYMENT)";
       }
     }
   },

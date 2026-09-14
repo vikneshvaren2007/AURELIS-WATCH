@@ -13,7 +13,8 @@ const Admin = {
 
   checkProtection() {
     if (!this.isAuth() && !window.location.pathname.includes("login.html")) {
-      window.location.href = "login.html";
+      const page = window.location.pathname.split("/").pop() || "orders.html";
+      window.location.href = `login.html?redirect=${encodeURIComponent(page)}`;
     }
   },
 
@@ -604,6 +605,57 @@ const Admin = {
     }
   },
 
+  initMobileNavigation() {
+    const sidebar = document.querySelector(".admin-sidebar");
+    if (!sidebar) return;
+
+    // Create backdrop if not already existing
+    let backdrop = document.querySelector(".admin-sidebar-backdrop");
+    if (!backdrop) {
+      backdrop = document.createElement("div");
+      backdrop.className = "admin-sidebar-backdrop";
+      document.body.appendChild(backdrop);
+    }
+
+    const toggleSidebar = () => {
+      sidebar.classList.toggle("mobile-open");
+      backdrop.classList.toggle("active", sidebar.classList.contains("mobile-open"));
+    };
+
+    const closeSidebar = () => {
+      sidebar.classList.remove("mobile-open");
+      backdrop.classList.remove("active");
+    };
+
+    backdrop.addEventListener("click", closeSidebar);
+
+    // Auto-inject hamburger button in header if not already present
+    const header = document.querySelector(".admin-header");
+    if (header && !document.getElementById("adminMobileToggle")) {
+      const toggleBtn = document.createElement("button");
+      toggleBtn.type = "button";
+      toggleBtn.id = "adminMobileToggle";
+      toggleBtn.className = "admin-mobile-toggle";
+      toggleBtn.setAttribute("aria-label", "Toggle Menu");
+      toggleBtn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      `;
+      toggleBtn.addEventListener("click", toggleSidebar);
+      header.insertBefore(toggleBtn, header.firstChild);
+    }
+
+    // Close on nav link click
+    document.querySelectorAll(".admin-nav-item").forEach(link => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth <= 992) closeSidebar();
+      });
+    });
+  },
+
   setText(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
@@ -613,6 +665,7 @@ const Admin = {
 document.addEventListener("DOMContentLoaded", () => {
   if (window.location.pathname.includes("/admin/")) {
     Admin.checkProtection();
+    Admin.initMobileNavigation();
     if (document.getElementById("kpiTotalSales")) Admin.loadDashboard();
     if (document.getElementById("adminOrdersTable")) Admin.loadOrders();
     if (document.getElementById("adminInventoryTable")) Admin.loadInventory();

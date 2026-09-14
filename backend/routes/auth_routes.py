@@ -252,34 +252,96 @@ def forgot_password():
             user = cursor.fetchone()
 
             if user:
+                # Generate a secure 6-digit numeric OTP
+                otp_code = f"{secrets.randbelow(900000) + 100000}"
+                # Also generate secure token for URL fallback
                 token = secrets.token_urlsafe(32)
                 now_utc = datetime.datetime.now(datetime.timezone.utc)
                 expires_at = (now_utc + datetime.timedelta(minutes=15)).isoformat()
 
                 cursor.execute("""
                     UPDATE users
-                    SET reset_token = ?, reset_token_expires = ?, updated_at = CURRENT_TIMESTAMP
+                    SET reset_otp = ?, reset_otp_expires = ?, reset_otp_attempts = 0,
+                        reset_token = ?, reset_token_expires = ?, updated_at = CURRENT_TIMESTAMP
                     WHERE id = ?
-                """, (token, expires_at, user["id"]))
+                """, (otp_code, expires_at, token, expires_at, user["id"]))
 
-                origin = request.headers.get("Origin") or request.host_url.rstrip("/")
-                reset_link = f"{origin}/reset-password.html?token={token}"
-                EmailService.send_password_reset_email(user["email"], user["name"], token, reset_link)
+                # Send 6-digit OTP email to customer
+                email_sent = EmailService.send_otp_email(user["email"], user["name"], otp_code)
 
                 return jsonify({
-                    "message": "If an account with this email address exists in our atelier registry, a secure reset token has been dispatched to your inbox.",
                     "success": True,
-                    "reset_token": token,
-                    "token": token
+                    "message": "A 6-digit verification code has been dispatched to your email address.",
+                    "email": user["email"],
+                    "email_dispatched": bool(email_sent),
+                    "reset_token": token
                 }), 200
 
-            # Safe response even if user not found to protect privacy
+            # If user not found, provide clear actionable feedback
             return jsonify({
-                "message": "If an account with this email address exists in our atelier registry, a secure reset token has been dispatched to your inbox.",
-                "success": True
-            }), 200
+                "error": f"No collector account found matching '{email}'. Please check the spelling or create an account first.",
+                "success": False
+            }), 404
     except Exception as e:
         return jsonify({"error": f"Failed to process password recovery request: {str(e)}"}), 500
+
+@auth_bp.route("/verify-otp", methods=["POST"])
+def verify_otp():
+    data = request.get_json() or {}
+    email = data.get("email", "").strip().lower()
+    otp = str(data.get("otp", "")).strip()
+
+    if not email or not otp:
+        return jsonify({"error": "Email and 6-digit verification code are required"}), 400
+
+    if not otp.isdigit() or len(otp) != 6:
+        return jsonify({"error": "Please enter a valid 6-digit verification code"}), 400
+
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, name, email, reset_otp, reset_otp_expires, reset_otp_attempts, reset_token
+            FROM users WHERE LOWER(email) = ?
+        """, (email,))
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({"error": "No account associated with this email address"}), 404
+
+        attempts = user["reset_otp_attempts"] or 0
+        if attempts >= 5:
+            return jsonify({
+                "error": "Maximum verification attempts exceeded (5/5). For your security, please request a new verification code."
+            }), 429
+
+        # Increment attempts
+        cursor.execute("UPDATE users SET reset_otp_attempts = reset_otp_attempts + 1 WHERE id = ?", (user["id"],))
+
+        expires_str = user["reset_otp_expires"]
+        if not expires_str:
+            return jsonify({"error": "No active verification code found. Please request a new code."}), 400
+
+        try:
+            expires_dt = datetime.datetime.fromisoformat(expires_str)
+            if expires_dt.tzinfo is None:
+                expires_dt = expires_dt.replace(tzinfo=datetime.timezone.utc)
+            if datetime.datetime.now(datetime.timezone.utc) > expires_dt:
+                return jsonify({"error": "This verification code has expired (15-minute validity). Please request a new code."}), 400
+        except Exception:
+            pass
+
+        if str(user["reset_otp"]).strip() != otp:
+            remaining = 5 - (attempts + 1)
+            return jsonify({
+                "error": f"Invalid verification code. {remaining} attempt(s) remaining." if remaining > 0 else "Invalid code. Maximum attempts reached."
+            }), 400
+
+        return jsonify({
+            "success": True,
+            "message": "Verification code confirmed successfully.",
+            "email": user["email"],
+            "reset_token": user["reset_token"]
+        }), 200
 
 @auth_bp.route("/verify-reset-token", methods=["GET"])
 def verify_reset_token():
@@ -317,11 +379,13 @@ def verify_reset_token():
 def reset_password():
     data = request.get_json() or {}
     token = data.get("token", "").strip()
+    email = data.get("email", "").strip().lower()
+    otp = str(data.get("otp", "")).strip()
     new_password = data.get("new_password") or data.get("password") or ""
     confirm_password = data.get("confirm_password") or data.get("password") or ""
 
-    if not token:
-        return jsonify({"error": "Reset token is required"}), 400
+    if not token and (not email or not otp):
+        return jsonify({"error": "Reset authorization (token or verified OTP) is required"}), 400
     if not new_password or not confirm_password:
         return jsonify({"error": "New password and confirmation are required"}), 400
     if len(new_password) < 6:
@@ -331,34 +395,66 @@ def reset_password():
 
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT id, name, email, reset_token_expires FROM users WHERE reset_token = ?", (token,))
-        user = cursor.fetchone()
+        user = None
+
+        if token:
+            cursor.execute("""
+                SELECT id, name, email, reset_token_expires
+                FROM users WHERE reset_token = ?
+            """, (token,))
+            user = cursor.fetchone()
+            if not user:
+                return jsonify({"error": "Invalid or expired password reset token"}), 400
+
+            expires_str = user["reset_token_expires"]
+            if expires_str:
+                try:
+                    expires_dt = datetime.datetime.fromisoformat(expires_str)
+                    if expires_dt.tzinfo is None:
+                        expires_dt = expires_dt.replace(tzinfo=datetime.timezone.utc)
+                    if datetime.datetime.now(datetime.timezone.utc) > expires_dt:
+                        return jsonify({"error": "Reset authorization has expired. Please initiate a new recovery request."}), 400
+                except Exception:
+                    pass
+
+        elif email and otp:
+            cursor.execute("""
+                SELECT id, name, email, reset_otp, reset_otp_expires, reset_otp_attempts
+                FROM users WHERE LOWER(email) = ?
+            """, (email,))
+            user = cursor.fetchone()
+            if not user or str(user["reset_otp"]).strip() != otp:
+                return jsonify({"error": "Invalid or expired verification credentials"}), 400
+
+            expires_str = user["reset_otp_expires"]
+            if expires_str:
+                try:
+                    expires_dt = datetime.datetime.fromisoformat(expires_str)
+                    if expires_dt.tzinfo is None:
+                        expires_dt = expires_dt.replace(tzinfo=datetime.timezone.utc)
+                    if datetime.datetime.now(datetime.timezone.utc) > expires_dt:
+                        return jsonify({"error": "Reset authorization has expired. Please initiate a new recovery request."}), 400
+                except Exception:
+                    pass
 
         if not user:
-            return jsonify({"error": "Invalid or expired password reset token"}), 400
-
-        expires_str = user["reset_token_expires"]
-        if expires_str:
-            try:
-                expires_dt = datetime.datetime.fromisoformat(expires_str)
-                if expires_dt.tzinfo is None:
-                    expires_dt = expires_dt.replace(tzinfo=datetime.timezone.utc)
-                if datetime.datetime.now(datetime.timezone.utc) > expires_dt:
-                    return jsonify({"error": "Reset token has expired. Please initiate a new recovery request."}), 400
-            except Exception:
-                pass
+            return jsonify({"error": "User account could not be identified"}), 400
 
         new_hash = generate_password_hash(new_password)
         now_ist = datetime.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")
 
+        # Crucial: Preserves user ID, email, orders, addresses, and history
         cursor.execute("""
             UPDATE users
-            SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL, updated_at = ?
+            SET password_hash = ?,
+                reset_token = NULL, reset_token_expires = NULL,
+                reset_otp = NULL, reset_otp_expires = NULL, reset_otp_attempts = 0,
+                updated_at = ?
             WHERE id = ?
         """, (new_hash, now_ist, user["id"]))
 
         return jsonify({
-            "message": "Your password has been reset successfully.",
+            "message": "Your password has been reset successfully. You can now sign in with your new password.",
             "success": True
         }), 200
 

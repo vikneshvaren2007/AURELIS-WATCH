@@ -166,16 +166,23 @@ def serve_frames_2(filename):
 
 @app.route("/assets/<path:filename>")
 def serve_assets(filename):
-    return send_from_directory(FRONTEND_DIR / "assets", filename, conditional=True)
+    response = send_from_directory(FRONTEND_DIR / "assets", filename, conditional=True)
+    response.headers["Cache-Control"] = "public, max-age=86400"
+    return response
 
 @app.route("/css/<path:filename>")
 def serve_css(filename):
-    return send_from_directory(FRONTEND_DIR / "css", filename)
+    response = send_from_directory(FRONTEND_DIR / "css", filename)
+    response.headers["Cache-Control"] = "public, max-age=86400"
+    return response
 
 @app.route("/js/<path:filename>")
 def serve_js(filename):
-    return send_from_directory(FRONTEND_DIR / "js", filename)
+    response = send_from_directory(FRONTEND_DIR / "js", filename)
+    response.headers["Cache-Control"] = "public, max-age=86400"
+    return response
 
+@app.route("/admin")
 @app.route("/admin/")
 @app.route("/admin/index.html")
 def serve_admin_dashboard():

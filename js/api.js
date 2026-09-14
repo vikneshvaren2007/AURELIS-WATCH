@@ -6,6 +6,11 @@ function getApiBase() {
   if (window.AURELIS_API_BASE) return window.AURELIS_API_BASE;
   const origin = window.location.origin || "";
   const port = window.location.port || "";
+  const protocol = window.location.protocol || "";
+  // If running via file:// protocol
+  if (protocol === "file:" || !origin || origin === "null") {
+    return "http://127.0.0.1:5000";
+  }
   // If running via Live Server (typically port 5500 or any non-5000 local port)
   if (origin.includes("localhost") || origin.includes("127.0.0.1")) {
     if (port && port !== "5000") {
@@ -13,7 +18,14 @@ function getApiBase() {
     }
     return origin;
   }
-  return "";
+  // If accessed by local LAN IP (e.g. 192.168.x.x on non-5000 port)
+  if (/^https?:\/\/\d+\.\d+\.\d+\.\d+/.test(origin)) {
+    if (port && port !== "5000") {
+      return origin.replace(`:${port}`, ":5000");
+    }
+    return origin;
+  }
+  return origin || "";
 }
 
 const API_BASE = getApiBase();

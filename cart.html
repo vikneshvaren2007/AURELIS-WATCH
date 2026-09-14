@@ -9,7 +9,70 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/cart-checkout.css">
+  <link rel="stylesheet" href="css/cart-checkout.css?v=2.2">
+  <style>
+    /* Indestructible inline safety for Quantity Stepper */
+    .cart-table th:nth-child(3),
+    .cart-table td:nth-child(3) {
+      white-space: nowrap !important;
+      width: 120px !important;
+      text-align: center !important;
+    }
+    .qty-stepper {
+      display: inline-flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border: 1px solid #d9ae55 !important;
+      border-radius: 4px !important;
+      background: #14120f !important;
+      padding: 2px !important;
+      height: 32px !important;
+      width: auto !important;
+      min-width: 96px !important;
+      max-width: 108px !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+    }
+    .qty-btn {
+      width: 28px !important;
+      height: 26px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: #1e1b15 !important;
+      border: 1px solid rgba(217, 174, 85, 0.3) !important;
+      border-radius: 2px !important;
+      color: #d9ae55 !important;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      padding: 0 !important;
+      line-height: 1 !important;
+      flex-shrink: 0 !important;
+    }
+    .qty-val,
+    .qty-input {
+      width: 36px !important;
+      min-width: 34px !important;
+      max-width: 40px !important;
+      height: 26px !important;
+      line-height: 26px !important;
+      border: none !important;
+      background: transparent !important;
+      text-align: center !important;
+      color: #f5f0e7 !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      padding: 0 4px !important;
+      margin: 0 !important;
+      display: inline-block !important;
+      user-select: none !important;
+      pointer-events: none !important;
+      box-shadow: none !important;
+    }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
@@ -126,7 +189,7 @@
   <footer class="luxury-footer">
     <div class="container footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
       <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
-      <a href="admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase; transition: all 0.2s ease;">ADMIN PANEL</a>
+      <a href="/admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase; transition: all 0.2s ease;">ADMIN PANEL</a>
       <span>AURELIS HAUTE HORLOGERIE &bull; PRIVATE CLIENT CONCIERGE</span>
     </div>
   </footer>

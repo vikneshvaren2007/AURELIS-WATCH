@@ -412,6 +412,23 @@ def init_db():
             except Exception as e:
                 print(f"Migration note (address): {e}")
 
+        # Ensure reset_otp, reset_otp_expires, reset_otp_attempts exist in users table
+        if "reset_otp" not in user_cols:
+            try:
+                cursor.execute("ALTER TABLE users ADD COLUMN reset_otp TEXT")
+            except Exception as e:
+                print(f"Migration note (reset_otp): {e}")
+        if "reset_otp_expires" not in user_cols:
+            try:
+                cursor.execute("ALTER TABLE users ADD COLUMN reset_otp_expires TEXT")
+            except Exception as e:
+                print(f"Migration note (reset_otp_expires): {e}")
+        if "reset_otp_attempts" not in user_cols:
+            try:
+                cursor.execute("ALTER TABLE users ADD COLUMN reset_otp_attempts INTEGER DEFAULT 0")
+            except Exception as e:
+                print(f"Migration note (reset_otp_attempts): {e}")
+
         # Ensure strap_color and accent_color exist in product_variants table
         cursor.execute("PRAGMA table_info(product_variants)")
         variant_cols = {row[1] for row in cursor.fetchall()}
@@ -425,6 +442,21 @@ def init_db():
                 cursor.execute("ALTER TABLE product_variants ADD COLUMN accent_color TEXT DEFAULT ''")
             except Exception as e:
                 print(f"Migration note (accent_color): {e}")
+
+        # Database Performance Indexes (Requirement 17)
+        indexes_sql = [
+            "CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);",
+            "CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);",
+            "CREATE INDEX IF NOT EXISTS idx_orders_customer_email ON orders(customer_email);",
+            "CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number);",
+            "CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);",
+            "CREATE INDEX IF NOT EXISTS idx_product_variants_product_id ON product_variants(product_id);"
+        ]
+        for idx_query in indexes_sql:
+            try:
+                cursor.execute(idx_query)
+            except Exception as e:
+                print(f"Index creation note: {e}")
                     
     print("Database schema initialized successfully.")
 

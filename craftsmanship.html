@@ -110,10 +110,37 @@
     @media (max-width: 850px) {
       .craft-pillar-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 30px;
       }
       .craft-hero {
-        height: 70vh;
-        min-height: 520px;
+        height: 65vh;
+        min-height: 460px;
+      }
+    }
+    @media (max-width: 600px) {
+      .craft-hero {
+        height: 55vh;
+        min-height: 380px;
+      }
+      .craft-pillar-card {
+        padding: 24px 18px;
+      }
+      .spec-table-box {
+        padding: 20px 14px;
+        margin-top: 30px;
+      }
+      .spec-table {
+        table-layout: fixed;
+        width: 100%;
+      }
+      .spec-table td {
+        padding: 12px 8px;
+        font-size: 12px;
+        word-break: break-word;
+      }
+      .spec-table td:first-child {
+        width: 40%;
       }
     }
   </style>

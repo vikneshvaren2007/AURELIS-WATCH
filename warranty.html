@@ -31,7 +31,7 @@
     }
     .warranty-card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
       gap: 30px;
       margin: 40px 0;
     }
@@ -54,6 +54,27 @@
     .cert-tr { top: 6px; right: 6px; border-left: none; border-bottom: none; }
     .cert-bl { bottom: 6px; left: 6px; border-right: none; border-top: none; }
     .cert-br { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+
+    @media (max-width: 600px) {
+      .warranty-page-header {
+        padding: 85px 4vw 35px;
+      }
+      .warranty-card-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin: 25px 0;
+      }
+      .cert-box {
+        padding: 24px 16px;
+        margin: 30px 0;
+      }
+      .shield-badge {
+        width: 58px;
+        height: 58px;
+        font-size: 26px;
+        margin-bottom: 14px;
+      }
+    }
   </style>
 </head>
 <body>

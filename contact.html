@@ -10,6 +10,27 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/cart-checkout.css">
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 50px;
+    }
+    @media (max-width: 850px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      main[style*="padding: 130px"] {
+        padding: 90px 4vw 60px !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .contact-grid .luxury-card {
+        padding: 24px 18px !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
@@ -61,7 +82,7 @@
         </p>
       </section>
 
-      <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 50px;">
+      <div class="contact-grid">
         <!-- Left: Atelier Address & Concierge Info -->
         <div>
           <div class="luxury-card" style="padding: 35px; margin-bottom: 30px;">

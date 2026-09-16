@@ -332,16 +332,23 @@
 
 @media (max-width: 900px) {
   .pdp-wrapper {
-    padding: 100px 5vw 50px;
+    padding: 90px 4.5vw 40px;
   }
   .pdp-grid {
     grid-template-columns: 1fr;
+    gap: 35px;
   }
   .pdp-gallery {
     position: static;
   }
   .pdp-actions-row {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .pdp-actions-row .gold-btn,
+  .pdp-actions-row .gold-btn-outline {
+    width: 100%;
+    text-align: center;
   }
   .pdp-assurances {
     grid-template-columns: 1fr;
@@ -349,13 +356,77 @@
   }
   .specs-section {
     margin-top: 40px;
-    padding-top: 40px;
+    padding-top: 35px;
+  }
+  .specs-table {
+    table-layout: fixed;
+    width: 100%;
   }
   .specs-table td {
     padding: 12px 10px;
     font-size: 12px;
+    word-break: break-word;
   }
   .specs-table td:first-child {
-    width: 40%;
+    width: 38%;
+  }
+}
+
+@media (max-width: 600px) {
+  .pdp-thumbnails {
+    gap: 10px;
+  }
+  .pdp-thumb {
+    width: 64px;
+    height: 64px;
+  }
+  .variant-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .variant-option-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 6px 10px;
+  }
+  .variant-card-thumb {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pdp-wrapper {
+    padding: 78px 4vw 35px;
+  }
+  .pdp-title {
+    font-size: clamp(24px, 6.5vw, 32px);
+  }
+  .pdp-price {
+    font-size: 28px;
+  }
+  .pdp-price-box {
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 0;
+  }
+  .pdp-assurances {
+    padding: 18px 0;
+  }
+  .qty-stepper {
+    max-width: 160px;
+    margin: 0 auto;
+    height: 38px;
+  }
+}
+
+@media (max-width: 340px) {
+  .variant-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .pdp-thumb {
+    width: 54px;
+    height: 54px;
   }
 }

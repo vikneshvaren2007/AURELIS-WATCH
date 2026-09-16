@@ -112,3 +112,98 @@ function formatINR(amount) {
     maximumFractionDigits: 0
   }).format(amount || 0);
 }
+
+/* ==========================================================================
+   AURELIS — Universal Mobile Navigation Controller
+   Ensures hamburger toggle, outside-click close, ESC dismiss, and active states
+   work seamlessly across all pages without duplicate event listeners.
+   ========================================================================== */
+function initAurelisMobileNav() {
+  const nav = document.querySelector(".nav") || document.getElementById("mainNav");
+  if (!nav) return;
+
+  const navLinks = nav.querySelector(".nav-links") || document.getElementById("navLinks");
+  if (!navLinks) return;
+
+  let mobileBtn = nav.querySelector(".mobile-toggle") || document.getElementById("mobileMenuBtn");
+  if (!mobileBtn) {
+    mobileBtn = document.createElement("button");
+    mobileBtn.className = "mobile-toggle";
+    mobileBtn.id = "mobileMenuBtn";
+    mobileBtn.setAttribute("aria-label", "Toggle Navigation");
+    mobileBtn.setAttribute("aria-expanded", "false");
+    mobileBtn.innerHTML = `
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    `;
+    const actions = nav.querySelector(".nav-actions");
+    if (actions) {
+      actions.appendChild(mobileBtn);
+    } else {
+      nav.appendChild(mobileBtn);
+    }
+  }
+
+  if (mobileBtn._hasAurelisNavListener) return;
+  mobileBtn._hasAurelisNavListener = true;
+
+  function openMenu() {
+    navLinks.classList.add("open");
+    mobileBtn.classList.add("active");
+    mobileBtn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    navLinks.classList.remove("open");
+    mobileBtn.classList.remove("active");
+    mobileBtn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  mobileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (navLinks.classList.contains("open")) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  navLinks.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      closeMenu();
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (navLinks.classList.contains("open") && !navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navLinks.classList.contains("open")) {
+      closeMenu();
+    }
+  });
+
+  try {
+    const currentPath = window.location.pathname.split("/").pop() || "index.html";
+    navLinks.querySelectorAll("a").forEach(a => {
+      const href = a.getAttribute("href") || "";
+      if (href === currentPath || (currentPath === "" && href === "index.html")) {
+        a.classList.add("active");
+      }
+    });
+  } catch (err) {}
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAurelisMobileNav);
+} else {
+  initAurelisMobileNav();
+}

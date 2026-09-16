@@ -672,7 +672,8 @@
     gap: 8px;
   }
   .product-card-actions .gold-btn,
-  .product-card-actions .gold-btn-outline {
+  .product-card-actions .gold-btn-outline,
+  .product-card-actions .dark-btn {
     width: 100%;
     text-align: center;
     padding: 11px 16px;

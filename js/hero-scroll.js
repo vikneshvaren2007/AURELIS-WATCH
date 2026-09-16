@@ -169,7 +169,11 @@
       if (progress <= 0.18) {
         const introOpacity = Math.max(0, 1 - (progress / 0.18));
         introWrap.style.opacity = introOpacity;
-        introWrap.style.transform = `translateY(calc(-50% - ${progress * 50}px))`;
+        if (window.innerWidth <= 768) {
+          introWrap.style.transform = `translateY(-${progress * 35}px)`;
+        } else {
+          introWrap.style.transform = `translateY(calc(-50% - ${progress * 50}px))`;
+        }
         introWrap.style.pointerEvents = introOpacity > 0.2 ? "auto" : "none";
       } else {
         introWrap.style.opacity = "0";

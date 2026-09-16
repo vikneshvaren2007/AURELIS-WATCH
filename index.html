@@ -70,6 +70,86 @@
       .warranty-feat-card { padding: 16px 14px; }
       .warranty-grid { gap: 20px; }
     }
+
+    /* Masterpiece Collection Grid */
+    .masterpiece-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 24px;
+    }
+    @media (max-width: 640px) {
+      .masterpiece-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+    }
+
+    /* Manifesto Stats Grid */
+    .manifesto-stats-grid {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 600px) {
+      .manifesto-stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px 16px;
+      }
+    }
+
+    /* Specifications Showcase Grid */
+    .specs-showcase-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .specs-showcase-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    /* Assurances Grid */
+    .assurances-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      text-align: center;
+    }
+    @media (max-width: 640px) {
+      .assurances-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 22px 14px;
+      }
+    }
+    @media (max-width: 400px) {
+      .assurances-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+    }
+
+    /* Final CTA Section */
+    .final-cta-heading {
+      font-size: clamp(34px, 7.5vw, 104px);
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      margin: 0 0 28px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    @media (max-width: 600px) {
+      .final-cta-section {
+        padding: 60px 4vw !important;
+      }
+      .final-cta-heading {
+        font-size: clamp(28px, 8.5vw, 42px);
+        margin-bottom: 18px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -526,7 +606,7 @@
           </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+        <div class="masterpiece-grid">
           <!-- Masterpiece 1: Tourbillon Squelette -->
           <div class="product-card" style="border: 1px solid rgba(212,175,55,0.4); background: rgba(18,16,13,0.7); box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
             <div class="product-card-badges">
@@ -699,7 +779,7 @@
           <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.9; margin-bottom: 30px;">
             AURELIS was established to make luxury horological architecture accessible. We combine 316L solid surgical steel, scratch-resistant sapphire crystals, and precise Japanese movements into commanding designs. Every timepiece is individually inspected and certified at our Tenkasi atelier prior to dispatch.
           </p>
-          <div style="display: flex; gap: 40px; flex-wrap: wrap;">
+          <div class="manifesto-stats-grid">
             <div>
               <span style="font-family: var(--font-serif); font-size: 38px; color: var(--gold-primary); display: block;">316L</span>
               <span style="font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase;">Solid Surgical Steel</span>
@@ -793,7 +873,7 @@
     <!-- SECTION: CRAFTSMANSHIP & MATERIALS SPECIFICATIONS -->
     <section class="section-padding" style="background: linear-gradient(135deg, #090806 0%, #14120e 100%); border-bottom: 1px solid var(--border-subtle);">
       <div class="container">
-        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center;">
+        <div class="specs-showcase-grid">
           <div>
             <p class="eyebrow">HIGH HOROLOGY SPECIFICATIONS</p>
             <h2 style="font-size: clamp(32px, 4vw, 52px); margin: 14px 0 24px;">Artisanal Metal.<br><em>Calibrated Balance.</em></h2>
@@ -863,7 +943,7 @@
 
     <!-- SECTION: ASSURANCES & GUARANTEES -->
     <section style="background: #090807; padding: 60px 5vw; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
-      <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; text-align: center;">
+      <div class="container assurances-grid">
         <div>
           <h4 style="color: var(--gold-primary); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">COMPLIMENTARY SHIPPING</h4>
           <p style="color: var(--text-secondary); font-size: 12px;">Fully insured door-to-door transit across India.</p>
@@ -884,11 +964,11 @@
     </section>
 
     <!-- SECTION: FINAL CTA -->
-    <section class="final-cta-section" id="final-cta" style="background: radial-gradient(circle at 50% 40%, #171511 0%, #080706 70%, #040403 100%); padding: 140px 5vw; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); position: relative; overflow: hidden; text-align: center;">
+    <section class="final-cta-section" id="final-cta">
       <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(214, 179, 106, 0.08) 0%, transparent 60%); pointer-events: none;"></div>
       <div class="container" style="max-width: 860px; margin: 0 auto; position: relative; z-index: 2;">
         <p class="eyebrow" style="letter-spacing: 0.32em; margin-bottom: 22px;">THE FINAL MOMENT</p>
-        <h2 style="font-size: clamp(52px, 8vw, 104px); line-height: 0.90; letter-spacing: -0.04em; margin: 0 0 28px; text-transform: uppercase; font-weight: 500;">
+        <h2 class="final-cta-heading">
           OWN YOUR<br><em style="color: var(--gold-primary); font-style: italic; font-weight: 400; text-shadow: 0 0 40px rgba(214, 179, 106, 0.25);">SECOND.</em>
         </h2>
         <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.85; max-width: 520px; margin: 0 auto 40px;">
@@ -975,21 +1055,6 @@
     window.FRAME_COUNT = 240;
     window.FRAME_EXT = ".jpg";
 
-    // Responsive Mobile Menu Drawer Toggle
-    document.addEventListener("DOMContentLoaded", () => {
-      const mobileBtn = document.getElementById("mobileMenuBtn");
-      const navLinks = document.getElementById("navLinks");
-      if (mobileBtn && navLinks) {
-        mobileBtn.addEventListener("click", () => {
-          navLinks.classList.toggle("open");
-        });
-        navLinks.querySelectorAll("a").forEach(link => {
-          link.addEventListener("click", () => {
-            navLinks.classList.remove("open");
-          });
-        });
-      }
-    });
 
     // Home Page Interactive Watch Color Variant Switcher
     const HomeVariantSwitcher = {

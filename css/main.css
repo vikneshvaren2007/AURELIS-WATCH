@@ -48,6 +48,7 @@ html {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   max-width: 100%;
+  width: 100%;
 }
 
 body {
@@ -56,10 +57,17 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   max-width: 100%;
+  width: 100%;
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+main {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 img, video, iframe, canvas {

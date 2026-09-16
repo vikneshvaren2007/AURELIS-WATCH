@@ -521,9 +521,9 @@
   }
 
   .hero-intro-wrap {
-    top: 18vh;
-    left: 6vw;
-    right: 6vw;
+    top: 82px;
+    left: 5vw;
+    right: 5vw;
     transform: none;
     max-width: 100%;
   }
@@ -584,9 +584,10 @@
 
 @media (max-width: 480px) {
   .hero-intro-wrap {
-    top: 14vh;
-    left: 5vw;
-    right: 5vw;
+    top: 76px;
+    left: 4.5vw;
+    right: 4.5vw;
+    transform: none;
   }
 
   .hero-eyebrow-brand {
@@ -660,9 +661,10 @@
 
 @media (max-width: 360px) {
   .hero-intro-wrap {
-    top: 12vh;
-    left: 4vw;
-    right: 4vw;
+    top: 70px;
+    left: 3.5vw;
+    right: 3.5vw;
+    transform: none;
   }
 
   .hero-eyebrow-brand {
@@ -972,5 +974,12 @@
   .craft-scrubber-bar-wrap {
     margin-top: 8px;
     width: 100%;
+  }
+  .craft-scrubber-label-row span:nth-child(2) {
+    display: none;
+  }
+  .craft-scrubber-label-row {
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
   }
 }

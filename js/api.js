@@ -147,7 +147,12 @@ function initAurelisMobileNav() {
     }
   }
 
-  if (mobileBtn._hasAurelisNavListener) return;
+  // Replace button with clean clone to strip any conflicting/duplicate inline listeners
+  const freshBtn = mobileBtn.cloneNode(true);
+  if (mobileBtn.parentNode) {
+    mobileBtn.parentNode.replaceChild(freshBtn, mobileBtn);
+    mobileBtn = freshBtn;
+  }
   mobileBtn._hasAurelisNavListener = true;
 
   function openMenu() {

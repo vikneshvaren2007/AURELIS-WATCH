@@ -77,6 +77,32 @@ def test_universal_nav_controller():
     assert "Escape" in api_js, "Escape key dismiss not found in js/api.js"
     print("PASS: Universal mobile navigation controller verified in js/api.js.")
 
+def test_no_duplicate_inline_listeners():
+    html_files = [f for f in ROOT_DIR.glob("*.html") if not f.name.startswith("admin")]
+    for hf in html_files:
+        content = hf.read_text(encoding="utf-8", errors="ignore")
+        # Ensure no inline script binds mobileMenuBtn
+        assert "getElementById(\"mobileMenuBtn\").addEventListener" not in content, f"Found inline mobile listener in {hf.name}"
+        assert 'getElementById("mobileMenuBtn").addEventListener' not in content, f"Found inline mobile listener in {hf.name}"
+        if "mobileBtn.addEventListener" in content:
+            assert False, f"Found inline mobileBtn listener in {hf.name}"
+    print(f"PASS: No duplicate/conflicting inline mobile menu listeners across all {len(html_files)} HTML pages.")
+
+def test_homepage_responsive_sections():
+    index_html = (ROOT_DIR / "index.html").read_text(encoding="utf-8")
+    assert 'class="masterpiece-grid"' in index_html, "masterpiece-grid class missing in index.html"
+    assert 'class="manifesto-stats-grid"' in index_html, "manifesto-stats-grid class missing in index.html"
+    assert 'class="specs-showcase-grid"' in index_html, "specs-showcase-grid class missing in index.html"
+    assert 'class="container assurances-grid"' in index_html, "assurances-grid class missing in index.html"
+    assert 'class="final-cta-heading"' in index_html, "final-cta-heading class missing in index.html"
+    print("PASS: index.html responsive classes correctly implemented.")
+
+def test_hero_intro_mobile_transform():
+    hero_scroll = (ROOT_DIR / "js" / "hero-scroll.js").read_text(encoding="utf-8")
+    assert "window.innerWidth <= 768" in hero_scroll, "Mobile breakpoint check missing in hero-scroll.js"
+    assert "introWrap.style.transform = `translateY(-${progress * 35}px)`" in hero_scroll, "Mobile introWrap transform missing in hero-scroll.js"
+    print("PASS: hero-scroll.js properly protects hero intro from negative Y clipping on mobile.")
+
 if __name__ == "__main__":
     print("\n" + "="*60)
     print("RUNNING MOBILE RESPONSIVENESS VALIDATION")
@@ -86,6 +112,10 @@ if __name__ == "__main__":
     test_media_queries_defined()
     test_no_horizontal_overflow_patterns()
     test_universal_nav_controller()
+    test_no_duplicate_inline_listeners()
+    test_homepage_responsive_sections()
+    test_hero_intro_mobile_transform()
     print("\n" + "="*60)
     print("ALL RESPONSIVE CHECKS PASSED (100% SUCCESS)")
     print("="*60 + "\n")
+

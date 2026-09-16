@@ -160,8 +160,17 @@
     @keyframes spinGear {
       to { transform: rotate(360deg); }
     }
+    .card-input-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
     @media (max-width: 600px) {
       .pay-tabs { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 420px) {
+      .card-input-grid { grid-template-columns: 1fr; gap: 10px; }
     }
   </style>
 </head>
@@ -313,7 +322,7 @@
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 20px;">
+          <div class="card-input-grid">
             <div class="form-group">
               <label class="form-label">Dummy Card Number</label>
               <input type="text" class="form-input" value="4532 8921 4450 8899" readonly style="background: #060605; font-family: monospace;">

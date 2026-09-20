@@ -135,17 +135,7 @@ def get_product_detail(identifier):
 
         product = dict_from_row(cursor.fetchone())
         if not product:
-            # Fallback to first active product
-            cursor.execute("""
-                SELECT p.*, c.name as category_name 
-                FROM products p 
-                LEFT JOIN categories c ON p.category_id = c.id 
-                WHERE (p.is_active = 1 OR p.is_active IS NULL)
-                ORDER BY p.id ASC LIMIT 1
-            """)
-            product = dict_from_row(cursor.fetchone())
-            if not product:
-                return jsonify({"error": "Timepiece not found"}), 404
+            return jsonify({"error": "Timepiece not found"}), 404
 
         if product.get("specifications"):
             try:

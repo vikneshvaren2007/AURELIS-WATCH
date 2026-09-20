@@ -421,7 +421,7 @@
   }
 }
 
-@media (max-width: 340px) {
+@media (max-width: 360px) {
   .variant-cards-grid {
     grid-template-columns: 1fr;
   }

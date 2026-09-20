@@ -47,7 +47,22 @@ function getAdminToken() {
   return localStorage.getItem("aurelis_admin_token") || "";
 }
 
-async function apiRequest(endpoint, options = {}) {
+async function apiRequest(endpoint, options = {}, extraBody = null) {
+  // Support both apiRequest(url, { method: "POST", body: JSON.stringify(data) })
+  // and apiRequest(url, "POST", data)
+  if (typeof options === "string") {
+    const method = options.toUpperCase();
+    const opts = { method };
+    if (extraBody !== null && extraBody !== undefined) {
+      if (typeof extraBody === "object" && !(extraBody instanceof FormData)) {
+        opts.body = JSON.stringify(extraBody);
+      } else {
+        opts.body = extraBody;
+      }
+    }
+    options = opts;
+  }
+
   const url = `${API_BASE}${endpoint}`;
   const headers = options.headers || {};
 

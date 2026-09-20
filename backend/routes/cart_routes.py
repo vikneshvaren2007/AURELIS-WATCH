@@ -89,7 +89,10 @@ def add_to_cart():
     data = request.get_json() or {}
     product_id = data.get("product_id")
     variant_id = data.get("variant_id")
-    quantity = int(data.get("quantity", 1))
+    try:
+        quantity = int(data.get("quantity", 1))
+    except (ValueError, TypeError):
+        return jsonify({"error": "Quantity must be a valid integer"}), 400
 
     if not variant_id and product_id:
         with get_db() as conn:
@@ -145,7 +148,10 @@ def add_to_cart():
 @cart_bp.route("/<int:item_id>", methods=["PUT"])
 def update_cart_item(item_id):
     data = request.get_json() or {}
-    quantity = int(data.get("quantity", 1))
+    try:
+        quantity = int(data.get("quantity", 1))
+    except (ValueError, TypeError):
+        return jsonify({"error": "Quantity must be a valid integer"}), 400
 
     with get_db() as conn:
         cursor = conn.cursor()

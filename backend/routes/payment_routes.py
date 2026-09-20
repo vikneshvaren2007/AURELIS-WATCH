@@ -295,3 +295,128 @@ def dummy_pay():
             "payment_status": new_payment_status,
             "order_status": new_order_status
         })
+
+@payment_bp.route("/webhook", methods=["POST"])
+def payment_webhook():
+    """
+    Razorpay Webhook Handler.
+    Validates HMAC-SHA256 signature, processes payment.captured and order.paid events,
+    provides duplicate webhook protection (idempotency), updates order and payment records,
+    and safely dispatches notifications.
+    """
+    signature = request.headers.get("X-Razorpay-Signature", "")
+    raw_body = request.get_data()
+
+    if not PaymentService.verify_webhook_signature(raw_body, signature):
+        return jsonify({"error": "Invalid webhook cryptographic signature"}), 400
+
+    try:
+        event_data = request.get_json(force=True) or {}
+    except Exception:
+        return jsonify({"error": "Invalid JSON payload"}), 400
+
+    event_id = event_data.get("event_id") or event_data.get("id")
+    event_type = event_data.get("event")
+    payload = event_data.get("payload", {})
+    payment_entity = payload.get("payment", {}).get("entity", {})
+    order_entity = payload.get("order", {}).get("entity", {})
+
+    razorpay_payment_id = payment_entity.get("id")
+    razorpay_order_id = payment_entity.get("order_id") or order_entity.get("id")
+    order_number = order_entity.get("receipt")
+    if not order_number and payment_entity.get("notes"):
+        order_number = payment_entity["notes"].get("order_number")
+    if not order_number and payment_entity.get("description"):
+        order_number = payment_entity["description"].split()[-1]
+
+    with get_db() as conn:
+        cursor = conn.cursor()
+
+        # Idempotency check: record webhook event if webhook_events table exists
+        if event_id:
+            try:
+                cursor.execute("SELECT id FROM webhook_events WHERE event_id = ?", (event_id,))
+                if cursor.fetchone():
+                    return jsonify({"status": "already_processed", "message": "Duplicate webhook event ignored"}), 200
+                cursor.execute("""
+                    INSERT INTO webhook_events (event_id, event_type, payload)
+                    VALUES (?, ?, ?)
+                """, (event_id, event_type, json.dumps(event_data)))
+            except Exception:
+                pass  # If table not yet present, continue with order-level idempotency
+
+        # Find matching order
+        order = None
+        if order_number:
+            cursor.execute("SELECT * FROM orders WHERE order_number = ?", (order_number,))
+            order = dict_from_row(cursor.fetchone())
+        if not order and razorpay_order_id:
+            cursor.execute("""
+                SELECT o.* FROM orders o
+                JOIN payments p ON p.order_id = o.id
+                WHERE p.gateway_order_id = ?
+            """, (razorpay_order_id,))
+            order = dict_from_row(cursor.fetchone())
+
+        if not order:
+            return jsonify({"status": "ignored", "message": "Order not found for event"}), 200
+
+        # Handle events
+        if event_type in ["payment.captured", "order.paid"]:
+            # Check if order is already marked as PAID (idempotency)
+            if order["payment_status"] == "PAID":
+                return jsonify({"status": "already_paid", "message": "Order already confirmed as paid"}), 200
+
+            cursor.execute("""
+                UPDATE orders
+                SET payment_status = 'PAID',
+                    order_status = 'CONFIRMED',
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+            """, (order["id"],))
+
+            cursor.execute("""
+                UPDATE payments
+                SET gateway_payment_id = COALESCE(?, gateway_payment_id),
+                    status = 'PAID'
+                WHERE gateway_order_id = ? OR order_id = ?
+            """, (razorpay_payment_id, razorpay_order_id, order["id"]))
+
+            cursor.execute("""
+                INSERT INTO order_status_history (order_id, status, notes)
+                VALUES (?, 'CONFIRMED', ?)
+            """, (order["id"], f"Payment confirmed via Razorpay Webhook ({event_type}). Txn ID: {razorpay_payment_id or 'N/A'}"))
+
+            # Fetch items and send confirmation
+            cursor.execute("SELECT * FROM order_items WHERE order_id = ?", (order["id"],))
+            from backend.database import dicts_from_rows
+            order_items = dicts_from_rows(cursor.fetchall())
+
+            order_updated = dict(order)
+            order_updated["payment_status"] = "PAID"
+            order_updated["order_status"] = "CONFIRMED"
+
+            try:
+                EmailService.notify_admin_new_order(order_updated, order_items)
+                EmailService.notify_admin_payment_event(order_updated, "PAID", razorpay_payment_id)
+                EmailService.notify_customer_order_confirmation(order_updated, order_items)
+            except Exception as email_err:
+                print(f"[Webhook Email Dispatch Note] {email_err}")
+
+            return jsonify({"status": "processed", "order_number": order["order_number"]}), 200
+
+        elif event_type in ["payment.failed"]:
+            cursor.execute("""
+                UPDATE orders SET payment_status = 'FAILED', updated_at = CURRENT_TIMESTAMP WHERE id = ?
+            """, (order["id"],))
+            cursor.execute("""
+                INSERT INTO order_status_history (order_id, status, notes)
+                VALUES (?, 'PAYMENT_FAILED', 'Payment failed via Razorpay Webhook')
+            """, (order["id"],))
+            try:
+                EmailService.notify_admin_payment_event(order, "FAILED", f"Webhook failure event: {event_id}")
+            except Exception:
+                pass
+            return jsonify({"status": "failure_recorded", "order_number": order["order_number"]}), 200
+
+        return jsonify({"status": "ignored", "event": event_type}), 200

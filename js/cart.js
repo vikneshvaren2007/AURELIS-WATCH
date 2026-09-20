@@ -64,7 +64,7 @@ const Cart = {
     this.data.subtotal = newSubtotal;
     this.data.count = newCount;
     this.data.tax = Math.round((newSubtotal * 18.0) / 100.0);
-    this.data.total = newSubtotal + (this.data.shipping || 0);
+    this.data.total = newSubtotal + this.data.tax + (this.data.shipping || 0);
 
     this.updateUI();
 
@@ -151,7 +151,10 @@ const Cart = {
                     🛡️ 6-Month Warranty
                   </span>
                   <p class="cart-item-sku">SKU: ${item.sku}</p>
-                  <button class="cart-item-remove" onclick="Cart.removeItem(${item.item_id})">Remove</button>
+                  <button type="button" class="cart-item-remove-link" onclick="Cart.removeItem(${item.item_id})" title="Remove item">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -1px; margin-right: 3px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Remove Item
+                  </button>
                 </div>
               </div>
             </td>
@@ -165,6 +168,17 @@ const Cart = {
             </td>
             <td data-label="Total" style="font-family: var(--font-serif); font-weight: 600; color: var(--gold-light);">
               ${formatINR(item.price * item.quantity)}
+            </td>
+            <td data-label="Action" style="text-align: center;">
+              <button type="button" class="cart-remove-item-btn" onclick="Cart.removeItem(${item.item_id})" title="Remove ${item.product_name} from cart">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+                Remove Item
+              </button>
             </td>
           </tr>
         `;

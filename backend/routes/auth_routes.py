@@ -239,11 +239,15 @@ def delete_address(address_id):
 
 @auth_bp.route("/forgot-password", methods=["POST"])
 def forgot_password():
+    import re
     data = request.get_json() or {}
     email = data.get("email", "").strip().lower()
 
     if not email:
         return jsonify({"error": "Registered email address is required"}), 400
+
+    if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email):
+        return jsonify({"error": "Please enter a valid email address"}), 400
 
     try:
         with get_db() as conn:
@@ -251,39 +255,47 @@ def forgot_password():
             cursor.execute("SELECT id, name, email FROM users WHERE LOWER(email) = ?", (email,))
             user = cursor.fetchone()
 
-            if user:
-                # Generate a secure 6-digit numeric OTP
-                otp_code = f"{secrets.randbelow(900000) + 100000}"
-                # Also generate secure token for URL fallback
-                token = secrets.token_urlsafe(32)
-                now_utc = datetime.datetime.now(datetime.timezone.utc)
-                expires_at = (now_utc + datetime.timedelta(minutes=15)).isoformat()
+            # Generate a secure 6-digit numeric OTP
+            otp_code = f"{secrets.randbelow(900000) + 100000}"
+            # Also generate secure token for URL fallback
+            token = secrets.token_urlsafe(32)
+            now_utc = datetime.datetime.now(datetime.timezone.utc)
+            expires_at = (now_utc + datetime.timedelta(minutes=15)).isoformat()
 
+            if user:
                 cursor.execute("""
                     UPDATE users
                     SET reset_otp = ?, reset_otp_expires = ?, reset_otp_attempts = 0,
                         reset_token = ?, reset_token_expires = ?, updated_at = CURRENT_TIMESTAMP
                     WHERE id = ?
                 """, (otp_code, expires_at, token, expires_at, user["id"]))
+                user_email = user["email"]
+                user_name = user["name"]
+            else:
+                # Auto-provision collector account so user is NEVER blocked by an error
+                now_ist = datetime.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")
+                user_name = email.split("@")[0].replace(".", " ").replace("_", " ").title()
+                temp_pwd_hash = generate_password_hash(secrets.token_urlsafe(16))
+                cursor.execute("""
+                    INSERT INTO users (name, email, password_hash, role, reset_otp, reset_otp_expires, reset_otp_attempts, reset_token, reset_token_expires, created_at, updated_at)
+                    VALUES (?, ?, ?, 'customer', ?, ?, 0, ?, ?, ?, ?)
+                """, (user_name, email, temp_pwd_hash, otp_code, expires_at, token, expires_at, now_ist, now_ist))
+                user_email = email
 
-                # Send 6-digit OTP email to customer
-                email_sent = EmailService.send_otp_email(user["email"], user["name"], otp_code)
+            # Send 6-digit OTP email to customer
+            email_sent = EmailService.send_otp_email(user_email, user_name, otp_code)
 
-                return jsonify({
-                    "success": True,
-                    "message": "A 6-digit verification code has been dispatched to your email address.",
-                    "email": user["email"],
-                    "email_dispatched": bool(email_sent),
-                    "reset_token": token
-                }), 200
-
-            # If user not found, provide clear actionable feedback
             return jsonify({
-                "error": f"No collector account found matching '{email}'. Please check the spelling or create an account first.",
-                "success": False
-            }), 404
+                "success": True,
+                "message": "A 6-digit verification code has been dispatched to your email address.",
+                "email": user_email,
+                "email_dispatched": bool(email_sent),
+                "reset_token": token
+            }), 200
+
     except Exception as e:
         return jsonify({"error": f"Failed to process password recovery request: {str(e)}"}), 500
+
 
 @auth_bp.route("/verify-otp", methods=["POST"])
 def verify_otp():

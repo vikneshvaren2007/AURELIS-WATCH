@@ -41,6 +41,7 @@ const ProductPage = {
       if (this.selectedVariant) {
         this.updateVariantDisplay();
       }
+      this.loadReviews(this.product.id);
     } catch (e) {
       showToast("Timepiece edition could not be loaded: " + e.message, "error");
     }
@@ -276,7 +277,13 @@ const ProductPage = {
     if (addBtn) {
       addBtn.addEventListener("click", async () => {
         if (!this.product) return;
-        const variantId = this.selectedVariant ? this.selectedVariant.id : 1;
+        const variantId = this.selectedVariant 
+          ? this.selectedVariant.id 
+          : (this.product.variants && this.product.variants.length > 0 ? this.product.variants[0].id : null);
+        if (!variantId) {
+          showToast("Please select an atelier edition variant", "error");
+          return;
+        }
         try {
           addBtn.disabled = true;
           addBtn.textContent = "COMMISSIONING...";
@@ -295,7 +302,13 @@ const ProductPage = {
     if (buyNowBtn) {
       buyNowBtn.addEventListener("click", async () => {
         if (!this.product) return;
-        const variantId = this.selectedVariant ? this.selectedVariant.id : 1;
+        const variantId = this.selectedVariant 
+          ? this.selectedVariant.id 
+          : (this.product.variants && this.product.variants.length > 0 ? this.product.variants[0].id : null);
+        if (!variantId) {
+          showToast("Please select an atelier edition variant", "error");
+          return;
+        }
         try {
           buyNowBtn.disabled = true;
           buyNowBtn.textContent = "PREPARING CHECKOUT...";
@@ -308,6 +321,131 @@ const ProductPage = {
         }
       });
     }
+
+    // Reviews Form Toggle & Submission
+    const openReviewBtn = document.getElementById("openReviewModalBtn");
+    const cancelReviewBtn = document.getElementById("cancelReviewBtn");
+    const reviewFormModal = document.getElementById("reviewFormModal");
+    const reviewForm = document.getElementById("pdpReviewForm");
+
+    if (openReviewBtn && reviewFormModal) {
+      openReviewBtn.addEventListener("click", () => {
+        reviewFormModal.style.display = reviewFormModal.style.display === "none" ? "block" : "none";
+      });
+    }
+
+    if (cancelReviewBtn && reviewFormModal) {
+      cancelReviewBtn.addEventListener("click", () => {
+        reviewFormModal.style.display = "none";
+      });
+    }
+
+    if (reviewForm) {
+      reviewForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!this.product) return;
+
+        const userName = document.getElementById("reviewAuthor")?.value.trim();
+        const rating = parseInt(document.getElementById("reviewRating")?.value || "5");
+        const title = document.getElementById("reviewTitle")?.value.trim();
+        const comment = document.getElementById("reviewComment")?.value.trim();
+
+        if (!title || !comment) {
+          showToast("Please provide both title and assessment", "error");
+          return;
+        }
+
+        try {
+          const submitBtn = reviewForm.querySelector("button[type='submit']");
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "TRANSMITTING...";
+          }
+
+          await apiRequest("/api/reviews", {
+            method: "POST",
+            body: JSON.stringify({
+              product_id: this.product.id,
+              user_name: userName || "Anonymous Collector",
+              rating,
+              title,
+              comment
+            })
+          });
+
+          showToast("Patron appraisal submitted successfully", "success");
+          reviewForm.reset();
+          if (reviewFormModal) reviewFormModal.style.display = "none";
+          await this.loadReviews(this.product.id);
+        } catch (err) {
+          showToast(err.message || "Failed to submit appraisal", "error");
+        } finally {
+          const submitBtn = reviewForm.querySelector("button[type='submit']");
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "TRANSMIT APPRAISAL";
+          }
+        }
+      });
+    }
+  },
+
+  async loadReviews(productId) {
+    const listEl = document.getElementById("pdpReviewsList");
+    if (!listEl) return;
+    try {
+      const res = await apiRequest(`/api/reviews/product/${productId}`);
+      const reviews = res.reviews || [];
+      if (reviews.length === 0) {
+        listEl.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 25px; border: 1px dashed var(--border-gold); text-align: center; border-radius: 4px;">
+            <p style="color: var(--gold-primary); font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 5px;">Be the inaugural patron to appraise this edition.</p>
+            <p style="color: var(--text-muted); font-size: 12px;">Share your discerning assessment of its chronometry, finishing, and wrist presence.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = reviews.map(rev => {
+        const starGold = '★'.repeat(rev.rating || 5);
+        const starMuted = '☆'.repeat(5 - (rev.rating || 5));
+        const author = this.escapeHtml(rev.user_name || "Collector");
+        const title = this.escapeHtml(rev.title || "Collector Appraisal");
+        const comment = this.escapeHtml(rev.comment || "");
+        const dateStr = rev.created_at ? rev.created_at.split(" ")[0] : "Verified Patron";
+
+        return `
+          <div style="background: rgba(18, 16, 13, 0.6); border: 1px solid rgba(217, 174, 85, 0.2); padding: 20px; border-radius: 4px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div style="color: var(--gold-primary); font-size: 14px; letter-spacing: 2px;">
+                  ${starGold}${starMuted}
+                </div>
+                <span style="font-size: 10.5px; color: var(--text-muted); letter-spacing: 0.05em;">${dateStr}</span>
+              </div>
+              <h4 style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 8px;">${title}</h4>
+              <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">${comment}</p>
+            </div>
+            <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 11px; font-weight: 500; color: var(--gold-primary); letter-spacing: 0.08em; text-transform: uppercase;">${author}</span>
+              <span style="font-size: 10px; color: #4ade80; background: rgba(74, 222, 128, 0.1); padding: 2px 6px; border-radius: 2px;">✓ Verified Patron</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    } catch (e) {
+      listEl.innerHTML = `<p style="color: var(--text-muted); font-size: 13px;">Unable to load appraisals at this moment.</p>`;
+    }
+  },
+
+  escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 };
 

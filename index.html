@@ -173,6 +173,34 @@
       </div>
     </div>
   </div>
+  <script>
+    (function() {
+      function dismissLoader() {
+        var l = document.getElementById("loader");
+        var b = document.getElementById("loaderBar");
+        var p = document.getElementById("loaderPercent");
+        if (b) b.style.width = "100%";
+        if (p) p.textContent = "100%";
+        if (l && !l.classList.contains("done")) {
+          l.classList.add("done");
+        }
+      }
+      var pct = 0;
+      var timer = setInterval(function() {
+        pct += 25;
+        var b = document.getElementById("loaderBar");
+        var p = document.getElementById("loaderPercent");
+        if (b) b.style.width = pct + "%";
+        if (p) p.textContent = pct + "%";
+        if (pct >= 100) {
+          clearInterval(timer);
+          dismissLoader();
+        }
+      }, 50);
+      window.addEventListener("load", dismissLoader);
+      setTimeout(dismissLoader, 350);
+    })();
+  </script>
 
   <!-- Luxury Navigation Bar -->
   <header class="nav" id="mainNav">
@@ -181,12 +209,12 @@
       <span class="brand-sub">Haute Horlogerie</span>
     </a>
     <nav class="nav-links" id="navLinks">
-      <a href="index.html" class="active">Atelier</a>
+      <a href="index.html" class="active">Home</a>
       <a href="shop.html">Collection</a>
-      <a href="#craft">Craftsmanship</a>
-      <a href="warranty.html">6-Month Warranty</a>
+      <a href="#craft">Craft</a>
+      <a href="warranty.html">Warranty</a>
       <a href="track-order.html">Track Order</a>
-      <a href="contact.html">Concierge</a>
+      <a href="contact.html">Contact</a>
     </nav>
     <div class="nav-actions">
       <a href="account.html" class="nav-icon-btn" title="Collector Account">
@@ -195,8 +223,8 @@
           <circle cx="12" cy="7" r="4"></circle>
         </svg>
       </a>
-      <a href="cart.html" class="nav-bag-link" id="navBagLink" title="Shopping Bag">
-        BAG (<span class="cart-badge-count" id="navBagCount">0</span>)
+      <a href="cart.html" class="nav-bag-link" id="navBagLink" title="Shopping Cart">
+        Cart (<span class="cart-badge-count" id="navBagCount">0</span>)
       </a>
       <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -212,7 +240,24 @@
     <!-- HERO SECTION: 240-FRAME SCROLLYTELLING ANIMATION SEQUENCE -->
     <section class="hero" id="hero">
       <div class="hero-sticky-stage">
-        <canvas id="watchCanvas" aria-label="Aurelis luxury chronograph 240-frame animation sequence"></canvas>
+        <!-- Dual Cinematic Video Stage -->
+        <div class="hero-video-container" id="heroVideoContainer">
+          <div class="hero-video-poster" id="heroPosterFallback" style="background-image: url('./assets/images/hero-poster-01.webp');"></div>
+          <video
+            class="hero-video hero-video-1 active"
+            id="heroVideo1"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            poster="./assets/images/hero-poster-01.webp"
+            aria-label="Aurelis Chronograph Caliber Sequence 1"
+          >
+            <source src="./assets/videos/hero-01-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+            <source src="./assets/videos/hero-01.mp4" type="video/mp4">
+          </video>
+        </div>
         <div class="hero-gradient-overlay"></div>
         <div class="hero-cinematic-outro-overlay" id="heroOutroOverlay"></div>
 
@@ -237,34 +282,17 @@
             </a>
             <a href="#craft" class="hero-cta-secondary" id="heroCraftBtn">
               <span>DISCOVER THE CRAFT</span>
-              <span style="font-size: 13px;">⚙</span>
             </a>
           </div>
         </div>
 
-        <!-- Minimalist Scroll Cue -->
-        <div class="hero-scroll-indicator" id="heroScrollCue">
-          <span class="indicator-line"></span>
-          <span>SCROLL TO EXPERIENCE CALIBER</span>
-        </div>
-
-        <!-- Minimalist Progress Indicator -->
-        <div class="hero-progress-tag" id="heroProgressTag">
-          <span>HOROLOGICAL FRAME</span>
-          <span class="progress-num" id="heroProgressNum">001 / 240</span>
-        </div>
-
-        <!-- 80% - 100%: Luxury Outro Statement -->
-        <div class="hero-outro-wrap" id="heroOutro">
-          <p class="eyebrow" style="letter-spacing: 0.32em; margin-bottom: 14px;">HAUTE HORLOGERIE MANIFESTO</p>
-          <h2 class="hero-outro-statement">CRAFTED FOR THE MOMENTS THAT MATTER.</h2>
-          <div class="hero-outro-line"></div>
-        </div>
       </div>
     </section>
 
     <!-- SECTION: 10 MASTERWORK WATCHES SHOWCASE -->
     <section class="section-padding" id="collection" style="background: #080706; border-top: 1px solid var(--border-subtle);">
+
+
       <div id="showcase"></div>
       <div class="container">
         <div style="text-align: center; max-width: 760px; margin: 0 auto 50px;">
@@ -804,23 +832,38 @@
     <!-- SECTION: CRAFTSMANSHIP & 3D EXPLODED MOVEMENT (FRAME 2 SCROLLYTELLING) -->
     <section class="craft-scrolly-section" id="craft">
       <div class="craft-sticky-stage">
-        <canvas id="craftCanvas" aria-label="AURELIS 3D exploded watch movement scrollytelling sequence"></canvas>
+        <!-- Craft 3D Exploded Movement Video Stage -->
+        <div class="craft-video-container" id="craftVideoContainer">
+          <video
+            class="craft-video"
+            id="craftVideo"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            poster="./assets/images/hero-poster-02.webp"
+            aria-label="Aurelis 3D exploded watch movement"
+          >
+            <source src="./assets/videos/hero-02-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+            <source src="./assets/videos/hero-02.mp4" type="video/mp4">
+          </video>
+        </div>
         <div class="craft-vignette"></div>
 
         <!-- Luxury Interactive HUD -->
         <div class="craft-hud-container">
           <div class="craft-hud-header">
             <div class="craft-header-left">
-              <p class="eyebrow" style="color: var(--gold-primary); margin-bottom: 6px;">HAUTE HORLOGERIE &bull; 3D DISASSEMBLY</p>
+              <p class="eyebrow" style="color: var(--gold-primary); margin-bottom: 6px;">HAUTE HORLOGERIE &bull; 3D CALIBER ARCHITECTURE</p>
               <h2>Internal Movement Architecture</h2>
               <p>
-                Scroll down to explode the 240-frame mechanical caliber; scroll up to reassemble with precision tolerances.
+                A high-precision 3D exploded view revealing the mechanical caliber, jewel bearings, and metallurgical architecture.
               </p>
             </div>
             <div class="craft-header-right">
-              <span class="craft-frame-badge" id="craftFrameNum">EXPLODED FRAME 001 / 240</span>
-              <span style="font-size: 10px; color: var(--gold-light); letter-spacing: 0.15em; text-transform: uppercase;">
-                🛡️ 6-Month Movement Warranty
+              <span style="font-size: 11px; color: var(--gold-light); letter-spacing: 0.15em; text-transform: uppercase;">
+                6-Month Movement Warranty
               </span>
             </div>
           </div>
@@ -828,27 +871,27 @@
           <!-- Component Callout Overlays -->
           <div class="craft-callouts-grid">
             <div class="craft-callout-item active" data-stage="0">
-              <div class="craft-callout-num">01 &bull; EXTERIOR</div>
+              <div class="craft-callout-num">01 EXTERIOR</div>
               <h4 class="craft-callout-title">Bezel & Sapphire</h4>
               <p class="craft-callout-desc">Flame-fusion scratchproof crystal & ceramic bezel</p>
             </div>
             <div class="craft-callout-item" data-stage="1">
-              <div class="craft-callout-num">02 &bull; CADRAN</div>
+              <div class="craft-callout-num">02 CADRAN</div>
               <h4 class="craft-callout-title">Guilloché Dial</h4>
               <p class="craft-callout-desc">Multi-layered textured dial with luminous hands</p>
             </div>
             <div class="craft-callout-item" data-stage="2">
-              <div class="craft-callout-num">03 &bull; HEART</div>
+              <div class="craft-callout-num">03 HEART</div>
               <h4 class="craft-callout-title">Caliber Movement</h4>
               <p class="craft-callout-desc">High-beat balance wheel, jewel bearings & rotor</p>
             </div>
             <div class="craft-callout-item" data-stage="3">
-              <div class="craft-callout-num">04 &bull; CHASSIS</div>
+              <div class="craft-callout-num">04 CHASSIS</div>
               <h4 class="craft-callout-title">316L Solid Case</h4>
               <p class="craft-callout-desc">Surgical-grade steel with dual-gasket crown</p>
             </div>
             <div class="craft-callout-item" data-stage="4">
-              <div class="craft-callout-num">05 &bull; FOUNDATION</div>
+              <div class="craft-callout-num">05 FOUNDATION</div>
               <h4 class="craft-callout-title">Exhibition & Clasp</h4>
               <p class="craft-callout-desc">Sapphire see-through back & deployant bracelet</p>
             </div>
@@ -862,7 +905,7 @@
             <input type="range" class="craft-scrubber-slider" id="craftScrubber" min="0" max="100" value="0" aria-label="Exploded view scrubber">
             <div class="craft-scrubber-label-row">
               <span>ASSEMBLED TIMEPIECE</span>
-              <span>INTERACTIVE HOROLOGY SCRUB</span>
+              <span>INTERACTIVE CALIBER EXPLORER</span>
               <span>FULL EXPLODED VIEW</span>
             </div>
           </div>
@@ -1151,10 +1194,10 @@
     };
     window.HomeVariantSwitcher = HomeVariantSwitcher;
   </script>
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/hero-scroll.js"></script>
-  <script src="js/craft-scroll.js"></script>
+  <script src="js/api.js?v=2.2"></script>
+  <script src="js/auth.js?v=2.2"></script>
+  <script src="js/cart.js?v=2.2"></script>
+  <script src="js/hero-scroll.js?v=2.2"></script>
+  <script src="js/craft-scroll.js?v=2.2"></script>
 </body>
 </html>

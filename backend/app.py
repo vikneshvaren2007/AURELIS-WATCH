@@ -133,7 +133,11 @@ def get_shop_frames():
         return [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]
 
     sorted_files = sorted(all_files, key=natural_sort_key)
-    frame_urls = [f"/{folder_name}/{name}" for name in sorted_files]
+
+    import urllib.parse
+    encoded_folder = urllib.parse.quote(folder_name)
+    frame_urls = [f"/{encoded_folder}/{urllib.parse.quote(name)}" for name in sorted_files]
+
 
     return jsonify({
         "status": "success",
@@ -173,13 +177,13 @@ def serve_assets(filename):
 @app.route("/css/<path:filename>")
 def serve_css(filename):
     response = send_from_directory(FRONTEND_DIR / "css", filename)
-    response.headers["Cache-Control"] = "public, max-age=86400"
+    response.headers["Cache-Control"] = "no-cache, must-revalidate"
     return response
 
 @app.route("/js/<path:filename>")
 def serve_js(filename):
     response = send_from_directory(FRONTEND_DIR / "js", filename)
-    response.headers["Cache-Control"] = "public, max-age=86400"
+    response.headers["Cache-Control"] = "no-cache, must-revalidate"
     return response
 
 @app.route("/admin")

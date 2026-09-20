@@ -9,31 +9,73 @@
 
 .hero {
   position: relative;
-  height: 380vh; /* Smooth scrollytelling distance across 240 frames */
+  height: 100vh;
+  height: 100svh;
+  min-height: 580px;
   background-color: var(--bg-primary);
+  overflow: hidden;
 }
 
 .hero-sticky-stage {
-  position: sticky;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   z-index: 2;
   background-color: var(--bg-primary);
 }
 
-/* Pinned High-Performance Canvas */
-#watchCanvas {
+
+/* Dual Cinematic Hero Video Stage */
+.hero-video-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: #080706;
+  overflow: hidden;
+}
+
+.hero-video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  display: block;
-  z-index: 1;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
   background-color: #080706;
+  will-change: opacity;
+}
+
+.hero-video.active,
+.hero-video-1 {
+  opacity: 1 !important;
+  z-index: 2;
+}
+
+.hero-video-poster {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+.hero-video-poster.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#watchCanvas {
+  display: none;
 }
 
 /* Subtle Cinematic Gradient for Negative Space Readability */
@@ -276,57 +318,16 @@
 }
 
 /* ==========================================================================
-   Scroll Cues & Luxury Indicators
+   Scroll Cues & Luxury Indicators (Video Play Line Removed per Request)
    ========================================================================== */
 .hero-scroll-indicator {
-  position: absolute;
-  bottom: 5vh;
-  left: 7vw;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: 9.5px;
-  letter-spacing: 0.24em;
-  color: var(--text-secondary);
-  z-index: 4;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.hero-scroll-indicator .indicator-line {
-  width: 36px;
-  height: 1px;
-  background: var(--gold-champagne);
-  display: inline-block;
-  animation: pulseLine 2.2s infinite ease-in-out;
-}
-
-@keyframes pulseLine {
-  0%, 100% { transform: scaleX(0.5); opacity: 0.4; }
-  50% { transform: scaleX(1); opacity: 1; }
+  display: none !important;
 }
 
 .hero-progress-tag {
-  position: absolute;
-  bottom: 5vh;
-  right: 7vw;
-  z-index: 4;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 9.5px;
-  letter-spacing: 0.24em;
-  color: var(--text-secondary);
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  display: none !important;
 }
 
-.hero-progress-tag .progress-num {
-  font-family: var(--font-serif);
-  font-size: 16px;
-  color: var(--gold-champagne);
-  font-weight: 500;
-}
 
 /* ==========================================================================
    Entrance Preloader (Instant Fallback Poster + Horology Gear Animation)
@@ -689,18 +690,20 @@
    ========================================================================== */
 .craft-scrolly-section {
   position: relative;
-  height: 320vh;
+  min-height: 85vh;
+  height: 92vh;
+  max-height: 960px;
   background: #080706;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
 }
 
 .craft-sticky-stage {
-  position: sticky;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  min-height: inherit;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -708,13 +711,31 @@
   background: #080706;
 }
 
-#craftCanvas {
+/* Craft Video Stage */
+.craft-video-container {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  display: block;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #080706;
+  overflow: hidden;
+}
+
+.craft-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
+  background-color: #080706;
+}
+
+#craftCanvas {
+  display: none;
 }
 
 .craft-vignette {
@@ -770,16 +791,7 @@
 }
 
 .craft-frame-badge {
-  font-family: var(--font-sans);
-  font-size: 10.5px;
-  letter-spacing: 0.2em;
-  color: var(--gold-light);
-  background: rgba(18, 16, 12, 0.85);
-  border: 1px solid var(--border-gold);
-  padding: 6px 14px;
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  display: none !important;
 }
 
 .craft-callouts-grid {
@@ -858,58 +870,10 @@
 }
 
 .craft-scrubber-bar-wrap {
-  width: 100%;
-  max-width: 580px;
-  margin: 15px auto 0;
-  pointer-events: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: none !important;
 }
 
-.craft-scrubber-track {
-  width: 100%;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 2px;
-  overflow: hidden;
-  position: relative;
-}
 
-.craft-scrubber-progress {
-  height: 100%;
-  width: 0%;
-  background: var(--gold-gradient);
-  transition: width 0.08s linear;
-}
-
-.craft-scrubber-slider {
-  width: 100%;
-  -webkit-appearance: none;
-  background: transparent;
-  cursor: pointer;
-  height: 12px;
-  margin: 0;
-}
-
-.craft-scrubber-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--gold-primary);
-  box-shadow: 0 0 10px rgba(214, 179, 106, 0.8);
-  cursor: ew-resize;
-}
-
-.craft-scrubber-label-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
 
 @media (max-width: 1100px) {
   .craft-callouts-grid {
@@ -919,7 +883,12 @@
 
 @media (max-width: 768px) {
   .craft-scrolly-section {
-    height: 260vh;
+    min-height: 640px;
+    height: auto;
+  }
+  .craft-sticky-stage {
+    min-height: 640px;
+    height: auto;
   }
   .craft-hud-container {
     padding: 80px 5vw 15px;

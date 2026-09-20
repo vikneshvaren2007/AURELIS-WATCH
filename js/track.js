@@ -208,7 +208,10 @@ const Track = {
 
     try {
       const reason = prompt("Please provide a reason for cancellation (optional):", "Customer requested cancellation");
-      const res = await apiRequest(`/api/orders/${orderNumber}/cancel`, "POST", { reason: reason || "Customer cancellation" });
+      const res = await apiRequest(`/api/orders/${orderNumber}/cancel`, {
+        method: "POST",
+        body: JSON.stringify({ reason: reason || "Customer cancellation" })
+      });
       showToast(res.message || "Order cancelled successfully", "success");
       // Reload order tracking
       await this.track(orderNumber, "");

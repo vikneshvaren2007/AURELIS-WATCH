@@ -122,6 +122,64 @@
   color: #e74c3c;
 }
 
+/* Dedicated Luxury Remove Item Button in Table */
+.cart-remove-item-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(231, 76, 60, 0.08);
+  border: 1px solid rgba(231, 76, 60, 0.35);
+  border-radius: 4px;
+  color: #e74c3c;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.cart-remove-item-btn:hover {
+  background: rgba(231, 76, 60, 0.22);
+  border-color: #e74c3c;
+  color: #ff6b5b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+}
+
+.cart-remove-item-btn:active {
+  transform: translateY(0);
+}
+
+/* Inline Remove Link under item info */
+.cart-item-remove-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(231, 76, 60, 0.06);
+  border: 1px solid rgba(231, 76, 60, 0.25);
+  border-radius: 3px;
+  color: #e74c3c;
+  font-size: 10px;
+  padding: 3px 8px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.cart-item-remove-link:hover {
+  background: rgba(231, 76, 60, 0.18);
+  color: #ff6b5b;
+  border-color: #e74c3c;
+}
+
 /* Compact Luxury Quantity Stepper */
 .cart-table th:nth-child(3),
 .cart-table td:nth-child(3) {
@@ -624,6 +682,49 @@
   }
   .order-summary-card {
     padding: 16px 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .checkout-layout {
+    padding: 15px 2vw 40px;
+    gap: 16px;
+  }
+  .cart-table th, .cart-table td {
+    padding: 10px 4px;
+  }
+  .coupon-box {
+    flex-direction: column;
+  }
+  .coupon-box button {
+    width: 100%;
+  }
+}
+
+/* Tracking Details Grid */
+.track-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .track-info-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+    padding: 16px 14px !important;
+  }
+}
+
+/* Card Preview & Responsive Payment */
+@media (max-width: 480px) {
+  .card-preview {
+    padding: 16px 14px;
+  }
+  .card-number-display {
+    font-size: clamp(13px, 4vw, 17px);
+    letter-spacing: 0.15em;
   }
 }
 

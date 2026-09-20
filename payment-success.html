@@ -90,12 +90,12 @@
       <span class="brand-sub">Haute Horlogerie</span>
     </a>
     <nav class="nav-links" id="navLinks">
-      <a href="index.html">Atelier</a>
+      <a href="index.html">Home</a>
       <a href="shop.html">Collection</a>
-      <a href="index.html#craft">Craftsmanship</a>
-      <a href="warranty.html">6-Month Warranty</a>
+      <a href="craftsmanship.html">Craft</a>
+      <a href="warranty.html">Warranty</a>
       <a href="track-order.html">Track Order</a>
-      <a href="contact.html">Concierge</a>
+      <a href="contact.html">Contact</a>
     </nav>
     <div class="nav-actions">
       <div style="font-size: 11px; letter-spacing: 0.15em; color: var(--gold-primary); text-transform: uppercase;">
@@ -210,49 +210,10 @@
         window.location.replace(`order-success.html?order_id=${encodeURIComponent(orderNumber)}&txn=${encodeURIComponent(txn)}`);
         return;
       }
-      return;
-
-      try {
-        const res = await apiRequest(`/api/orders/${orderNumber}`);
-        const order = res.order;
-        if (!order) return;
-
-        document.getElementById("displayCustomerName").textContent = order.customer_name || "-";
-        document.getElementById("displayCustomerContact").textContent = `${order.customer_email || ''} (${order.customer_phone || ''})`;
-        document.getElementById("displayOrderDate").textContent = order.created_at || new Date().toLocaleString("en-IN");
-        document.getElementById("displayPaymentMethod").textContent = order.payment_method || "UPI / Razorpay";
-        document.getElementById("displayPaymentStatus").textContent = order.payment_status || "PAID";
-        document.getElementById("displayTotalAmount").textContent = formatINR(order.total_amount);
-
-        let addr = order.shipping_address;
-        if (typeof addr === "string") {
-          try { addr = JSON.parse(addr); } catch (_) { addr = { address_line: addr }; }
-        }
-
-        const fullAddr = addr.address_line || `${addr.flat_no || ''}, ${addr.street || ''}, ${addr.area || ''}, ${addr.city || ''}, ${addr.state || ''}`;
-        document.getElementById("displayShippingAddress").textContent = fullAddr;
-        document.getElementById("displayPincode").textContent = addr.pincode || "-";
-
-        const tbody = document.getElementById("displayItemsTable");
-        if (tbody && order.items) {
-          tbody.innerHTML = order.items.map(i => `
-            <tr>
-              <td><strong>${i.product_name}</strong></td>
-              <td style="color: var(--gold-light); font-size: 12px;">${i.color_name || 'Signature'}</td>
-              <td>${i.quantity}</td>
-              <td style="text-align: right; font-weight: 600;">${formatINR(i.total_price || (i.price * i.quantity))}</td>
-            </tr>
-          `).join("");
-        }
-      } catch (e) {
-        console.warn("Error fetching order details for success screen:", e);
-      }
-    }
-
-    function copyOrderId() {
-      if (!orderNumber) return;
-      navigator.clipboard.writeText(orderNumber);
-      showToast("Order ID copied to clipboard", "success");
+      // If no order number is provided, redirect to shop
+      setTimeout(() => {
+        window.location.replace("shop.html");
+      }, 2000);
     }
 
     document.addEventListener("DOMContentLoaded", loadSuccessDetails);

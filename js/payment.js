@@ -60,11 +60,13 @@ const PaymentPortal = {
     }
 
     // Update CTA button labels with order total
+    const rzpBtn = document.getElementById("razorpayLiveBtn");
     const gpayBtn = document.getElementById("gpayActionBtn");
     const upiBtn = document.getElementById("upiActionBtn");
     const cardBtn = document.getElementById("cardActionBtn");
     const codBtn = document.getElementById("codActionBtn");
 
+    if (rzpBtn) rzpBtn.innerHTML = `PAY ${formattedAmount} VIA RAZORPAY GATEWAY &rarr;`;
     if (gpayBtn) gpayBtn.textContent = `Pay ${formattedAmount} via GPay [Demo]`;
     if (upiBtn) upiBtn.textContent = `Pay ${formattedAmount} via UPI [Demo]`;
     if (cardBtn) cardBtn.textContent = `Pay ${formattedAmount} with Card [Demo]`;
@@ -150,6 +152,104 @@ const PaymentPortal = {
     } catch (e) {
       if (overlay) overlay.classList.remove("active");
       showToast("Payment authorization error: " + e.message, "error");
+    }
+  },
+
+  async payWithRazorpay() {
+    if (!this.order) {
+      showToast("Order details not loaded", "error");
+      return;
+    }
+
+    const rzpBtn = document.getElementById("razorpayLiveBtn");
+    try {
+      if (rzpBtn) {
+        rzpBtn.disabled = true;
+        rzpBtn.textContent = "INITIALIZING GATEWAY...";
+      }
+
+      const res = await apiRequest("/api/payments/create", {
+        method: "POST",
+        body: JSON.stringify({ order_number: this.order.order_number })
+      });
+
+      if (!res.success) {
+        throw new Error(res.error || "Failed to initialize Razorpay checkout");
+      }
+
+      if (typeof Razorpay === "undefined") {
+        throw new Error("Razorpay Checkout SDK is loading or unavailable. Please use alternative payment below.");
+      }
+
+      const options = {
+        key: res.key_id,
+        amount: res.amount,
+        currency: res.currency,
+        name: "AURELIS Haute Horlogerie",
+        description: res.description || `Acquisition Commission for ${this.order.order_number}`,
+        order_id: res.razorpay_order_id,
+        prefill: {
+          name: res.customer_name || this.order.customer_name,
+          email: res.customer_email || this.order.customer_email,
+          contact: res.customer_phone || this.order.customer_phone
+        },
+        theme: {
+          color: "#d9ae55"
+        },
+        handler: async (response) => {
+          const overlay = document.getElementById("procOverlay");
+          const title = document.getElementById("procTitle");
+          const desc = document.getElementById("procDesc");
+          if (overlay) overlay.classList.add("active");
+          if (title) title.textContent = "Verifying Payment Signature...";
+          if (desc) desc.textContent = "Exchanging HMAC-SHA256 authorization proof with atelier ledger.";
+
+          try {
+            const verifyRes = await apiRequest("/api/payments/verify", {
+              method: "POST",
+              body: JSON.stringify({
+                order_number: this.order.order_number,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+
+            if (verifyRes.success) {
+              if (title) title.textContent = "Acquisition Authorized!";
+              if (desc) desc.textContent = "Redirecting to your order confirmation and warranty certificate...";
+              setTimeout(() => {
+                window.location.href = `order-success.html?order_id=${encodeURIComponent(this.order.order_number)}&txn=${encodeURIComponent(response.razorpay_payment_id)}`;
+              }, 1200);
+            } else {
+              throw new Error(verifyRes.error || "Signature verification rejected");
+            }
+          } catch (err) {
+            if (overlay) overlay.classList.remove("active");
+            showToast(err.message || "Payment verification failed", "error");
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            showToast("Payment window was dismissed.", "info");
+          }
+        }
+      };
+
+      const rzpInstance = new Razorpay(options);
+      rzpInstance.on("payment.failed", (resp) => {
+        showToast(`Payment failed: ${resp.error ? resp.error.description : 'Transaction cancelled'}`, "error");
+      });
+      rzpInstance.open();
+
+    } catch (err) {
+      showToast(err.message || "Could not launch Razorpay. You may use alternative methods below.", "error");
+    } finally {
+      if (rzpBtn) {
+        rzpBtn.disabled = false;
+        const formattedAmount = formatINR(this.order.total_amount);
+        rzpBtn.innerHTML = `PAY ${formattedAmount} VIA RAZORPAY GATEWAY &rarr;`;
+      }
     }
   }
 };

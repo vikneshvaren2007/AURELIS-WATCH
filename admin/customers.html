@@ -11,56 +11,124 @@
   <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body class="admin-body">
+  <!-- Admin Sidebar -->
   <aside class="admin-sidebar">
     <div class="admin-brand">
-      <h2>AURELIS</h2>
-      <span>Atelier Executive Console</span>
+      <div class="admin-brand-text">
+        <h2>AURELIS</h2>
+        <span>Atelier Executive Console</span>
+      </div>
+      <button type="button" class="admin-sidebar-close" onclick="Admin.closeMobileSidebar()" aria-label="Close Menu">&times;</button>
     </div>
+
     <nav class="admin-nav">
       <a href="index.html" class="admin-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
         <span>Dashboard</span>
       </a>
+      <a href="products.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 12 12 16 14"></polygon></svg>
+        <span>Products & Variants</span>
+      </a>
       <a href="orders.html" class="admin-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
         <span>Orders Lifecycle</span>
+      </a>
+      <a href="messages.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span>Customer Messages</span>
+      </a>
+      <a href="inventory.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        <span>Live Inventory</span>
+      </a>
+      <a href="cancellations.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        <span>Cancellations</span>
+      </a>
+      <a href="returns.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+        <span>Returns & Refunds</span>
       </a>
       <a href="customers.html" class="admin-nav-item active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         <span>Collectors Directory</span>
       </a>
+      <a href="payments.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        <span>Payment Audit</span>
+      </a>
       <a href="settings.html" class="admin-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         <span>Store Settings</span>
       </a>
+      <a href="../index.html" class="admin-nav-item" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        <span>View Live Website</span>
+      </a>
     </nav>
+
+    <div class="admin-sidebar-footer">
+      <div class="admin-user-card">
+        <div class="admin-avatar">V</div>
+        <div class="admin-user-info">
+          <h5>Vikneshvaren</h5>
+          <p>Tenkasi Atelier</p>
+        </div>
+        <button onclick="Admin.logout()" style="margin-left: auto; background: none; border: none; color: #8e8a82; cursor: pointer;" title="Sign Out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+      </div>
+    </div>
   </aside>
+
+  <div class="admin-sidebar-backdrop" onclick="Admin.closeMobileSidebar()"></div>
 
   <main class="admin-main">
     <header class="admin-header">
+      <button type="button" id="adminMobileToggle" class="admin-mobile-toggle" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
       <div class="admin-header-title">
         <h3>Collectors Directory</h3>
-        <p>Registered horology clients, acquisition frequencies, and lifetime values</p>
+        <p>Registered horology clients, acquisition records, and contact profiles</p>
+      </div>
+      <div class="admin-header-right">
+        <span class="badge-gold" id="collectorCountBadge">Loading Collectors...</span>
       </div>
     </header>
 
     <div class="admin-content">
       <div class="admin-card">
-        <div class="admin-card-header">
-          <h4>Client Records</h4>
+        <div class="admin-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+          <h4>Registered Client Profiles</h4>
+          <div style="width: 100%; max-width: 320px;">
+            <input type="text" id="customerSearchInput" class="form-input" placeholder="Search by name, email, phone..." oninput="filterCustomers()" style="padding: 8px 14px; font-size: 12px; background: #14120e; border: 1px solid #28241e; border-radius: 4px; color: #f5f0e7; width: 100%;">
+          </div>
         </div>
         <table class="admin-table">
           <thead>
             <tr>
               <th>Collector Name</th>
-              <th>Email</th>
+              <th>Email Address</th>
               <th>Phone</th>
-              <th>Total Commissions</th>
-              <th>Total Spent</th>
-              <th>Registered Date</th>
+              <th>Primary Address</th>
+              <th style="text-align: center;">Total Orders</th>
+              <th style="text-align: right;">Total Spent</th>
+              <th>Joined Date</th>
             </tr>
           </thead>
-          <tbody id="adminCustomersTable"></tbody>
+          <tbody id="adminCustomersTable">
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                Loading registered collectors...
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -69,25 +137,130 @@
   <script src="../js/api.js"></script>
   <script src="../js/admin.js"></script>
   <script>
+    let allCustomers = [];
+
+    function formatMoney(amount) {
+      if (typeof formatINR === "function") return formatINR(amount);
+      return "₹" + Number(amount || 0).toLocaleString("en-IN");
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return "-";
+      try {
+        const d = new Date(dateStr.replace(" ", "T"));
+        if (isNaN(d.getTime())) return dateStr;
+        return d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+      } catch (e) {
+        return dateStr;
+      }
+    }
+
+    function renderCustomers(customers) {
+      const tbody = document.getElementById("adminCustomersTable");
+      if (!tbody) return;
+
+      if (!customers || customers.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 36px; color: var(--text-muted);">
+              No collector records found matching your search.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = customers.map(c => {
+        let addrDisplay = "-";
+        if (c.address) {
+          try {
+            const parsed = JSON.parse(c.address);
+            if (typeof parsed === "object" && parsed !== null) {
+              const parts = [parsed.flat_no || parsed.flat || parsed.house, parsed.street, parsed.city, parsed.pincode].filter(Boolean);
+              addrDisplay = parts.join(", ") || c.address;
+            } else {
+              addrDisplay = String(c.address);
+            }
+          } catch (e) {
+            addrDisplay = String(c.address);
+          }
+        }
+
+        return `
+          <tr>
+            <td>
+              <strong style="color: var(--text-primary); font-size: 13.5px;">${c.name || 'Anonymous Client'}</strong>
+              <div style="font-size: 10.5px; color: var(--text-muted); font-family: monospace;">ID #${c.id}</div>
+            </td>
+            <td>
+              <a href="mailto:${c.email}" style="color: var(--gold-primary); text-decoration: none;">${c.email}</a>
+            </td>
+            <td>${c.phone ? `+91 ${c.phone}` : '<span style="color: #666;">-</span>'}</td>
+            <td style="max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${addrDisplay}">
+              ${addrDisplay}
+            </td>
+            <td style="text-align: center;">
+              <span style="display: inline-block; padding: 2px 8px; border-radius: 12px; background: rgba(214, 179, 106, 0.12); border: 1px solid rgba(214, 179, 106, 0.3); font-weight: 600; font-size: 11px; color: var(--gold-light);">
+                ${c.order_count || 0}
+              </span>
+            </td>
+            <td style="text-align: right;">
+              <strong style="color: var(--gold-primary);">${formatMoney(c.total_spent)}</strong>
+            </td>
+            <td style="font-size: 12px; color: var(--text-muted);">${formatDate(c.created_at)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function filterCustomers() {
+      const q = (document.getElementById("customerSearchInput")?.value || "").toLowerCase().trim();
+      if (!q) {
+        renderCustomers(allCustomers);
+        return;
+      }
+      const filtered = allCustomers.filter(c => 
+        (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.email && c.email.toLowerCase().includes(q)) ||
+        (c.phone && c.phone.includes(q)) ||
+        (c.address && c.address.toLowerCase().includes(q))
+      );
+      renderCustomers(filtered);
+    }
+
     async function loadCustomers() {
       try {
         const res = await apiRequest("/api/admin/customers");
-        const tbody = document.getElementById("adminCustomersTable");
-        tbody.innerHTML = res.customers.map(c => `
-          <tr>
-            <td><strong>${c.name}</strong></td>
-            <td>${c.email}</td>
-            <td>${c.phone || '-'}</td>
-            <td><strong>${c.order_count}</strong></td>
-            <td>${formatINR(c.total_spent)}</td>
-            <td>${new Date(c.created_at).toLocaleDateString()}</td>
-          </tr>
-        `).join("");
+        allCustomers = res.customers || [];
+
+        const badge = document.getElementById("collectorCountBadge");
+        if (badge) {
+          badge.textContent = `${allCustomers.length} Registered Collectors`;
+        }
+
+        renderCustomers(allCustomers);
       } catch (e) {
-        showToast(e.message, "error");
+        showToast(e.message || "Failed to load collectors directory", "error");
+        const tbody = document.getElementById("adminCustomersTable");
+        if (tbody) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 30px; color: #e74c3c;">
+                Error loading client records. Please ensure administrator authentication is active.
+              </td>
+            </tr>
+          `;
+        }
       }
     }
-    document.addEventListener("DOMContentLoaded", loadCustomers);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check admin auth
+      if (typeof Admin !== "undefined" && Admin.checkAuth) {
+        Admin.checkAuth();
+      }
+      loadCustomers();
+    });
   </script>
 </body>
 </html>

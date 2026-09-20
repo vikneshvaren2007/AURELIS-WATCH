@@ -360,8 +360,8 @@ const Admin = {
       return;
     }
 
-    if (price < 2000 || price > 2500) {
-      showToast("Selling price must strictly be between INR ₹2,000 and ₹2,500", "error");
+    if (price <= 0) {
+      showToast("Selling price must be greater than zero", "error");
       return;
     }
 
@@ -605,6 +605,22 @@ const Admin = {
     }
   },
 
+  closeMobileSidebar() {
+    const sidebar = document.querySelector(".admin-sidebar");
+    const backdrop = document.querySelector(".admin-sidebar-backdrop");
+    if (sidebar) sidebar.classList.remove("mobile-open");
+    if (backdrop) backdrop.classList.remove("active");
+  },
+
+  toggleMobileSidebar() {
+    const sidebar = document.querySelector(".admin-sidebar");
+    const backdrop = document.querySelector(".admin-sidebar-backdrop");
+    if (sidebar) {
+      const isOpen = sidebar.classList.toggle("mobile-open");
+      if (backdrop) backdrop.classList.toggle("active", isOpen);
+    }
+  },
+
   initMobileNavigation() {
     const sidebar = document.querySelector(".admin-sidebar");
     if (!sidebar) return;
@@ -617,22 +633,17 @@ const Admin = {
       document.body.appendChild(backdrop);
     }
 
-    const toggleSidebar = () => {
-      sidebar.classList.toggle("mobile-open");
-      backdrop.classList.toggle("active", sidebar.classList.contains("mobile-open"));
-    };
+    const toggleSidebar = () => this.toggleMobileSidebar();
+    const closeSidebar = () => this.closeMobileSidebar();
 
-    const closeSidebar = () => {
-      sidebar.classList.remove("mobile-open");
-      backdrop.classList.remove("active");
-    };
-
+    backdrop.removeEventListener("click", closeSidebar);
     backdrop.addEventListener("click", closeSidebar);
 
-    // Auto-inject hamburger button in header if not already present
+    // Bind existing or inject hamburger button into admin header
     const header = document.querySelector(".admin-header");
-    if (header && !document.getElementById("adminMobileToggle")) {
-      const toggleBtn = document.createElement("button");
+    let toggleBtn = document.getElementById("adminMobileToggle");
+    if (header && !toggleBtn) {
+      toggleBtn = document.createElement("button");
       toggleBtn.type = "button";
       toggleBtn.id = "adminMobileToggle";
       toggleBtn.className = "admin-mobile-toggle";
@@ -644,9 +655,18 @@ const Admin = {
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       `;
-      toggleBtn.addEventListener("click", toggleSidebar);
       header.insertBefore(toggleBtn, header.firstChild);
     }
+
+    if (toggleBtn) {
+      toggleBtn.removeEventListener("click", toggleSidebar);
+      toggleBtn.addEventListener("click", toggleSidebar);
+    }
+
+    // Close on escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeSidebar();
+    });
 
     // Close on nav link click
     document.querySelectorAll(".admin-nav-item").forEach(link => {

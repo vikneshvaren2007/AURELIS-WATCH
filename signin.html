@@ -53,12 +53,12 @@
       <span class="brand-sub">Haute Horlogerie</span>
     </a>
     <nav class="nav-links" id="navLinks">
-      <a href="index.html">Atelier</a>
+      <a href="index.html">Home</a>
       <a href="shop.html">Collection</a>
-      <a href="craftsmanship.html">Craftsmanship</a>
-      <a href="warranty.html">6-Month Warranty</a>
+      <a href="craftsmanship.html">Craft</a>
+      <a href="warranty.html">Warranty</a>
       <a href="track-order.html">Track Order</a>
-      <a href="contact.html">Concierge</a>
+      <a href="contact.html">Contact</a>
     </nav>
     <div class="nav-actions">
       <a href="shop.html" class="nav-cta">Collection</a>
@@ -106,10 +106,11 @@
               <label class="form-label" for="authLoginPassword">Password *</label>
               <input type="password" id="authLoginPassword" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
               <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
-                <a href="forgot-password.html" style="font-size: 11.5px; color: var(--gold-primary); text-decoration: underline; letter-spacing: 0.05em; transition: all 0.2s ease;">
+                <a href="forgot-password.html" id="forgotPasswordLink" onclick="const em = (document.getElementById('authLoginEmail')?.value || '').trim(); if (em) { this.href = 'forgot-password.html?email=' + encodeURIComponent(em); }" style="font-size: 11.5px; color: var(--gold-primary); text-decoration: underline; letter-spacing: 0.05em; transition: all 0.2s ease;">
                   Forgot Password?
                 </a>
               </div>
+
             </div>
 
             <button type="submit" class="gold-btn" id="authLoginSubmitBtn" style="width: 100%; padding: 14px; font-size: 11.5px; letter-spacing: 0.15em; margin-top: 12px;">

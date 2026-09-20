@@ -14,8 +14,11 @@
   <!-- Admin Sidebar -->
   <aside class="admin-sidebar">
     <div class="admin-brand">
-      <h2>AURELIS</h2>
-      <span>Atelier Executive Console</span>
+      <div class="admin-brand-text">
+        <h2>AURELIS</h2>
+        <span>Atelier Executive Console</span>
+      </div>
+      <button type="button" class="admin-sidebar-close" onclick="Admin.closeMobileSidebar()" aria-label="Close Menu">&times;</button>
     </div>
 
     <nav class="admin-nav">
@@ -79,9 +82,18 @@
     </div>
   </aside>
 
+  <div class="admin-sidebar-backdrop" onclick="Admin.closeMobileSidebar()"></div>
+
   <!-- Main Content -->
   <main class="admin-main">
     <header class="admin-header">
+      <button type="button" id="adminMobileToggle" class="admin-mobile-toggle" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
       <div class="admin-header-title">
         <h3>Atelier Master Overview</h3>
         <p>Live metrics and executive command console</p>

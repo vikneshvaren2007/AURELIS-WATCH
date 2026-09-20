@@ -3,6 +3,8 @@ import smtplib
 import json
 import datetime
 import email.utils
+from email.header import Header
+import threading
 from zoneinfo import ZoneInfo
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -146,11 +148,23 @@ class EmailService:
 </html>"""
 
     @classmethod
-    def send_email(cls, to_email, subject, title, headline, message_body, order_details=None, cta_text=None, cta_link=None, is_admin=False):
+    def send_email(cls, to_email, subject, title, headline, message_body, order_details=None, cta_text=None, cta_link=None, is_admin=False, async_send=False):
         """
         Dispatches an email via SMTP with full logging and graceful failure handling.
         Returns True on success, False on failure. Never raises an uncaught exception.
         """
+        if async_send:
+            t = threading.Thread(
+                target=cls._send_email_sync,
+                args=(to_email, subject, title, headline, message_body, order_details, cta_text, cta_link, is_admin),
+                daemon=True
+            )
+            t.start()
+            return True
+        return cls._send_email_sync(to_email, subject, title, headline, message_body, order_details, cta_text, cta_link, is_admin)
+
+    @classmethod
+    def _send_email_sync(cls, to_email, subject, title, headline, message_body, order_details=None, cta_text=None, cta_link=None, is_admin=False):
         try:
             html_content = cls._render_luxury_template(title, headline, message_body, order_details, cta_text, cta_link, is_admin)
             raw_recipient = to_email or cls.get_admin_email()
@@ -167,8 +181,9 @@ class EmailService:
                 return True
 
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = subject
-            msg["From"] = f"AURELIS Concierge <{clean_sender}>"
+            msg["Subject"] = Header(str(subject), "utf-8")
+            from_display = str(Header("AURELIS Concierge", "utf-8"))
+            msg["From"] = f"{from_display} <{clean_sender}>"
             msg["To"] = clean_recipient
             msg["Reply-To"] = clean_sender
             msg["Date"] = email.utils.formatdate(localtime=True)
@@ -188,21 +203,23 @@ class EmailService:
             msg.attach(MIMEText(plain_content, "plain", "utf-8"))
             msg.attach(MIMEText(html_content, "html", "utf-8"))
 
-            # Send email via SMTP (synchronous with 10s timeout to guarantee completion and return status)
+            # Send email via SMTP
             clean_pwd = Config.EMAIL_PASSWORD.replace(" ", "") if Config.EMAIL_PASSWORD else ""
             try:
                 with smtplib.SMTP(Config.EMAIL_HOST, Config.EMAIL_PORT, timeout=12) as server:
+                    server.ehlo()
                     server.starttls()
+                    server.ehlo()
                     server.login(Config.EMAIL_USERNAME, clean_pwd)
                     server.sendmail(clean_sender, [clean_recipient], msg.as_string())
                 _safe_log(f"[EMAIL SENT SUCCESSFULLY] Destination: {clean_recipient} | Subject: {subject}")
                 return True
             except Exception as smtp_err:
-                _safe_log(f"[EMAIL SENDING EXCEPTION to {clean_recipient}] Error: {smtp_err}")
+                _safe_log(f"[EMAIL SENDING EXCEPTION to {clean_recipient}] Error {type(smtp_err).__name__}: {smtp_err}")
                 return False
 
         except Exception as e:
-            _safe_log(f"[EMAIL SERVICE ERROR to {to_email}] {e}")
+            _safe_log(f"[EMAIL SERVICE ERROR to {to_email}] {type(e).__name__}: {e}")
             return False
 
     # =========================================================================
@@ -393,7 +410,7 @@ class EmailService:
 
             return cls.send_email(
                 to_email=order.get("customer_email"),
-                subject=f"AURELIS WATCH — ORDER #{order_number} CONFIRMATION",
+                subject=f"AURELIS WATCH - ORDER #{order_number} CONFIRMATION",
                 title="AURELIS WATCH",
                 headline="ORDER CONFIRMATION",
                 message_body=body,
@@ -547,7 +564,7 @@ class EmailService:
             }
             return cls.send_email(
                 to_email=admin_email,
-                subject=f"[SUPPORT INQUIRY] {subject} — From {name}",
+                subject=f"[SUPPORT INQUIRY] {subject} - From {name}",
                 title="Concierge Client Inquiry",
                 headline=f"Inquiry from {name}",
                 message_body=f"<strong>Message:</strong><br><blockquote style='border-left: 2px solid #d9ae55; padding-left: 12px; margin: 10px 0; color: #dfdad1;'>{message}</blockquote>",
@@ -559,3 +576,128 @@ class EmailService:
         except Exception as err:
             _safe_log(f"[Email notify_admin_customer_message Error] {err}")
             return False
+
+    @classmethod
+    def notify_customer_status_change(cls, order, new_status, notes=""):
+        """
+        Notifies customer of status updates (e.g. PROCESSING, PACKED, SHIPPED, OUT_FOR_DELIVERY, DELIVERED, CANCELLED, RETURN_REQUESTED).
+        """
+        try:
+            base_url = cls.get_base_url()
+            order_number = order.get("order_number")
+            track_url = f"{base_url}/track-order.html?order_id={order_number}"
+            status_clean = str(new_status).replace("_", " ")
+
+            details = {
+                "ORDER ID": f"#{order_number}",
+                "NEW STATUS": status_clean,
+                "UPDATE TIME (IST)": cls.get_ist_now(),
+                "NOTES": notes or "Status updated in atelier records."
+            }
+
+            body = f"""
+            Dear {order.get('customer_name') or 'Valued Collector'},<br><br>
+            The status of your AURELIS timepiece commission <strong>#{order_number}</strong> has been updated to: <strong>{status_clean}</strong>.<br><br>
+            <em>Atelier Notes:</em> {notes or 'Your order is progressing with serialized precision.'}<br><br>
+            You can track real-time courier and delivery status anytime using the button below.
+            """
+
+            return cls.send_email(
+                to_email=order.get("customer_email"),
+                subject=f"AURELIS WATCH - ORDER #{order_number} STATUS: {status_clean}",
+                title="AURELIS WATCH",
+                headline=f"ORDER STATUS: {status_clean}",
+                message_body=body,
+                order_details=details,
+                cta_text="Track Order Status",
+                cta_link=track_url
+            )
+        except Exception as err:
+            _safe_log(f"[Email notify_customer_status_change Error] {err}")
+            return False
+
+    @classmethod
+    def notify_customer_support_reply(cls, customer_name, customer_email, inquiry_subject, reply_text):
+        """
+        Dispatches concierge response to customer inquiry from the admin console.
+        """
+        try:
+            base_url = cls.get_base_url()
+            details = {
+                "RECIPIENT": f"{customer_name} ({customer_email})",
+                "ORIGINAL INQUIRY": inquiry_subject,
+                "RESPONSE TIME (IST)": cls.get_ist_now(),
+                "CONCIERGE DESK": f"+91 {Config.ADMIN_PHONE}"
+            }
+
+            body = f"""
+            Dear {customer_name or 'Valued Collector'},<br><br>
+            Thank you for contacting the AURELIS Private Client Concierge.<br><br>
+            In response to your inquiry regarding <em>"{inquiry_subject}"</em>, our master watchmaker concierge team has provided the following response:<br><br>
+            <div style="background: #0d0c0a; border-left: 3px solid #d9ae55; padding: 18px 20px; margin: 20px 0; color: #f5f0e7; font-size: 13.5px; line-height: 1.8;">
+                {reply_text}
+            </div>
+            If you have any further inquiries, please feel free to reply directly to this dispatch or reach out to our client concierge desk.
+            """
+
+            return cls.send_email(
+                to_email=customer_email,
+                subject=f"Re: {inquiry_subject} - AURELIS Client Concierge",
+                title="AURELIS CONCIERGE",
+                headline="ATELIER RESPONSE",
+                message_body=body,
+                order_details=details,
+                cta_text="Visit AURELIS Atelier",
+                cta_link=f"{base_url}/shop.html"
+            )
+        except Exception as err:
+            _safe_log(f"[Email notify_customer_support_reply Error] {err}")
+            return False
+
+    @classmethod
+    def send_otp_email(cls, to_email, name, otp_code):
+        """
+        Dispatches a 6-digit OTP security verification code email to customer.
+        Returns True if sent, False on failure. Never raises an uncaught exception.
+        """
+        try:
+            base_url = cls.get_base_url()
+            clean_name = (name or "Valued Collector").strip()
+            details = {
+                "RECIPIENT": f"{clean_name} ({to_email})",
+                "SECURITY CODE": f"{otp_code}",
+                "CODE VALIDITY": "15 Minutes",
+                "REQUEST TIME (IST)": cls.get_ist_now()
+            }
+
+            body = f"""
+            Dear {clean_name},<br><br>
+            A request was initiated to verify or recover access to your <strong>AURELIS Private Collector Registry</strong> account.<br><br>
+            Please enter the authentic 6-digit security code below into the verification page to proceed:
+            <div style="text-align: center; margin: 28px 0; padding: 22px; background: #0c0b09; border: 1.5px solid #d9ae55; border-radius: 6px; box-shadow: 0 0 20px rgba(217, 174, 85, 0.15);">
+                <div style="font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #d9ae55; margin-bottom: 8px;">6-DIGIT VERIFICATION CODE</div>
+                <div style="font-family: 'Courier New', monospace; font-size: 36px; font-weight: 700; letter-spacing: 10px; color: #f5f0e7; text-shadow: 0 0 15px rgba(217, 174, 85, 0.35);">
+                    {otp_code}
+                </div>
+                <div style="font-size: 11px; color: #8c877e; margin-top: 8px;">Valid for 15 minutes &bull; Single-use security token</div>
+            </div>
+            If you did not initiate this request, your account remains secure and no further action is required.<br><br>
+            <em>Security Advisory:</em> AURELIS horology concierges will never ask for your verification code or password via phone or message.
+            """
+
+            _safe_log(f"[OTP DISPATCH] 6-digit code {otp_code} generated for {to_email}")
+
+            return cls.send_email(
+                to_email=to_email,
+                subject=f"AURELIS — Your Security Verification Code: {otp_code}",
+                title="ACCOUNT SECURITY",
+                headline="6-DIGIT VERIFICATION CODE",
+                message_body=body,
+                order_details=details,
+                cta_text="Complete Verification",
+                cta_link="forgot-password.html"
+            )
+        except Exception as err:
+            _safe_log(f"[Email send_otp_email Error to {to_email}] {err}")
+            return False
+

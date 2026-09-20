@@ -1,14 +1,13 @@
 /* ==========================================================================
-   AURELIS — Apple-Style Hero Scrollytelling Engine
-   Dynamically discovers Frame 2 sequence, preloads instantly, and animates
-   strictly via scroll kinematics with requestAnimationFrame.
+   AURELIS — Haute Horlogerie Cinematic Hero Video Controller (Single Video)
+   Plays Video 1 (Chronograph Assembly) smoothly on continuous loop.
+   Zero alternating video in hero. Video 2 resides exclusively in Discover Craft.
    ========================================================================== */
 
 (function () {
-  const canvas = document.getElementById("watchCanvas");
-  if (!canvas) return;
+  const v1 = document.getElementById("heroVideo1");
+  const poster = document.getElementById("heroPosterFallback");
 
-  const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
   const loader = document.getElementById("loader");
   const bar = document.getElementById("loaderBar");
   const percentEl = document.getElementById("loaderPercent");
@@ -18,17 +17,20 @@
   const outroWrap = document.getElementById("heroOutro");
   const outroOverlay = document.getElementById("heroOutroOverlay");
   const scrollCue = document.getElementById("heroScrollCue");
-  const progressNum = document.getElementById("heroProgressNum");
   const heroSection = document.getElementById("hero");
 
-  let frameUrls = [];
-  let frameCount = 240;
-  let images = [];
-  let loadedCount = 0;
-  let currentFrame = 0;
-  let targetFrame = 0;
-  let isRunning = false;
-  let animationId = null;
+  if (!v1) return;
+
+  let isLoaderDismissed = false;
+
+  // Ensure video 1 is muted, looped, and playsinline
+  v1.muted = true;
+  v1.loop = true;
+  v1.playsInline = true;
+  v1.setAttribute("muted", "");
+  v1.setAttribute("loop", "");
+  v1.setAttribute("playsinline", "");
+  v1.setAttribute("webkit-playsinline", "");
 
   // Track nav scroll state
   function updateNav() {
@@ -42,133 +44,73 @@
   window.addEventListener("scroll", updateNav, { passive: true });
   updateNav();
 
-  // Dynamic frame discovery
-  async function fetchFrameList() {
-    try {
-      const res = await fetch("/api/frames");
-      if (res.ok) {
-        const data = await res.json();
-        if (data.frames && data.frames.length > 0) {
-          frameUrls = data.frames;
-          frameCount = data.frames.length;
-          return;
-        }
+  // Bulletproof autoplay handler adhering strictly to browser autoplay policies
+  function safePlay(video) {
+    if (!video) return Promise.resolve();
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("loop", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    const p = video.play();
+    if (p !== undefined) {
+      return p.catch((err) => {
+        console.warn("[AURELIS Hero] Autoplay restricted, will resume on interaction", err);
+        const resumeOnGesture = () => {
+          video.play().catch(() => {});
+          window.removeEventListener("touchstart", resumeOnGesture);
+          window.removeEventListener("click", resumeOnGesture);
+          window.removeEventListener("scroll", resumeOnGesture);
+        };
+        window.addEventListener("touchstart", resumeOnGesture, { passive: true, once: true });
+        window.addEventListener("click", resumeOnGesture, { passive: true, once: true });
+        window.addEventListener("scroll", resumeOnGesture, { passive: true, once: true });
+      });
+    }
+    return Promise.resolve();
+  }
+
+  // Dismiss loader once hero video is ready
+  function dismissLoader() {
+    if (isLoaderDismissed) return;
+    isLoaderDismissed = true;
+    if (bar) bar.style.width = "100%";
+    if (percentEl) percentEl.textContent = "100%";
+    if (statusEl) statusEl.textContent = "AURELIS ATELIER READY";
+    if (loader) {
+      loader.classList.add("done");
+    }
+    if (poster) {
+      setTimeout(() => poster.classList.add("hidden"), 300);
+    }
+    safePlay(v1);
+  }
+
+  // Scroll kinematics for hero intro copy and outro statement
+  function updateScroll() {
+    if (!heroSection) return;
+    const heroRect = heroSection.getBoundingClientRect();
+    const heroScrollHeight = heroSection.offsetHeight - window.innerHeight;
+    if (heroScrollHeight <= 0) {
+      if (introWrap) {
+        introWrap.style.opacity = "1";
+        introWrap.style.pointerEvents = "auto";
       }
-    } catch (e) {
-      console.warn("API frame discovery unavailable, falling back to static sequence", e);
+      return;
     }
 
-    // High-fidelity fallback for original homepage hero frames
-    frameUrls = [];
-    frameCount = 240;
-    for (let i = 1; i <= 240; i++) {
-      const padded = String(i).padStart(4, "0");
-      frameUrls.push(`./frames/frame_${padded}.jpg`);
-    }
-  }
 
-  // Load an individual frame
-  function loadFrame(index) {
-    return new Promise((resolve) => {
-      if (images[index]) {
-        return resolve(images[index]);
-      }
-      const img = new Image();
-      img.decoding = "async";
-      img.src = frameUrls[index];
-      img.onload = () => {
-        images[index] = img;
-        loadedCount++;
-        resolve(img);
-      };
-      img.onerror = () => {
-        // Fallback retry with URL encoding if needed
-        const encodedSrc = frameUrls[index].replace(" ", "%20");
-        if (img.src !== encodedSrc) {
-          img.src = encodedSrc;
-        } else {
-          resolve(null);
-        }
-      };
-    });
-  }
+    const scrolled = Math.max(0, -heroRect.top);
+    const progress = Math.max(0, Math.min(1, scrolled / heroScrollHeight));
 
-  // Progressively stream remaining frames in background
-  async function streamRemainingFrames(start) {
-    const batchSize = 6;
-    for (let i = start; i < frameCount; i += batchSize) {
-      const batch = [];
-      for (let j = 0; j < batchSize && (i + j) < frameCount; j++) {
-        batch.push(loadFrame(i + j));
-      }
-      await Promise.all(batch);
-      // Brief yield so the UI thread and render loop stay completely buttery
-      await new Promise((r) => setTimeout(r, 16));
-    }
-  }
-
-  // High-DPI responsive canvas sizing
-  function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(window.innerWidth * dpr);
-    canvas.height = Math.round(window.innerHeight * dpr);
-    canvas.style.width = window.innerWidth + "px";
-    canvas.style.height = window.innerHeight + "px";
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drawFrame(currentFrame);
-  }
-
-  // Precision canvas drawing with aspect ratio protection
-  function drawFrame(index) {
-    const safeIndex = Math.max(0, Math.min(frameCount - 1, Math.round(index)));
-    // Use nearest loaded image or frame 0
-    let img = images[safeIndex];
-    if (!img) {
-      // Find nearest loaded frame
-      for (let offset = 1; offset < 20; offset++) {
-        if (images[safeIndex - offset]) { img = images[safeIndex - offset]; break; }
-        if (images[safeIndex + offset]) { img = images[safeIndex + offset]; break; }
-      }
-    }
-    if (!img) img = images[0];
-    if (!img) return;
-
-    const cw = window.innerWidth;
-    const ch = window.innerHeight;
-
-    // Deep luxury background fill (#080706)
-    ctx.fillStyle = "#080706";
-    ctx.fillRect(0, 0, cw, ch);
-
-    // Maintain aspect ratio without stretching or distorting the watch
-    const screenAspect = cw / ch;
-    const imgAspect = (img.naturalWidth || 1920) / (img.naturalHeight || 1080);
-    let scale;
-
-    if (screenAspect < 1) {
-      // Mobile portrait: fit watch completely without clipping exploded view labels
-      // Since background is #080706, pillarbox is 100% invisible
-      scale = Math.min(cw / (img.naturalWidth || 1920), ch / (img.naturalHeight || 1080)) * 1.08;
-    } else {
-      // Desktop / Landscape: luxury full-bleed cover
-      scale = Math.max(cw / (img.naturalWidth || 1920), ch / (img.naturalHeight || 1080));
-    }
-
-    const w = (img.naturalWidth || 1920) * scale;
-    const h = (img.naturalHeight || 1080) * scale;
-    const x = (cw - w) / 2;
-    const y = (ch - h) / 2;
-
-    ctx.drawImage(img, x, y, w, h);
-  }
-
-  // Storytelling orchestrator synced with scroll
-  function updateStory(progress) {
-    // 1. Beginning: 0% to 20%
+    // 1. Intro Copy (0% - 18%)
     if (introWrap) {
       if (progress <= 0.18) {
         const introOpacity = Math.max(0, 1 - (progress / 0.18));
-        introWrap.style.opacity = introOpacity;
+        introWrap.style.opacity = String(introOpacity);
         if (window.innerWidth <= 768) {
           introWrap.style.transform = `translateY(-${progress * 35}px)`;
         } else {
@@ -181,7 +123,7 @@
       }
     }
 
-    // Scroll Cue visibility (fade out early)
+    // 2. Scroll Cue (fade out early)
     if (scrollCue) {
       if (progress < 0.12) {
         scrollCue.style.opacity = String(Math.max(0, 1 - (progress / 0.10)));
@@ -190,13 +132,7 @@
       }
     }
 
-    // Progress counter
-    if (progressNum) {
-      const displayFrame = String(Math.round(currentFrame) + 1).padStart(3, "0");
-      progressNum.textContent = `${displayFrame} / ${frameCount}`;
-    }
-
-    // 2. Final: 80% to 100%
+    // 3. Outro Statement (78% - 100%)
     if (outroWrap) {
       if (progress >= 0.78) {
         const outroProgress = Math.min(1, (progress - 0.78) / 0.18);
@@ -214,90 +150,33 @@
     }
   }
 
-  // Animation render loop
-  function render() {
-    if (heroSection) {
-      const heroRect = heroSection.getBoundingClientRect();
-      const heroScrollHeight = heroSection.offsetHeight - window.innerHeight;
-      if (heroScrollHeight > 0) {
-        const scrolled = Math.max(0, -heroRect.top);
-        const progress = Math.max(0, Math.min(1, scrolled / heroScrollHeight));
-        targetFrame = progress * (frameCount - 1);
-        updateStory(progress);
-      }
-    } else {
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const progress = Math.max(0, Math.min(1, window.scrollY / maxScroll));
-      targetFrame = progress * (frameCount - 1);
-      updateStory(progress);
+  window.addEventListener("scroll", updateScroll, { passive: true });
+
+  // Event listeners for hero video 1
+  v1.addEventListener("loadeddata", dismissLoader);
+  v1.addEventListener("canplay", dismissLoader);
+  v1.addEventListener("ended", () => {
+    v1.currentTime = 0;
+    safePlay(v1);
+  });
+
+  // Watchdog timer: Dismiss loader within 350ms max
+  setTimeout(dismissLoader, 350);
+
+  // Self-healing watchdog: resume if tab regains focus
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && v1) {
+      if (v1.paused) safePlay(v1);
     }
+  });
 
-    // Smooth Lerp interpolation
-    const diff = targetFrame - currentFrame;
-    if (Math.abs(diff) < 0.005) {
-      currentFrame = targetFrame;
-    } else {
-      currentFrame += diff * 0.14;
+  // Periodic heartbeat: guarantees continuous smooth loop
+  setInterval(() => {
+    if (v1 && v1.paused && document.visibilityState === "visible") {
+      safePlay(v1);
     }
+  }, 2000);
 
-    drawFrame(currentFrame);
-    animationId = requestAnimationFrame(render);
-  }
-
-  // Main initializer
-  async function init() {
-    await fetchFrameList();
-    images = new Array(frameCount);
-
-    // 1. Immediately load Frame 0 as instant poster fallback
-    const firstImg = await loadFrame(0);
-    resize();
-    if (firstImg) {
-      drawFrame(0);
-      if (bar) bar.style.width = "40%";
-      if (percentEl) percentEl.textContent = "40%";
-    }
-
-    // 2. Fast pre-cache of initial 12 frames so scroll is silky from first touch
-    const initialBatch = [];
-    const preloadCount = Math.min(12, frameCount);
-    for (let i = 1; i < preloadCount; i++) {
-      initialBatch.push(
-        loadFrame(i).then(() => {
-          const pct = Math.min(95, Math.round(40 + (loadedCount / preloadCount) * 55));
-          if (bar) bar.style.width = `${pct}%`;
-          if (percentEl) percentEl.textContent = `${pct}%`;
-        })
-      );
-    }
-
-    // Dismiss loader quickly once initial batch is ready (or 600ms ceiling)
-    const dismissLoader = () => {
-      if (bar) bar.style.width = "100%";
-      if (percentEl) percentEl.textContent = "100%";
-      if (statusEl) statusEl.textContent = "AURELIS ATELIER READY";
-      if (loader && !loader.classList.contains("done")) {
-        loader.classList.add("done");
-      }
-      if (!isRunning) {
-        isRunning = true;
-        render();
-      }
-      // Stream remaining frames in background chunks
-      streamRemainingFrames(preloadCount);
-    };
-
-    const fastTimeout = setTimeout(dismissLoader, 600);
-
-    try {
-      await Promise.all(initialBatch);
-    } finally {
-      clearTimeout(fastTimeout);
-      dismissLoader();
-    }
-  }
-
-  window.addEventListener("resize", resize, { passive: true });
-  init();
+  // Initial play call
+  safePlay(v1);
 })();
-

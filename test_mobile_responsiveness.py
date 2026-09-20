@@ -103,6 +103,22 @@ def test_hero_intro_mobile_transform():
     assert "introWrap.style.transform = `translateY(-${progress * 35}px)`" in hero_scroll, "Mobile introWrap transform missing in hero-scroll.js"
     print("PASS: hero-scroll.js properly protects hero intro from negative Y clipping on mobile.")
 
+def test_admin_responsiveness_and_fit():
+    admin_css = (ROOT_DIR / "css" / "admin.css").read_text(encoding="utf-8")
+    assert "calc(100% - 260px)" in admin_css, "Admin main calc(100% - 260px) width missing for desktop fit"
+    assert "admin-mobile-toggle" in admin_css, "Admin mobile toggle missing in admin.css"
+    assert "admin-sidebar-backdrop" in admin_css, "Admin sidebar backdrop missing in admin.css"
+    assert "admin-sidebar-close" in admin_css, "Admin sidebar close button missing in admin.css"
+    
+    # Check all dashboard admin pages have the hamburger toggle
+    admin_pages = [f for f in (ROOT_DIR / "admin").glob("*.html") if f.name != "login.html"]
+    for ap in admin_pages:
+        content = ap.read_text(encoding="utf-8", errors="ignore")
+        assert "adminMobileToggle" in content, f"Missing adminMobileToggle button in {ap.name}"
+        assert "admin-sidebar-backdrop" in content, f"Missing admin-sidebar-backdrop in {ap.name}"
+        assert "admin-sidebar-close" in content, f"Missing admin-sidebar-close button in {ap.name}"
+    print(f"PASS: All {len(admin_pages)} Admin Dashboard pages have mobile hamburger, close button, and backdrop.")
+
 if __name__ == "__main__":
     print("\n" + "="*60)
     print("RUNNING MOBILE RESPONSIVENESS VALIDATION")
@@ -115,7 +131,9 @@ if __name__ == "__main__":
     test_no_duplicate_inline_listeners()
     test_homepage_responsive_sections()
     test_hero_intro_mobile_transform()
+    test_admin_responsiveness_and_fit()
     print("\n" + "="*60)
     print("ALL RESPONSIVE CHECKS PASSED (100% SUCCESS)")
     print("="*60 + "\n")
+
 

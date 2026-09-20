@@ -599,16 +599,17 @@ def admin_customers():
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT u.id, u.name, u.email, u.phone, u.created_at,
-                   COUNT(o.id) as order_count,
-                   COALESCE(SUM(o.total_amount), 0) as total_spent
+            SELECT u.id, u.name, u.email, u.phone, u.created_at, u.address,
+                   COUNT(DISTINCT o.id) as order_count,
+                   COALESCE(SUM(CASE WHEN o.order_status != 'CANCELLED' THEN o.total_amount ELSE 0 END), 0) as total_spent
             FROM users u
-            LEFT JOIN orders o ON u.id = o.user_id AND o.order_status != 'CANCELLED'
+            LEFT JOIN orders o ON (u.id = o.user_id OR LOWER(u.email) = LOWER(o.customer_email))
             WHERE u.role = 'customer'
             GROUP BY u.id
             ORDER BY u.id DESC
         """)
         return jsonify({"customers": dicts_from_rows(cursor.fetchall())})
+
 
 @admin_bp.route("/payments", methods=["GET"])
 @admin_required

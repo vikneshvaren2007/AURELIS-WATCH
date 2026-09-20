@@ -1,9 +1,12 @@
 import json
 import random
+import secrets
 import datetime
 from zoneinfo import ZoneInfo
 from flask import Blueprint, request, jsonify
 import jwt
+from werkzeug.security import generate_password_hash
+
 from backend.config import Config
 from backend.database import get_db, dict_from_row, dicts_from_rows
 from backend.services.inventory_service import InventoryService
@@ -108,6 +111,17 @@ def create_order():
             u_row = cursor.fetchone()
             if u_row:
                 user_id = u_row["id"]
+            else:
+                # Auto-create customer account record so every customer appears in Admin Panel
+                now_ist = datetime.datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")
+                addr_str = json.dumps(shipping_address) if isinstance(shipping_address, dict) else str(shipping_address)
+                temp_hash = generate_password_hash(secrets.token_urlsafe(16))
+                cursor.execute("""
+                    INSERT INTO users (name, email, phone, address, password_hash, role, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, 'customer', ?, ?)
+                """, (customer_name, customer_email, clean_phone, addr_str, temp_hash, now_ist, now_ist))
+                user_id = cursor.lastrowid
+
 
     # If items not explicitly passed in payload, automatically pull from active cart
     if not items:
@@ -294,17 +308,24 @@ def create_order():
         admin_email_sent = False
         customer_email_sent = False
 
-        try:
-            admin_email_sent = EmailService.notify_admin_new_order(order_dict, verified_items)
-            print(f"[ORDER {order_number}] Admin email dispatch status: {'SUCCESS' if admin_email_sent else 'FAILED'}")
-        except Exception as e_admin:
-            print(f"[ORDER {order_number}] Admin email exception: {e_admin}")
+        if is_cod:
+            try:
+                admin_email_sent = EmailService.notify_admin_new_order(order_dict, verified_items)
+                print(f"[ORDER {order_number}] Admin email dispatch status: {'SUCCESS' if admin_email_sent else 'FAILED'}")
+            except Exception as e_admin:
+                print(f"[ORDER {order_number}] Admin email exception: {e_admin}")
 
-        try:
-            customer_email_sent = EmailService.notify_customer_order_confirmation(order_dict, verified_items)
-            print(f"[ORDER {order_number}] Customer email dispatch status: {'SUCCESS' if customer_email_sent else 'FAILED'}")
-        except Exception as e_cust:
-            print(f"[ORDER {order_number}] Customer email exception: {e_cust}")
+            try:
+                customer_email_sent = EmailService.notify_customer_order_confirmation(order_dict, verified_items)
+                print(f"[ORDER {order_number}] Customer email dispatch status: {'SUCCESS' if customer_email_sent else 'FAILED'}")
+            except Exception as e_cust:
+                print(f"[ORDER {order_number}] Customer email exception: {e_cust}")
+        else:
+            # For online payments, notify admin of initiated order; customer confirmation is sent upon payment verification
+            try:
+                admin_email_sent = EmailService.notify_admin_new_order(order_dict, verified_items)
+            except Exception as e_admin:
+                print(f"[ORDER {order_number}] Admin email notice exception: {e_admin}")
 
         return jsonify({
             "message": "Order placed successfully",

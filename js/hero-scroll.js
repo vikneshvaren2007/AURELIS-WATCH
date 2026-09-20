@@ -99,7 +99,7 @@
         introWrap.style.opacity = "1";
         introWrap.style.pointerEvents = "auto";
         if (window.innerWidth <= 768) {
-          introWrap.style.transform = "translateY(-50%)";
+          introWrap.style.transform = "none";
         }
       }
       return;

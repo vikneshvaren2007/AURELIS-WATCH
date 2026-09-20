@@ -23,7 +23,7 @@ WATCHES = [
         "base_price": 5499.0,
         "discount_price": 6999.0,
         "stock": 15,
-        "image": "./assets/watches/watch_1.jpg",
+        "image": "/assets/watches/watch_1.jpg",
         "short_description": "Timeless dress timepiece featuring a polished silver case, porcelain cream dial, and supple brown leather strap.",
         "description": "The AURELIS Classic embodies the zenith of heritage dress horology. Encased in high-density 316L surgical stainless steel and paired with a hand-stitched Italian leather strap, this timepiece offers an understated yet commanding presence. The porcelain cream dial features subtle Roman numerals and an independent small-seconds register.",
         "specs": {
@@ -49,7 +49,7 @@ WATCHES = [
         "base_price": 6999.0,
         "discount_price": 8999.0,
         "stock": 12,
-        "image": "./assets/watches/watch_2.jpg",
+        "image": "/assets/watches/watch_2.jpg",
         "short_description": "Multi-function chronograph engineered with a gunmetal case, dark charcoal dial, and solid steel bracelet.",
         "description": "Built for decisive individuals who demand mechanical precision. The Velor Chronograph features a robust gunmetal finish with dual chronograph pushers and three textured sub-registers for split-second timing. The brushed stainless-steel bracelet delivers enduring comfort and wrist authority.",
         "specs": {
@@ -75,7 +75,7 @@ WATCHES = [
         "base_price": 5999.0,
         "discount_price": 7499.0,
         "stock": 18,
-        "image": "./assets/watches/watch_3.jpg",
+        "image": "/assets/watches/watch_3.jpg",
         "short_description": "Pure minimalist monochrome timepiece with an ultra-slim black case and genuine black leather strap.",
         "description": "Stripped of all superfluous ornament, the Noir Edge represents the purest manifestation of modern horological minimalism. Its ultra-slim 7.8mm profile glides effortlessly under tailored cuffs, while the pitch-black dial with polished silver hands delivers instant legibility.",
         "specs": {
@@ -101,7 +101,7 @@ WATCHES = [
         "base_price": 7499.0,
         "discount_price": 9499.0,
         "stock": 14,
-        "image": "./assets/watches/watch_4.jpg",
+        "image": "/assets/watches/watch_4.jpg",
         "short_description": "Commanding business luxury timepiece with a radiant sunburst blue dial and multi-link steel bracelet.",
         "description": "Engineered for executive environments, the Imperial Steel balances timeless boardroom elegance with modern metallurgical poise. The captivating sunburst midnight blue dial captures ambient light dynamically across brushed silver facets.",
         "specs": {
@@ -127,7 +127,7 @@ WATCHES = [
         "base_price": 6499.0,
         "discount_price": 7999.0,
         "stock": 10,
-        "image": "./assets/watches/watch_5.jpg",
+        "image": "/assets/watches/watch_5.jpg",
         "short_description": "Contemporary dress timepiece featuring an ethereal champagne dial and supple Milanese mesh strap.",
         "description": "A study in fluid sophistication. The Royale Mesh combines a polished silver bezel with a warm champagne gold sunray dial and a micro-woven Milanese mesh bracelet that drapes seamlessly around the wrist.",
         "specs": {
@@ -153,7 +153,7 @@ WATCHES = [
         "base_price": 7999.0,
         "discount_price": 9999.0,
         "stock": 16,
-        "image": "./assets/watches/watch_6.jpg",
+        "image": "/assets/watches/watch_6.jpg",
         "short_description": "Stealth luxury sports chronograph in full DLC black finish with textured subdials and black metal bracelet.",
         "description": "Uncompromising authority in complete shadow. The Obsidian Elite is treated with a specialized diamond-like carbon coating that resists daily scuffs while exuding an unmistakable dark architectural poise with triple chronograph registers.",
         "specs": {
@@ -179,7 +179,7 @@ WATCHES = [
         "base_price": 8499.0,
         "discount_price": 10499.0,
         "stock": 11,
-        "image": "./assets/watches/watch_7.jpg",
+        "image": "/assets/watches/watch_7.jpg",
         "short_description": "Rugged business sport luxury watch with faceted gunmetal case, luminescent dial, and architectural link bracelet.",
         "description": "Engineered for executive authority and extreme resilience. The Titan Classic pairs a faceted coin-edge bezel with high-output SuperLuminova markers and a heavy-duty stainless-steel link bracelet built to command attention.",
         "specs": {
@@ -205,7 +205,7 @@ WATCHES = [
         "base_price": 5799.0,
         "discount_price": 7299.0,
         "stock": 15,
-        "image": "./assets/watches/watch_8.jpg",
+        "image": "/assets/watches/watch_8.jpg",
         "short_description": "Heritage gold-tone dress timepiece featuring a guilloché dial, blued steel hands, and cognac leather.",
         "description": "Drawing inspiration from 19th-century Swiss pocket chronometers, the Auren Signature radiates warmth and aristocratic balance. Its 18K yellow gold-toned case frames a multi-textured guilloché dial with heat-blued Breguet hands.",
         "specs": {
@@ -231,7 +231,7 @@ WATCHES = [
         "base_price": 6799.0,
         "discount_price": 8499.0,
         "stock": 13,
-        "image": "./assets/watches/watch_9.jpg",
+        "image": "/assets/watches/watch_9.jpg",
         "short_description": "Modern contemporary timepiece with ceramic bezel, sunburst emerald green dial, and woven steel bracelet.",
         "description": "A magnificent contrast of ceramic gloss, deep emerald green dial, and satin-brushed steel mesh. The Monarch Black commands admiration in any setting, equipped with a magnifying cyclops date lens and luminescent diver indices.",
         "specs": {
@@ -257,7 +257,7 @@ WATCHES = [
         "base_price": 5299.0,
         "discount_price": 6599.0,
         "stock": 20,
-        "image": "./assets/watches/watch_10.jpg",
+        "image": "/assets/watches/watch_10.jpg",
         "short_description": "Pure minimalist silver elegance with a porcelain white dial, blued sweep second hand, and Jubilee steel bracelet.",
         "description": "Purity, proportion, and luminous presence. The Silver Crest celebrates minimalist horological restraint with its radiant white dial, subtle date aperture, blued central seconds hand, and five-link Jubilee bracelet.",
         "specs": {
@@ -283,7 +283,7 @@ WATCHES = [
         "base_price": 49999.0,
         "discount_price": 59999.0,
         "stock": 5,
-        "image": "./assets/masterpiece/tourbillon-squelette.jpg",
+        "image": "/assets/masterpiece/tourbillon-squelette.jpg",
         "short_description": "Bespoke high-horology flying tourbillon in 18K rose gold with hand-finished skeleton bridges.",
         "description": "The Royal Tourbillon Squelette represents the pinnacle of AURELIS Haute Horlogerie. Encased in 18K rose gold with an openworked architectural sapphire dial, the exposed flying tourbillon compensates for gravitational variations with poetic grace. Hand-beveled anglage and hand-stitched alligator leather.",
         "specs": {
@@ -309,7 +309,7 @@ WATCHES = [
         "base_price": 44999.0,
         "discount_price": 54999.0,
         "stock": 7,
-        "image": "./assets/masterpiece/celestial-moonphase.jpg",
+        "image": "/assets/masterpiece/celestial-moonphase.jpg",
         "short_description": "Astronomical calendar chronograph featuring a guilloché midnight blue dial and poetic moonphase.",
         "description": "Capturing the cosmic mechanics of time, the Celestial Grand Complication pairs a split-second column-wheel chronograph with an astronomical lunar phase indicator accurate to one day every 122 years. Finished with a deep midnight blue sunray dial and polished steel.",
         "specs": {
@@ -335,7 +335,7 @@ WATCHES = [
         "base_price": 38999.0,
         "discount_price": 46999.0,
         "stock": 8,
-        "image": "./assets/masterpiece/sovereign-platinum.jpg",
+        "image": "/assets/masterpiece/sovereign-platinum.jpg",
         "short_description": "Regulated chronometer in liquid platinum finish with blued steel hands and roman indices.",
         "description": "Engineered for connoisseurs of pure classical proportion, the Sovereign Platinum Chronometer achieves chronometer-certified precision. Its multi-tiered silver opaline dial displays concentric guilloché clous de Paris textures accented by thermal-blued steel leaf hands.",
         "specs": {
@@ -361,7 +361,7 @@ WATCHES = [
         "base_price": 32499.0,
         "discount_price": 39999.0,
         "stock": 10,
-        "image": "./assets/masterpiece/monaco-heritage.jpg",
+        "image": "/assets/masterpiece/monaco-heritage.jpg",
         "short_description": "High-octane racing chronograph with sunburst emerald green dial, tachymeter bezel, and rally strap.",
         "description": "Paying tribute to vintage circuit racing, the Monaco Heritage combines an aggressive brushed gunmetal case with a sunburst British racing green dial. Twin recessed registers, a high-precision tachymetric scale, and perforated rally strap evoke classic motorsport heritage.",
         "specs": {
@@ -387,7 +387,7 @@ WATCHES = [
         "base_price": 27999.0,
         "discount_price": 34999.0,
         "stock": 12,
-        "image": "./assets/masterpiece/octo-ceramic.jpg",
+        "image": "/assets/masterpiece/octo-ceramic.jpg",
         "short_description": "Avant-garde ultra-thin geometric architecture crafted in sandblasted stealth black high-tech ceramic.",
         "description": "Redefining contemporary haute horlogerie with architectural boldness, the Octo Finissimo Ceramic features an ultra-thin 8.2mm multi-faceted case. Crafted from scratch-proof zirconium oxide ceramic with an integrated seamless link bracelet, it is virtually indestructible.",
         "specs": {
@@ -414,7 +414,7 @@ CORE_10_VARIANTS = {
             "price": 5499.0,
             "discount_price": 6999.0,
             "stock": 15,
-            "image": "./assets/watches/variants/watch-01-original.jpg",
+            "image": "/assets/watches/variants/watch-01-original.jpg",
             "strap_color": "Hand-Stitched Italian Brown Calfskin Leather",
             "accent_color": "Porcelain Ivory Dial with Roman Numerals"
         },
@@ -425,7 +425,7 @@ CORE_10_VARIANTS = {
             "price": 5499.0,
             "discount_price": 6999.0,
             "stock": 12,
-            "image": "./assets/watches/variants/watch-01-alternate.jpg",
+            "image": "/assets/watches/variants/watch-01-alternate.jpg",
             "strap_color": "Deep Brown Full-Grain Leather Strap",
             "accent_color": "Porcelain Ivory Dial with Blued Small Seconds"
         }
@@ -438,7 +438,7 @@ CORE_10_VARIANTS = {
             "price": 6999.0,
             "discount_price": 8999.0,
             "stock": 12,
-            "image": "./assets/watches/variants/watch-02-original.jpg",
+            "image": "/assets/watches/variants/watch-02-original.jpg",
             "strap_color": "Brushed Stainless Steel Link Bracelet",
             "accent_color": "Charcoal Sunray Chronograph Dial"
         },
@@ -449,7 +449,7 @@ CORE_10_VARIANTS = {
             "price": 6999.0,
             "discount_price": 8999.0,
             "stock": 10,
-            "image": "./assets/watches/variants/watch-02-alternate.jpg",
+            "image": "/assets/watches/variants/watch-02-alternate.jpg",
             "strap_color": "Navy Blue Textured Leather Strap",
             "accent_color": "Charcoal Dial with Navy Blue Accents"
         }
@@ -462,7 +462,7 @@ CORE_10_VARIANTS = {
             "price": 5999.0,
             "discount_price": 7499.0,
             "stock": 18,
-            "image": "./assets/watches/variants/watch-03-original.jpg",
+            "image": "/assets/watches/variants/watch-03-original.jpg",
             "strap_color": "Onyx Black Alligator Leather Strap",
             "accent_color": "Matte Black Dial with Slender Silver Hands"
         },
@@ -473,7 +473,7 @@ CORE_10_VARIANTS = {
             "price": 5999.0,
             "discount_price": 7499.0,
             "stock": 14,
-            "image": "./assets/watches/variants/watch-03-alternate.jpg",
+            "image": "/assets/watches/variants/watch-03-alternate.jpg",
             "strap_color": "Cognac Brown Alligator Leather Strap",
             "accent_color": "Matte Black Dial with Warm Cognac Contrast"
         }
@@ -486,7 +486,7 @@ CORE_10_VARIANTS = {
             "price": 7499.0,
             "discount_price": 9499.0,
             "stock": 14,
-            "image": "./assets/watches/variants/watch-04-original.jpg",
+            "image": "/assets/watches/variants/watch-04-original.jpg",
             "strap_color": "Multi-Link 316L Solid Stainless Steel Bracelet",
             "accent_color": "Sunburst Midnight Blue Dial"
         },
@@ -497,7 +497,7 @@ CORE_10_VARIANTS = {
             "price": 7499.0,
             "discount_price": 9499.0,
             "stock": 11,
-            "image": "./assets/watches/variants/watch-04-alternate.jpg",
+            "image": "/assets/watches/variants/watch-04-alternate.jpg",
             "strap_color": "Forest Green Textured Sailcloth Strap",
             "accent_color": "Midnight Blue Dial with Green Contrast"
         }
@@ -510,7 +510,7 @@ CORE_10_VARIANTS = {
             "price": 6499.0,
             "discount_price": 7999.0,
             "stock": 10,
-            "image": "./assets/watches/variants/watch-05-original.jpg",
+            "image": "/assets/watches/variants/watch-05-original.jpg",
             "strap_color": "Stainless Steel Milanese Weave Mesh",
             "accent_color": "Champagne Sunburst Dial"
         },
@@ -521,7 +521,7 @@ CORE_10_VARIANTS = {
             "price": 6499.0,
             "discount_price": 7999.0,
             "stock": 9,
-            "image": "./assets/watches/variants/watch-05-alternate.jpg",
+            "image": "/assets/watches/variants/watch-05-alternate.jpg",
             "strap_color": "Burgundy Dark Wine Leather Strap",
             "accent_color": "Champagne Sunburst Dial with Wine Accents"
         }
@@ -534,7 +534,7 @@ CORE_10_VARIANTS = {
             "price": 7999.0,
             "discount_price": 9999.0,
             "stock": 16,
-            "image": "./assets/watches/variants/watch-06-original.jpg",
+            "image": "/assets/watches/variants/watch-06-original.jpg",
             "strap_color": "Matte Diamond-Like Carbon (DLC) Steel Bracelet",
             "accent_color": "Monochrome Pitch Black Tactical Dial"
         },
@@ -545,7 +545,7 @@ CORE_10_VARIANTS = {
             "price": 7999.0,
             "discount_price": 9999.0,
             "stock": 12,
-            "image": "./assets/watches/variants/watch-06-alternate.jpg",
+            "image": "/assets/watches/variants/watch-06-alternate.jpg",
             "strap_color": "Dark Tan Saddle Leather Strap",
             "accent_color": "Matte Black DLC Bezel with Tan Contrast"
         }
@@ -558,7 +558,7 @@ CORE_10_VARIANTS = {
             "price": 8499.0,
             "discount_price": 10499.0,
             "stock": 16,
-            "image": "./assets/watches/variants/watch-07-original.jpg",
+            "image": "/assets/watches/variants/watch-07-original.jpg",
             "strap_color": "Ion-Plated Gunmetal Solid Link Bracelet",
             "accent_color": "Matte Slate Grey Dial with High Lume"
         },
@@ -569,7 +569,7 @@ CORE_10_VARIANTS = {
             "price": 8499.0,
             "discount_price": 10499.0,
             "stock": 13,
-            "image": "./assets/watches/variants/watch-07-alternate.jpg",
+            "image": "/assets/watches/variants/watch-07-alternate.jpg",
             "strap_color": "Charcoal Grey Tactical Diver Strap",
             "accent_color": "Gunmetal Ceramic Bezel with Slate Accents"
         }
@@ -582,7 +582,7 @@ CORE_10_VARIANTS = {
             "price": 5799.0,
             "discount_price": 7299.0,
             "stock": 15,
-            "image": "./assets/watches/variants/watch-08-original.jpg",
+            "image": "/assets/watches/variants/watch-08-original.jpg",
             "strap_color": "Hand-Stitched Cognac Brown Calfskin Leather",
             "accent_color": "18K Gold Guilloché Dial with Blued Hands"
         },
@@ -593,7 +593,7 @@ CORE_10_VARIANTS = {
             "price": 5799.0,
             "discount_price": 7299.0,
             "stock": 10,
-            "image": "./assets/watches/variants/watch-08-alternate.jpg",
+            "image": "/assets/watches/variants/watch-08-alternate.jpg",
             "strap_color": "Olive Dark Green Calfskin Leather Strap",
             "accent_color": "18K Gold Case with Olive Leather Accents"
         }
@@ -606,7 +606,7 @@ CORE_10_VARIANTS = {
             "price": 6799.0,
             "discount_price": 8499.0,
             "stock": 13,
-            "image": "./assets/watches/variants/watch-09-original.jpg",
+            "image": "/assets/watches/variants/watch-09-original.jpg",
             "strap_color": "Brushed Stainless Steel Link Bracelet",
             "accent_color": "Sunburst Emerald Green Dial with Cyclops Date"
         },
@@ -617,7 +617,7 @@ CORE_10_VARIANTS = {
             "price": 6799.0,
             "discount_price": 8499.0,
             "stock": 10,
-            "image": "./assets/watches/variants/watch-09-alternate.jpg",
+            "image": "/assets/watches/variants/watch-09-alternate.jpg",
             "strap_color": "Coffee Brown Textured Diver Strap",
             "accent_color": "Emerald Green Dial with Coffee Brown Strap"
         }
@@ -630,7 +630,7 @@ CORE_10_VARIANTS = {
             "price": 5299.0,
             "discount_price": 6599.0,
             "stock": 20,
-            "image": "./assets/watches/variants/watch-10-original.jpg",
+            "image": "/assets/watches/variants/watch-10-original.jpg",
             "strap_color": "Five-Link Jubilee Stainless Steel Bracelet",
             "accent_color": "Porcelain White Dial with Blued Seconds Hand"
         },
@@ -641,7 +641,7 @@ CORE_10_VARIANTS = {
             "price": 5299.0,
             "discount_price": 6599.0,
             "stock": 15,
-            "image": "./assets/watches/variants/watch-10-alternate.jpg",
+            "image": "/assets/watches/variants/watch-10-alternate.jpg",
             "strap_color": "Deep Black Crocodile Leather Strap with Metallic Buckle",
             "accent_color": "Porcelain White Dial with Black Crocodile Accent"
         }

@@ -171,18 +171,24 @@ const Admin = {
 
     const itemsContainer = document.getElementById("inspOrderItemsList");
     if (o.items && o.items.length > 0) {
-      itemsContainer.innerHTML = o.items.map(it => `
+      itemsContainer.innerHTML = o.items.map(it => {
+        const itemImg = Admin.formatAdminImageUrl(it.image_url);
+        return `
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border-subtle); background: rgba(0,0,0,0.2);">
-          <div>
-            <div style="font-weight: 600; color: #fff; font-size: 13px;">${it.product_name}</div>
-            <div style="font-size: 11px; color: var(--gold-primary);">Variant: ${it.variant_color || 'Standard Edition'}</div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="${itemImg}" style="width: 42px; height: 42px; object-fit: contain; background: #080807; border: 1px solid var(--border-subtle); border-radius: 4px;" onerror="this.src='/assets/fallback-watch.svg'">
+            <div>
+              <div style="font-weight: 600; color: #fff; font-size: 13px;">${it.product_name}</div>
+              <div style="font-size: 11px; color: var(--gold-primary);">Variant: ${it.variant_color || 'Standard Edition'}</div>
+            </div>
           </div>
           <div style="text-align: right;">
             <div style="font-size: 13px; font-weight: 600; color: #fff;">${formatINR(it.total_price || (it.unit_price * it.quantity))}</div>
             <div style="font-size: 11px; color: var(--text-muted);">${formatINR(it.unit_price)} × ${it.quantity}</div>
           </div>
         </div>
-      `).join("");
+      `;
+      }).join("");
     } else {
       itemsContainer.innerHTML = '<div style="padding: 12px; font-size: 12px; color: var(--text-muted);">Standard Timepiece Specification</div>';
     }
@@ -240,6 +246,26 @@ const Admin = {
   },
 
   /* ==========================================================================
+     IMAGE NORMALIZATION & PREVIEW HELPERS
+     ========================================================================== */
+  formatAdminImageUrl(url) {
+    if (!url || typeof url !== "string") return "/assets/fallback-watch.svg";
+    let clean = url.trim();
+    if (!clean) return "/assets/fallback-watch.svg";
+    if (clean.startsWith("./assets/")) return clean.replace("./assets/", "/assets/");
+    if (clean.startsWith("assets/")) return "/" + clean;
+    if (clean.startsWith("../assets/")) return clean.replace("../assets/", "/assets/");
+    return clean;
+  },
+
+  updateProductImagePreview(url) {
+    const preview = document.getElementById("prodImagePreview");
+    if (preview) {
+      preview.src = this.formatAdminImageUrl(url);
+    }
+  },
+
+  /* ==========================================================================
      PRODUCT CATALOG MANAGEMENT (ALL 10 WATCHES)
      ========================================================================== */
   async loadProductsCatalog() {
@@ -250,7 +276,8 @@ const Admin = {
       const res = await apiRequest("/api/admin/products");
       this.catalogProducts = res.products || [];
       tbody.innerHTML = this.catalogProducts.map(p => {
-        const imgSrc = p.main_image || p.primary_image || (p.variants && p.variants[0] ? p.variants[0].image_url : '/assets/fallback-watch.svg');
+        const rawImg = p.main_image || p.primary_image || (p.variants && p.variants[0] ? p.variants[0].image_url : "");
+        const imgSrc = this.formatAdminImageUrl(rawImg);
         const stock = p.stock_quantity !== undefined ? p.stock_quantity : (p.variants && p.variants[0] ? p.variants[0].stock_quantity : 0);
         return `
           <tr>
@@ -303,6 +330,7 @@ const Admin = {
     const modal = document.getElementById("productModal");
     if (!modal) return;
 
+    const defaultImg = "/assets/watches/variants/watch-01-original.jpg";
     document.getElementById("prodEditId").value = "";
     document.getElementById("productModalTitle").textContent = "Add New Timepiece";
     document.getElementById("prodName").value = "";
@@ -312,7 +340,8 @@ const Admin = {
     document.getElementById("prodStock").value = "15";
     document.getElementById("prodPrice").value = "2199";
     document.getElementById("prodDiscountPrice").value = "2899";
-    document.getElementById("prodImage").value = "/assets/watches/watch_1.jpg";
+    document.getElementById("prodImage").value = defaultImg;
+    this.updateProductImagePreview(defaultImg);
     document.getElementById("prodShortDesc").value = "";
     document.getElementById("prodDesc").value = "";
 
@@ -326,6 +355,8 @@ const Admin = {
     const p = this.catalogProducts.find(item => item.id === productId);
     if (!p) return;
 
+    const currentImg = this.formatAdminImageUrl(p.main_image || p.primary_image || (p.variants && p.variants[0] ? p.variants[0].image_url : "/assets/watches/watch_1.jpg"));
+
     document.getElementById("prodEditId").value = p.id;
     document.getElementById("productModalTitle").textContent = `Edit ${p.name}`;
     document.getElementById("prodName").value = p.name || "";
@@ -335,7 +366,8 @@ const Admin = {
     document.getElementById("prodStock").value = p.stock_quantity !== undefined ? p.stock_quantity : 15;
     document.getElementById("prodPrice").value = p.base_price || 2199;
     document.getElementById("prodDiscountPrice").value = p.discount_price || 2899;
-    document.getElementById("prodImage").value = p.main_image || p.primary_image || "/assets/watches/watch_1.jpg";
+    document.getElementById("prodImage").value = currentImg;
+    this.updateProductImagePreview(currentImg);
     document.getElementById("prodShortDesc").value = p.short_description || "";
     document.getElementById("prodDesc").value = p.description || "";
 
@@ -523,9 +555,11 @@ const Admin = {
 
     try {
       const res = await apiRequest("/api/admin/inventory");
-      table.innerHTML = res.inventory.map(v => `
+      table.innerHTML = res.inventory.map(v => {
+        const imgSrc = this.formatAdminImageUrl(v.image_url);
+        return `
         <tr>
-          <td><img src="${v.image_url || '/assets/fallback-watch.svg'}" style="width: 44px; height: 44px; object-fit: contain; background: #080807; border: 1px solid var(--border-subtle); border-radius: 3px;" onerror="this.src='/assets/fallback-watch.svg'"></td>
+          <td><img src="${imgSrc}" style="width: 44px; height: 44px; object-fit: contain; background: #080807; border: 1px solid var(--border-subtle); border-radius: 3px;" onerror="this.src='/assets/fallback-watch.svg'"></td>
           <td><strong>${v.color_name}</strong><br><span style="font-size: 10px; color: var(--text-muted);">${v.sku}</span></td>
           <td>${formatINR(v.price)}</td>
           <td><strong>${v.stock_quantity}</strong></td>
@@ -537,7 +571,8 @@ const Admin = {
             </button>
           </td>
         </tr>
-      `).join("");
+      `;
+      }).join("");
     } catch (e) {
       showToast(e.message, "error");
     }

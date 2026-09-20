@@ -167,7 +167,7 @@ def create_order():
         for item in items:
             cursor.execute("""
                 SELECT pv.id as variant_id, pv.product_id, pv.color_name, pv.sku, pv.price,
-                       COALESCE(pv.image_url, p.main_image, './assets/fallback-watch.svg') as image_url,
+                       COALESCE(pv.image_url, p.main_image, '/assets/fallback-watch.svg') as image_url,
                        p.name as product_name
                 FROM product_variants pv
                 JOIN products p ON pv.product_id = p.id
@@ -373,7 +373,7 @@ def get_user_orders():
             except Exception:
                 pass
             cursor.execute("""
-                SELECT oi.*, COALESCE(pv.image_url, p.main_image, './assets/fallback-watch.svg') as image_url,
+                SELECT oi.*, COALESCE(pv.image_url, p.main_image, '/assets/fallback-watch.svg') as image_url,
                        p.name as product_name
                 FROM order_items oi
                 LEFT JOIN product_variants pv ON oi.variant_id = pv.id
@@ -444,7 +444,7 @@ def get_order_by_identifier(identifier):
 
         # Items with images and watch names
         cursor.execute("""
-            SELECT oi.*, COALESCE(pv.image_url, p.main_image, './assets/fallback-watch.svg') as image_url,
+            SELECT oi.*, COALESCE(pv.image_url, p.main_image, '/assets/fallback-watch.svg') as image_url,
                    p.name as product_name
             FROM order_items oi
             LEFT JOIN product_variants pv ON oi.variant_id = pv.id
@@ -502,7 +502,7 @@ def track_order():
             pass
 
         cursor.execute("""
-            SELECT oi.*, COALESCE(pv.image_url, p.main_image, './assets/fallback-watch.svg') as image_url,
+            SELECT oi.*, COALESCE(pv.image_url, p.main_image, '/assets/fallback-watch.svg') as image_url,
                    p.name as product_name
             FROM order_items oi
             LEFT JOIN product_variants pv ON oi.variant_id = pv.id

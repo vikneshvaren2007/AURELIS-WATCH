@@ -186,6 +186,12 @@ def serve_js(filename):
     response.headers["Cache-Control"] = "no-cache, must-revalidate"
     return response
 
+@app.route("/admin/assets/<path:filename>")
+def serve_admin_assets(filename):
+    response = send_from_directory(FRONTEND_DIR / "assets", filename, conditional=True)
+    response.headers["Cache-Control"] = "public, max-age=86400"
+    return response
+
 @app.route("/admin")
 @app.route("/admin/")
 @app.route("/admin/index.html")

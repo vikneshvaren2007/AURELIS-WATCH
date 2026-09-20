@@ -167,7 +167,10 @@
 
         <div class="form-group" style="grid-column: 1/-1;">
           <label class="form-label">Main Image URL or Path *</label>
-          <input type="text" id="prodImage" class="form-input" placeholder="/assets/watches/watch_1.jpg">
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <img id="prodImagePreview" src="/assets/fallback-watch.svg" alt="Watch Preview" style="width: 54px; height: 54px; object-fit: contain; background: #080807; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 3px; flex-shrink: 0;" onerror="this.src='/assets/fallback-watch.svg'">
+            <input type="text" id="prodImage" class="form-input" placeholder="/assets/watches/watch_1.jpg" style="flex: 1;" oninput="Admin.updateProductImagePreview(this.value)">
+          </div>
         </div>
 
         <div class="form-group" style="grid-column: 1/-1;">

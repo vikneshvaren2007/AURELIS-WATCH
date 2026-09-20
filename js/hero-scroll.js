@@ -94,10 +94,13 @@
     if (!heroSection) return;
     const heroRect = heroSection.getBoundingClientRect();
     const heroScrollHeight = heroSection.offsetHeight - window.innerHeight;
-    if (heroScrollHeight <= 0) {
+    if (heroScrollHeight <= 0 || window.innerWidth <= 768) {
       if (introWrap) {
         introWrap.style.opacity = "1";
         introWrap.style.pointerEvents = "auto";
+        if (window.innerWidth <= 768) {
+          introWrap.style.transform = "translateY(-50%)";
+        }
       }
       return;
     }

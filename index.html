@@ -150,6 +150,75 @@
         margin-bottom: 18px;
       }
     }
+
+    /* Mobile Enhancements: Super Neat, Awesome & Fitted */
+    @media (max-width: 600px) {
+      #collection, #masterpiece-collection {
+        padding: 55px 0 65px !important;
+      }
+      #collection h2, #masterpiece-collection h2 {
+        font-size: clamp(25px, 7vw, 34px) !important;
+        line-height: 1.15 !important;
+        margin-bottom: 12px !important;
+      }
+      .manifesto-stats-grid > div {
+        background: rgba(18, 16, 13, 0.7);
+        border: 1px solid rgba(214, 179, 106, 0.2);
+        border-radius: 8px;
+        padding: 16px 12px;
+        text-align: center;
+      }
+      .manifesto-stats-grid > div span:first-child {
+        font-size: 28px !important;
+      }
+      .specs-showcase-grid .luxury-card {
+        padding: 16px 14px;
+        border-radius: 6px;
+      }
+      .assurances-grid > div {
+        background: rgba(18, 16, 13, 0.6);
+        border: 1px solid rgba(214, 179, 106, 0.16);
+        border-radius: 6px;
+        padding: 14px 10px;
+      }
+      .assurances-grid h4 {
+        font-size: 11px !important;
+        letter-spacing: 0.1em !important;
+      }
+      .assurances-grid p {
+        font-size: 11px !important;
+        line-height: 1.4 !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .warranty-grid div:first-child div[style*="display: flex"] {
+        flex-direction: column;
+        gap: 10px !important;
+      }
+      .warranty-grid .gold-btn,
+      .warranty-grid .gold-btn-outline {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+      }
+      .final-cta-section div[style*="justify-content: center"] {
+        flex-direction: column;
+        gap: 12px !important;
+      }
+      .final-cta-section .gold-btn,
+      .final-cta-section .gold-btn-outline {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+        padding: 14px 20px !important;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -242,7 +311,7 @@
       <div class="hero-sticky-stage">
         <!-- Dual Cinematic Video Stage -->
         <div class="hero-video-container" id="heroVideoContainer">
-          <div class="hero-video-poster" id="heroPosterFallback" style="background-image: url('./assets/images/hero-poster-01.webp');"></div>
+          <div class="hero-video-poster" id="heroPosterFallback" style="background-image: url('/assets/images/hero-poster-01.webp');"></div>
           <video
             class="hero-video hero-video-1 active"
             id="heroVideo1"
@@ -251,11 +320,11 @@
             loop
             playsinline
             preload="auto"
-            poster="./assets/images/hero-poster-01.webp"
+            poster="/assets/images/hero-poster-01.webp"
             aria-label="Aurelis Chronograph Caliber Sequence 1"
           >
-            <source src="./assets/videos/hero-01-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
-            <source src="./assets/videos/hero-01.mp4" type="video/mp4">
+            <source src="/assets/videos/hero-01-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+            <source src="/assets/videos/hero-01.mp4" type="video/mp4">
           </video>
         </div>
         <div class="hero-gradient-overlay"></div>
@@ -313,7 +382,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=1&variant=1" class="product-image-wrap">
-              <img src="./assets/watches/watch_1.jpg" alt="AURELIS CLASSIC" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_1.jpg" alt="AURELIS CLASSIC" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -344,7 +413,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=2&variant=3" class="product-image-wrap">
-              <img src="./assets/watches/watch_2.jpg" alt="VELOR CHRONOGRAPH" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_2.jpg" alt="VELOR CHRONOGRAPH" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -375,7 +444,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=3&variant=5" class="product-image-wrap">
-              <img src="./assets/watches/watch_3.jpg" alt="NOIR EDGE" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_3.jpg" alt="NOIR EDGE" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -406,7 +475,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=4&variant=7" class="product-image-wrap">
-              <img src="./assets/watches/watch_4.jpg" alt="IMPERIAL STEEL" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_4.jpg" alt="IMPERIAL STEEL" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -437,7 +506,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=5&variant=9" class="product-image-wrap">
-              <img src="./assets/watches/watch_5.jpg" alt="ROYALE MESH" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_5.jpg" alt="ROYALE MESH" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -468,7 +537,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=6&variant=11" class="product-image-wrap">
-              <img src="./assets/watches/watch_6.jpg" alt="OBSIDIAN ELITE" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_6.jpg" alt="OBSIDIAN ELITE" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -499,7 +568,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=7&variant=13" class="product-image-wrap">
-              <img src="./assets/watches/watch_7.jpg" alt="TITAN CLASSIC" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_7.jpg" alt="TITAN CLASSIC" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -530,7 +599,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=8&variant=15" class="product-image-wrap">
-              <img src="./assets/watches/watch_8.jpg" alt="AUREN SIGNATURE" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_8.jpg" alt="AUREN SIGNATURE" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -561,7 +630,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=9&variant=17" class="product-image-wrap">
-              <img src="./assets/watches/watch_9.jpg" alt="MONARCH BLACK" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_9.jpg" alt="MONARCH BLACK" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -592,7 +661,7 @@
               <span class="badge-stock">In Stock</span>
             </div>
             <a href="product.html?id=10&variant=19" class="product-image-wrap">
-              <img src="./assets/watches/watch_10.jpg" alt="SILVER CREST" onerror="this.src='./assets/fallback-watch.svg'" loading="lazy">
+              <img src="/assets/watches/watch_10.jpg" alt="SILVER CREST" onerror="this.src='/assets/fallback-watch.svg'" loading="lazy">
             </a>
             <div class="product-info">
               <div class="badge-warranty-pill">🛡️ 6-Month Warranty</div>
@@ -842,11 +911,11 @@
             loop
             playsinline
             preload="auto"
-            poster="./assets/images/hero-poster-02.webp"
+            poster="/assets/images/hero-poster-02.webp"
             aria-label="Aurelis 3D exploded watch movement"
           >
-            <source src="./assets/videos/hero-02-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
-            <source src="./assets/videos/hero-02.mp4" type="video/mp4">
+            <source src="/assets/videos/hero-02-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+            <source src="/assets/videos/hero-02.mp4" type="video/mp4">
           </video>
         </div>
         <div class="craft-vignette"></div>
@@ -1068,7 +1137,6 @@
             <li><a href="cancellation-request.html">Cancel Order</a></li>
             <li><a href="return-request.html">Return / Exchange</a></li>
             <li><a href="contact.html">Concierge Contact</a></li>
-            <li><a href="/admin/login.html">Admin Portal</a></li>
           </ul>
         </div>
 
@@ -1087,7 +1155,6 @@
 
       <div class="footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
         <span>&copy; 2026 AURELIS TIMEPIECES. ALL RIGHTS RESERVED.</span>
-        <a href="/admin/login.html" style="color: var(--gold-primary); text-decoration: none; font-size: 10.5px; letter-spacing: 0.15em; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border-gold); border-radius: 2px; text-transform: uppercase; transition: all 0.2s ease;">ADMIN PANEL</a>
         <span>TIME / FORM / PRECISION</span>
       </div>
     </div>
@@ -1103,44 +1170,44 @@
     const HomeVariantSwitcher = {
       variants: {
         1: [
-          { id: 1, name: "Classic Brown Leather", img: "./assets/watches/variants/watch-01-original.jpg", price: "₹5,499", origPrice: "₹6,999", tag: "Classic Brown Leather • Porcelain Ivory Dial" },
-          { id: 2, name: "Deep Brown Leather", img: "./assets/watches/variants/watch-01-alternate.jpg", price: "₹5,499", origPrice: "₹6,999", tag: "Deep Brown Leather • Blued Small Seconds" }
+          { id: 1, name: "Classic Brown Leather", img: "/assets/watches/variants/watch-01-original.jpg", price: "₹5,499", origPrice: "₹6,999", tag: "Classic Brown Leather • Porcelain Ivory Dial" },
+          { id: 2, name: "Deep Brown Leather", img: "/assets/watches/variants/watch-01-alternate.jpg", price: "₹5,499", origPrice: "₹6,999", tag: "Deep Brown Leather • Blued Small Seconds" }
         ],
         2: [
-          { id: 3, name: "Brushed Steel & Charcoal", img: "./assets/watches/variants/watch-02-original.jpg", price: "₹6,999", origPrice: "₹8,999", tag: "Brushed Steel & Charcoal • Tachymeter Bezel" },
-          { id: 4, name: "Navy Blue", img: "./assets/watches/variants/watch-02-alternate.jpg", price: "₹6,999", origPrice: "₹8,999", tag: "Navy Blue Strap • Charcoal Chronograph" }
+          { id: 3, name: "Brushed Steel & Charcoal", img: "/assets/watches/variants/watch-02-original.jpg", price: "₹6,999", origPrice: "₹8,999", tag: "Brushed Steel & Charcoal • Tachymeter Bezel" },
+          { id: 4, name: "Navy Blue", img: "/assets/watches/variants/watch-02-alternate.jpg", price: "₹6,999", origPrice: "₹8,999", tag: "Navy Blue Strap • Charcoal Chronograph" }
         ],
         3: [
-          { id: 5, name: "Matte Black & Onyx", img: "./assets/watches/variants/watch-03-original.jpg", price: "₹5,999", origPrice: "₹7,499", tag: "Matte Black & Onyx • Minimalist Profile" },
-          { id: 6, name: "Cognac Brown", img: "./assets/watches/variants/watch-03-alternate.jpg", price: "₹5,999", origPrice: "₹7,499", tag: "Cognac Brown Alligator Leather • Matte Black Dial" }
+          { id: 5, name: "Matte Black & Onyx", img: "/assets/watches/variants/watch-03-original.jpg", price: "₹5,999", origPrice: "₹7,499", tag: "Matte Black & Onyx • Minimalist Profile" },
+          { id: 6, name: "Cognac Brown", img: "/assets/watches/variants/watch-03-alternate.jpg", price: "₹5,999", origPrice: "₹7,499", tag: "Cognac Brown Alligator Leather • Matte Black Dial" }
         ],
         4: [
-          { id: 7, name: "Silver Steel & Midnight Blue", img: "./assets/watches/variants/watch-04-original.jpg", price: "₹7,499", origPrice: "₹9,499", tag: "Silver Surgical Steel • Midnight Blue Sunburst" },
-          { id: 8, name: "Forest Green", img: "./assets/watches/variants/watch-04-alternate.jpg", price: "₹7,499", origPrice: "₹9,499", tag: "Forest Green Sailcloth • Midnight Blue Dial" }
+          { id: 7, name: "Silver Steel & Midnight Blue", img: "/assets/watches/variants/watch-04-original.jpg", price: "₹7,499", origPrice: "₹9,499", tag: "Silver Surgical Steel • Midnight Blue Sunburst" },
+          { id: 8, name: "Forest Green", img: "/assets/watches/variants/watch-04-alternate.jpg", price: "₹7,499", origPrice: "₹9,499", tag: "Forest Green Sailcloth • Midnight Blue Dial" }
         ],
         5: [
-          { id: 9, name: "Silver Milanese Mesh", img: "./assets/watches/variants/watch-05-original.jpg", price: "₹6,499", origPrice: "₹7,999", tag: "Silver Milanese Mesh • Champagne Gold Dial" },
-          { id: 10, name: "Burgundy / Dark Wine", img: "./assets/watches/variants/watch-05-alternate.jpg", price: "₹6,499", origPrice: "₹7,999", tag: "Burgundy / Dark Wine Strap • Champagne Dial" }
+          { id: 9, name: "Silver Milanese Mesh", img: "/assets/watches/variants/watch-05-original.jpg", price: "₹6,499", origPrice: "₹7,999", tag: "Silver Milanese Mesh • Champagne Gold Dial" },
+          { id: 10, name: "Burgundy / Dark Wine", img: "/assets/watches/variants/watch-05-alternate.jpg", price: "₹6,499", origPrice: "₹7,999", tag: "Burgundy / Dark Wine Strap • Champagne Dial" }
         ],
         6: [
-          { id: 11, name: "All-Black DLC Steel", img: "./assets/watches/variants/watch-06-original.jpg", price: "₹7,999", origPrice: "₹9,999", tag: "All-Black DLC Steel Bracelet • Tactical Dial" },
-          { id: 12, name: "Dark Tan", img: "./assets/watches/variants/watch-06-alternate.jpg", price: "₹7,999", origPrice: "₹9,999", tag: "Dark Tan Saddle Leather • Matte DLC Bezel" }
+          { id: 11, name: "All-Black DLC Steel", img: "/assets/watches/variants/watch-06-original.jpg", price: "₹7,999", origPrice: "₹9,999", tag: "All-Black DLC Steel Bracelet • Tactical Dial" },
+          { id: 12, name: "Dark Tan", img: "/assets/watches/variants/watch-06-alternate.jpg", price: "₹7,999", origPrice: "₹9,999", tag: "Dark Tan Saddle Leather • Matte DLC Bezel" }
         ],
         7: [
-          { id: 13, name: "Gunmetal Steel & Graphite", img: "./assets/watches/variants/watch-07-original.jpg", price: "₹8,499", origPrice: "₹10,499", tag: "Gunmetal Steel & Graphite • Ceramic Bezel" },
-          { id: 14, name: "Charcoal Grey", img: "./assets/watches/variants/watch-07-alternate.jpg", price: "₹8,499", origPrice: "₹10,499", tag: "Charcoal Grey Tactical Strap • Slate Dial" }
+          { id: 13, name: "Gunmetal Steel & Graphite", img: "/assets/watches/variants/watch-07-original.jpg", price: "₹8,499", origPrice: "₹10,499", tag: "Gunmetal Steel & Graphite • Ceramic Bezel" },
+          { id: 14, name: "Charcoal Grey", img: "/assets/watches/variants/watch-07-alternate.jpg", price: "₹8,499", origPrice: "₹10,499", tag: "Charcoal Grey Tactical Strap • Slate Dial" }
         ],
         8: [
-          { id: 15, name: "18K Gold & Cognac Leather", img: "./assets/watches/variants/watch-08-original.jpg", price: "₹5,799", origPrice: "₹7,299", tag: "18K Gold & Cognac Leather • Guilloché Dial" },
-          { id: 16, name: "Olive / Dark Green", img: "./assets/watches/variants/watch-08-alternate.jpg", price: "₹5,799", origPrice: "₹7,299", tag: "Olive / Dark Green Leather • 18K Gold Case" }
+          { id: 15, name: "18K Gold & Cognac Leather", img: "/assets/watches/variants/watch-08-original.jpg", price: "₹5,799", origPrice: "₹7,299", tag: "18K Gold & Cognac Leather • Guilloché Dial" },
+          { id: 16, name: "Olive / Dark Green", img: "/assets/watches/variants/watch-08-alternate.jpg", price: "₹5,799", origPrice: "₹7,299", tag: "Olive / Dark Green Leather • 18K Gold Case" }
         ],
         9: [
-          { id: 17, name: "Brushed Steel & Emerald Green", img: "./assets/watches/variants/watch-09-original.jpg", price: "₹6,799", origPrice: "₹8,499", tag: "Brushed Steel & Emerald Green • Cyclops Date" },
-          { id: 18, name: "Coffee Brown", img: "./assets/watches/variants/watch-09-alternate.jpg", price: "₹6,799", origPrice: "₹8,499", tag: "Coffee Brown Textured Strap • Emerald Dial" }
+          { id: 17, name: "Brushed Steel & Emerald Green", img: "/assets/watches/variants/watch-09-original.jpg", price: "₹6,799", origPrice: "₹8,499", tag: "Brushed Steel & Emerald Green • Cyclops Date" },
+          { id: 18, name: "Coffee Brown", img: "/assets/watches/variants/watch-09-alternate.jpg", price: "₹6,799", origPrice: "₹8,499", tag: "Coffee Brown Textured Strap • Emerald Dial" }
         ],
         10: [
-          { id: 19, name: "Mirror Silver Links", img: "./assets/watches/variants/watch-10-original.jpg", price: "₹5,299", origPrice: "₹6,599", tag: "Mirror Silver Links • White Porcelain Dial" },
-          { id: 20, name: "Deep Black", img: "./assets/watches/variants/watch-10-alternate.jpg", price: "₹5,299", origPrice: "₹6,599", tag: "Deep Black Crocodile Leather • Metallic Buckle" }
+          { id: 19, name: "Mirror Silver Links", img: "/assets/watches/variants/watch-10-original.jpg", price: "₹5,299", origPrice: "₹6,599", tag: "Mirror Silver Links • White Porcelain Dial" },
+          { id: 20, name: "Deep Black", img: "/assets/watches/variants/watch-10-alternate.jpg", price: "₹5,299", origPrice: "₹6,599", tag: "Deep Black Crocodile Leather • Metallic Buckle" }
         ]
       },
 

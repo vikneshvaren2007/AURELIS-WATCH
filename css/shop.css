@@ -658,8 +658,14 @@
   .catalog-sort select {
     flex: 1;
   }
+  .product-card {
+    border-radius: 8px;
+    border: 1px solid rgba(214, 179, 106, 0.2);
+    background: linear-gradient(180deg, #151310 0%, #0c0b09 100%);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  }
   .product-info {
-    padding: 18px 14px;
+    padding: 16px 14px;
   }
   .product-title {
     font-size: 17px;
@@ -668,7 +674,8 @@
     font-size: 20px;
   }
   .product-card-actions {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
     gap: 8px;
   }
   .product-card-actions .gold-btn,
@@ -676,9 +683,24 @@
   .product-card-actions .dark-btn {
     width: 100%;
     text-align: center;
-    padding: 11px 16px;
+    padding: 10px 6px;
     font-size: 10px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .card-color-selector {
+    margin: 6px 0 8px 0;
+    gap: 8px;
+  }
+  .color-dot {
+    width: 22px;
+    height: 22px;
+  }
+  .card-variant-label {
+    font-size: 10.5px;
+    max-width: 175px;
   }
   .vip-form input {
     width: 100%;
